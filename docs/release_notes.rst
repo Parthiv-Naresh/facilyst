@@ -3,7 +3,7 @@ Release Notes
 
 **Future Releases**
     * Enhancements
-        *   Added common regression and time series regression datasets via git lfs :pr:`6`
+        * Added common regression and time series regression datasets via git lfs :pr:`6`
         * Added ``MultiLayerPerceptronRegressor`` as a model :pr:`6`
         * Added nullable booleans, phone numbers, addresses, email addresses, URLs, currencies, file paths, full names, IPAddresses, and latitude/longitude as data types in ``Features`` :pr:`6`
         * Added ``Woodwork`` initialization for ``Features`` mock data :pr:`5`
@@ -28,6 +28,7 @@ Release Notes
         * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Removed testing datasets from CI :pr:`7`
         * Parallelized ``linux_unit_tests`` testing :pr:`6`
         * Added ``setup.py`` to enable the build process :pr:`3`
         * Added ``lint_tests`` GitHub Action to check for lint errors on PRs :pr:`3`
