@@ -3,7 +3,7 @@ Release Notes
 
 **Future Releases**
     * Enhancements
-        * Added common regression and time series regression datasets via git lfs :pr:`6`
+        *  Added common regression and time series regression datasets via git lfs :pr:`6`
         * Added ``MultiLayerPerceptronRegressor`` as a model :pr:`6`
         * Added nullable booleans, phone numbers, addresses, email addresses, URLs, currencies, file paths, full names, IPAddresses, and latitude/longitude as data types in ``Features`` :pr:`6`
         * Added ``Woodwork`` initialization for ``Features`` mock data :pr:`5`
