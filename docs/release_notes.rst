@@ -28,6 +28,7 @@ Release Notes
         * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Removed testing datasets from CI :pr:`7`
         * Parallelized ``linux_unit_tests`` testing :pr:`6`
         * Added ``setup.py`` to enable the build process :pr:`3`
         * Added ``lint_tests`` GitHub Action to check for lint errors on PRs :pr:`3`
