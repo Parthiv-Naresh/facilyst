@@ -4,6 +4,9 @@ Release Notes
 **Future Releases**
     * Enhancements
         * Added Hyperopt optimizer :pr:`11`
+        * Added primary, secondary, and tertiary types to models :pr:`11`
+        * Added the ``RandomForestRegressor`` :pr:`11`
+        * Added the ``get_models`` utility function to easily retrieve models by name or type :pr:`11`
         * Added common regression and time series regression datasets via git lfs :pr:`6`
         * Added ``MultiLayerPerceptronRegressor`` as a model :pr:`6`
         * Added nullable booleans, phone numbers, addresses, email addresses, URLs, currencies, file paths, full names, IPAddresses, and latitude/longitude as data types in ``Features`` :pr:`6`
