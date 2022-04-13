@@ -1,2 +1,3 @@
-from .neural_network_base import NeuralNetworkBase
+from .model_base import ModelBase
 from .neural_networks import MultiLayerPerceptronRegressor
+from .regressors import RandomForestRegressor

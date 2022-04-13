@@ -5,7 +5,7 @@ def _get_subclasses(base_class):
     """Returns all subclasses to the base class passed.
 
     :param base_class:
-    :type base_class: str
+    :type base_class: object
     :return: The list of child classes.
     :rtype: list
     """

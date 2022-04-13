@@ -1,13 +1,13 @@
-"""Base class for neural network models."""
+"""Base class for all models."""
 from abc import ABC, abstractmethod
 
 import pandas as pd
 
 
-class NeuralNetworkBase(ABC):
-    """Base initialization for all mock types.
+class ModelBase(ABC):
+    """Base initialization for all models.
 
-    :param model: The neural network-based model to be used.
+    :param model: The model to be used.
     :type model: object
     """
 
@@ -18,6 +18,26 @@ class NeuralNetworkBase(ABC):
     @abstractmethod
     def name(self):
         """Name of the model."""
+
+    @property
+    @abstractmethod
+    def primary_type(self):
+        """Primary type of the model."""
+
+    @property
+    @abstractmethod
+    def secondary_type(self):
+        """Secondary type of the model."""
+
+    @property
+    @abstractmethod
+    def tertiary_type(self):
+        """Tertiary type of the model."""
+
+    @property
+    @abstractmethod
+    def hyperparameters(self):
+        """Hyperparameter space for the model."""
 
     def fit(self, x_train, y_train):
         """Fits model to the data.
