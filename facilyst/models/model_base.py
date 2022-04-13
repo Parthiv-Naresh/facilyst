@@ -14,6 +14,12 @@ class ModelBase(ABC):
     def __init__(self, model=None):
         self.model = model
 
+    def __eq__(self, other):
+        if not isinstance(other, ModelBase):
+            return NotImplemented
+
+        return self.get_params() == other.get_params()
+
     @property
     @abstractmethod
     def name(self):

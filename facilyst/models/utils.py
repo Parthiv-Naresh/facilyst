@@ -1,15 +1,20 @@
 """Utility functions for all model types."""
 from facilyst.models.model_base import ModelBase
 from facilyst.utils import _get_subclasses
+from facilyst.utils.gen_utils import handle_problem_type
 
 
-def get_models(model):
+def get_models(model, problem_type=None):
     """Return all models that correspond to either the name or type passed.
 
-    A model can be selected either by its name, or by its primary, secondary, or tertiary type.
+    A model can be selected either by its name, or by its primary, secondary, or tertiary type. If problem type is passed,
+    then only models belonging to that type will be returned. If the name of a model is passed that conflicts with the
+    problem type passed, then an error will be raised.
 
     :param model: The name or type of model(s) to return.
     :type model: str
+    :param problem_type: The problem type to which the models should belong, `regression` or `classification`.
+    :type problem_type: str, optional
     :return: A list of all models found.
     :rtype list:
     """
@@ -47,12 +52,38 @@ def get_models(model):
                 f"Tertiary types: {set(each_model.tertiary_type for each_model in all_models)}"
             )
         else:
+            if problem_type:
+                subset_models = _get_models_by_problem_type(subset_models, problem_type)
+                if not subset_models:
+                    raise ValueError(
+                        f"There are no {model} models belong to the {problem_type} problem type available."
+                    )
             return subset_models
 
+    model_name_found = []
     for each_model in all_models:
         if each_model.name.lower() == model.lower():
-            return [each_model]
+            model_name_found = [each_model]
+            break
+    if not model_name_found:
+        raise ValueError(
+            f"That model doesn't exist. This is the list of all available models: {[each_model.name for each_model in all_models]}"
+        )
+    elif problem_type:
+        final_model = _get_models_by_problem_type(model_name_found, problem_type)
+        if not final_model:
+            raise ValueError(
+                f"The model {model_name_found[0].name} was found but doesn't match the problem type {problem_type}"
+            )
+        else:
+            return final_model
+    else:
+        return model_name_found
 
-    raise ValueError(
-        f"That model doesn't exist. This is the list of all available models: {[each_model.name for each_model in all_models]}"
-    )
+
+def _get_models_by_problem_type(models, problem_type):
+    accepted_models = []
+    for model in models:
+        if model.primary_type == handle_problem_type(problem_type):
+            accepted_models.append(model)
+    return accepted_models

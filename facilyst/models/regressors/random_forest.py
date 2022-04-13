@@ -28,7 +28,7 @@ class RandomForestRegressor(ModelBase):
 
     name = "Random Forest Regressor"
 
-    primary_type = "regressor"
+    primary_type = "regression"
     secondary_type = "ensemble"
     tertiary_type = "tree"
 
@@ -50,6 +50,7 @@ class RandomForestRegressor(ModelBase):
         ccp_alpha=0.0,
         max_samples=None,
         n_jobs=-1,
+        **kwargs,
     ):
         parameters = {
             "n_estimators": n_estimators,
@@ -60,6 +61,7 @@ class RandomForestRegressor(ModelBase):
             "max_samples": max_samples,
             "n_jobs": n_jobs,
         }
+        parameters.update(kwargs)
 
         random_forest_model = rf_regressor(**parameters)
 

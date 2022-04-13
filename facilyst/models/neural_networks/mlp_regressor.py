@@ -31,7 +31,7 @@ class MultiLayerPerceptronRegressor(ModelBase):
 
     hyperparameters = {}
 
-    primary_type = "regressor"
+    primary_type = "regression"
     secondary_type = "neural"
     tertiary_type = "perceptron"
 
@@ -45,6 +45,7 @@ class MultiLayerPerceptronRegressor(ModelBase):
         learning_rate="constant",
         learning_rate_init=0.001,
         max_iter=200,
+        **kwargs,
     ):
 
         parameters = {
@@ -57,6 +58,7 @@ class MultiLayerPerceptronRegressor(ModelBase):
             "learning_rate_init": learning_rate_init,
             "max_iter": max_iter,
         }
+        parameters.update(kwargs)
 
         multilayer_perceptron_model = MLPRegressor(**parameters)
 
