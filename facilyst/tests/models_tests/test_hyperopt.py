@@ -29,14 +29,12 @@ def test_invalid_model_error():
 
 
 def test_hyperopt(numeric_features_regression):
-    from pprint import pprint
-
-    print()
     x = pd.DataFrame({"Col_1": [i for i in range(100)]})
     y = pd.Series([i for i in range(100)])
 
     opt = HyperoptOptimizer(
-        regressor="Random Forest Regressor", iterations_per_model=10
+        regressor="Random Forest Regressor",
+        iterations_per_model={"Random Forest Regressor": 5},
     )
     best_model, best_score = opt.optimize(x, y)
 

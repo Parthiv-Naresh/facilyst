@@ -44,6 +44,7 @@ def test_no_model_name_of_problem_type():
         ("Random Forest Regressor", "regression", [RandomForestRegressor]),
         ("neural", "regression", [MultiLayerPerceptronRegressor]),
         ("regression", None, [RandomForestRegressor, MultiLayerPerceptronRegressor]),
+        ("all", None, [RandomForestRegressor, MultiLayerPerceptronRegressor]),
     ],
 )
 def test_get_models(model, problem_type, expected):
