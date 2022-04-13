@@ -5,7 +5,7 @@ def _get_subclasses(base_class):
     """Returns all subclasses to the base class passed.
 
     :param base_class:
-    :type base_class: str
+    :type base_class: object
     :return: The list of child classes.
     :rtype: list
     """
@@ -28,8 +28,10 @@ def handle_problem_type(problem_type):
     :return: The standardized problem type.
     :rtype: str
     """
-    if problem_type.lower() in ["regression"]:
+    if problem_type.lower() in ["regression", "regressor"]:
         problem_type_ = "regression"
+    elif problem_type.lower() in ["classification", "classifier"]:
+        problem_type_ = "classification"
     elif problem_type.lower() in ["binary"]:
         problem_type_ = "binary"
     elif problem_type.lower() in ["multiclass", "multi", "multi class"]:

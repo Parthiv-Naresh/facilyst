@@ -15,7 +15,7 @@ lint:
 lint-fix:
 	isort facilyst --profile black
 	black -t py39 facilyst
-	pydocstyle facilyst/ --convention=google --add-ignore=D104,D107 --add-select=D400 --match-dir='^(?!(tests)).*'
+	pydocstyle facilyst/ --convention=google --add-ignore=D104,D105,D107 --add-select=D400 --match-dir='^(?!(tests)).*'
 
 .PHONY: installdeps
 installdeps:
@@ -38,20 +38,20 @@ test:
 
 .PHONY: test-datasets
 test-datasets:
-	pytest facilyst/tests/dataset_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+	pytest facilyst/tests/dataset_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-models
 test-models:
-	pytest facilyst/tests/models_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+	pytest facilyst/tests/models_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-mocks
 test-mocks:
-	pytest facilyst/tests//mock_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+	pytest facilyst/tests//mock_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-graphs
 test-graphs:
-	pytest facilyst/tests//graphs_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+	pytest facilyst/tests//graphs_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-utils
 test-utils:
-	pytest facilyst/tests//utils_tests -n 2 --durations 20 --timeout 300 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+	pytest facilyst/tests//utils_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml

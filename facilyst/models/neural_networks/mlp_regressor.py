@@ -1,10 +1,10 @@
 """A multi-perceptron neural network model."""
 from sklearn.neural_network import MLPRegressor
 
-from facilyst.models.neural_network_base import NeuralNetworkBase
+from facilyst.models.model_base import ModelBase
 
 
-class MultiLayerPerceptronRegressor(NeuralNetworkBase):
+class MultiLayerPerceptronRegressor(ModelBase):
     """The Multilayer Perceptron regressor is a feedforward neural network made of hidden layers.
 
     :param hidden_layer_sizes: The number of neurons in each hidden layer. For example, (34, 78, 90) results in 3 middle
@@ -29,6 +29,12 @@ class MultiLayerPerceptronRegressor(NeuralNetworkBase):
 
     name = "Multilayer Perceptron"
 
+    hyperparameters = {}
+
+    primary_type = "regression"
+    secondary_type = "neural"
+    tertiary_type = "perceptron"
+
     def __init__(
         self,
         hidden_layer_sizes=(100,),
@@ -39,6 +45,7 @@ class MultiLayerPerceptronRegressor(NeuralNetworkBase):
         learning_rate="constant",
         learning_rate_init=0.001,
         max_iter=200,
+        **kwargs,
     ):
 
         parameters = {
@@ -51,6 +58,7 @@ class MultiLayerPerceptronRegressor(NeuralNetworkBase):
             "learning_rate_init": learning_rate_init,
             "max_iter": max_iter,
         }
+        parameters.update(kwargs)
 
         multilayer_perceptron_model = MLPRegressor(**parameters)
 
