@@ -4,17 +4,16 @@ from facilyst.models import RandomForestRegressor
 
 
 def test_random_forest_regressor(numeric_features_regression):
-    x = pd.DataFrame({"Col_1": [i for i in range(100)]})
-    y = pd.Series([i for i in range(100)])
+    x, y = numeric_features_regression
 
     rf_regressor = RandomForestRegressor()
     rf_regressor.fit(x, y)
     rf_predictions = rf_regressor.predict(x)
 
     assert isinstance(rf_predictions, pd.Series)
-    assert len(rf_predictions) == 20
+    assert len(rf_predictions) == 100
 
-    score = rf_regressor.score(x[80:], y[80:])
+    score = rf_regressor.score(x, y)
     assert isinstance(score, float)
 
     assert rf_regressor.get_params() == {

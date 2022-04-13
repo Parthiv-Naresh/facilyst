@@ -37,36 +37,3 @@ def multi_dim_data():
 def numeric_features_regression():
     X, y = make_regression(n_samples=100, n_features=10)
     return X, y
-
-
-@pytest.fixture
-def dummy_perceptron_regressor():
-    class MockPerceptronRegressor(ModelBase):
-        name = "Mock Neural Regressor"
-
-        primary_type = "regressor"
-        secondary_type = "neural"
-        tertiary_type = "perceptron"
-
-        hyperparameters = None
-
-        def get_params(self):
-            return {1: "1"}
-
-    return MockPerceptronRegressor
-
-
-@pytest.fixture
-def dummy_tree_regressor():
-    class MockTreeRegressor(ModelBase):
-        name = "Mock Tree Regressor"
-        primary_type = "regressor"
-        secondary_type = "ensemble"
-        tertiary_type = "tree"
-
-        hyperparameters = None
-
-        def get_params(self):
-            return {1: "1"}
-
-    return MockTreeRegressor
