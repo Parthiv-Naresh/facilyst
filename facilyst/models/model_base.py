@@ -11,8 +11,9 @@ class ModelBase(ABC):
     :type model: object
     """
 
-    def __init__(self, model=None):
+    def __init__(self, model=None, parameters=None):
         self.model = model
+        self.parameters = parameters
 
     def __eq__(self, other):
         if not isinstance(other, ModelBase):

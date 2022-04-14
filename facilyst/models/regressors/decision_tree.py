@@ -1,29 +1,25 @@
-"""An ensemble bootstrapping tree-based model for regression problems."""
+"""A tree-based model for regression problems."""
 from hyperopt import hp
-from sklearn.ensemble import RandomForestRegressor as rf_regressor
+from sklearn.tree import DecisionTreeRegressor as dt_regressor
 
 from facilyst.models.model_base import ModelBase
 
 
-class RandomForestRegressor(ModelBase):
-    """The Random Forest Regressor (via sklearn's implementation).
+class DecisionTreeRegressor(ModelBase):
+    """The Decision Tree Regressor (via sklearn's implementation).
 
-     This is an ensemble regressor that fits multiple trees on the data.
-
-    :param n_estimators: The number of trees in the forest. Defaults to 100.
-    :type n_estimators: int, optional
     :param max_depth: The maximum depth of the tree. Defaults to no maximum depth, nodes are expanded until all leaves
     are pure or until all leaves contain less than 2 samples.
     :type max_depth: int, optional
-    :param criterion: The function to measure the quality of a split. Defaults to the `squared_error`.
+    :param criterion: The function to measure the quality of a split. Options are `squared_error`, `friedman_mse`,
+    `absolute_error`, and `poisson`. Defaults to the `squared_error`.
     :type criterion: str, optional
     :param max_features: The number of features to consider when looking for the best split. Defaults to `auto`.
     :type max_features: str, optional
     :param ccp_alpha: Complexity parameter used for Minimal Cost-Complexity Pruning. Defaults to 0.0.
     :type ccp_alpha: float, optional
-    :param max_samples: The number of samples to draw from x to train each base estimator. Defaults to None so the entire
-    dataset is used for each base estimator.
-    :type max_samples: float or None, optional
+    :param splitter: The strategy used to choose the split at each node. Options are `best` and `random`. Defaults to `best`.
+    :type splitter: str, optional
     :param n_jobs: The number of cores to be used, -1 uses all available cores.
     :type n_jobs: int, optional
     """
@@ -31,40 +27,35 @@ class RandomForestRegressor(ModelBase):
     name = "Random Forest Regressor"
 
     primary_type = "regression"
-    secondary_type = "ensemble"
+    secondary_type = "None"
     tertiary_type = "tree"
 
     hyperparameters = {
-        "n_estimators": hp.choice("n_estimators", [10, 50, 100, 200, 300]),
         "max_depth": hp.randint("max_depth", 2, 10),
-        "criterion": hp.choice("criterion", ["squared_error", "poisson"]),
+        "criterion": hp.choice("criterion", ["squared_error", "absolute_error"]),
         "max_features": hp.choice("max_features", ["auto", "sqrt"]),
         "ccp_alpha": hp.uniform("ccp_alpha", 0.0, 1.0),
-        "max_samples": hp.choice("max_samples", [0.6, 0.75, None]),
+        "splitter": hp.choice("splitter", ["best", "random"]),
     }
 
     def __init__(
         self,
-        n_estimators=100,
         max_depth=None,
         criterion="squared_error",
         max_features="auto",
         ccp_alpha=0.0,
-        max_samples=None,
-        n_jobs=-1,
+        splitter="best",
         **kwargs,
     ):
         parameters = {
-            "n_estimators": n_estimators,
             "max_depth": max_depth,
             "criterion": criterion,
             "max_features": max_features,
             "ccp_alpha": ccp_alpha,
-            "max_samples": max_samples,
-            "n_jobs": n_jobs,
+            "splitter": splitter,
         }
         parameters.update(kwargs)
 
-        random_forest_model = rf_regressor(**parameters)
+        decision_tree_model = dt_regressor(**parameters)
 
-        super().__init__(model=random_forest_model, parameters=parameters)
+        super().__init__(model=decision_tree_model, parameters=parameters)

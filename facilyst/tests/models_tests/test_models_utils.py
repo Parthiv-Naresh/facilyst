@@ -1,10 +1,37 @@
 import pytest
 
 from facilyst.models import (
+    ADABoostRegressor,
+    BaggingRegressor,
+    CatBoostRegressor,
+    DecisionTreeRegressor,
+    ExtraTreesRegressor,
     MultiLayerPerceptronRegressor,
     RandomForestRegressor,
+    XGBoostRegressor,
 )
 from facilyst.models.utils import get_models
+
+all_regressors = [
+    ADABoostRegressor,
+    BaggingRegressor,
+    CatBoostRegressor,
+    DecisionTreeRegressor,
+    ExtraTreesRegressor,
+    MultiLayerPerceptronRegressor,
+    RandomForestRegressor,
+    XGBoostRegressor,
+]
+
+tree_regressors = [
+    ADABoostRegressor,
+    BaggingRegressor,
+    CatBoostRegressor,
+    DecisionTreeRegressor,
+    ExtraTreesRegressor,
+    RandomForestRegressor,
+    XGBoostRegressor,
+]
 
 
 def test_no_model_name_passed():
@@ -42,12 +69,13 @@ def test_no_model_name_of_problem_type():
     "model, problem_type, expected",
     [
         ("Random Forest Regressor", "regression", [RandomForestRegressor]),
-        ("neural", "regression", [MultiLayerPerceptronRegressor]),
-        ("regression", None, [RandomForestRegressor, MultiLayerPerceptronRegressor]),
-        ("all", None, [RandomForestRegressor, MultiLayerPerceptronRegressor]),
+        ("tree", "regression", tree_regressors),
+        ("regression", None, all_regressors),
+        ("all", None, all_regressors),
     ],
 )
 def test_get_models(model, problem_type, expected):
     actual_models = get_models(model, problem_type)
 
-    assert actual_models == expected
+    assert len(actual_models) == len(expected)
+    assert set(actual_models) == set(expected)

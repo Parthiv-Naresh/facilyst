@@ -1,14 +1,14 @@
-"""An ensemble bootstrapping tree-based model for regression problems."""
+"""An ensemble tree-based model for regression problems."""
 from hyperopt import hp
-from sklearn.ensemble import RandomForestRegressor as rf_regressor
+from sklearn.ensemble import ExtraTreesRegressor as et_regressor
 
 from facilyst.models.model_base import ModelBase
 
 
-class RandomForestRegressor(ModelBase):
-    """The Random Forest Regressor (via sklearn's implementation).
+class ExtraTreesRegressor(ModelBase):
+    """The Extra Trees Regressor (via sklearn's implementation).
 
-     This is an ensemble regressor that fits multiple trees on the data.
+     This is an ensemble regressor that fits randomized decision trees on the entire dataset each time.
 
     :param n_estimators: The number of trees in the forest. Defaults to 100.
     :type n_estimators: int, optional
@@ -21,9 +21,6 @@ class RandomForestRegressor(ModelBase):
     :type max_features: str, optional
     :param ccp_alpha: Complexity parameter used for Minimal Cost-Complexity Pruning. Defaults to 0.0.
     :type ccp_alpha: float, optional
-    :param max_samples: The number of samples to draw from x to train each base estimator. Defaults to None so the entire
-    dataset is used for each base estimator.
-    :type max_samples: float or None, optional
     :param n_jobs: The number of cores to be used, -1 uses all available cores.
     :type n_jobs: int, optional
     """
@@ -37,10 +34,9 @@ class RandomForestRegressor(ModelBase):
     hyperparameters = {
         "n_estimators": hp.choice("n_estimators", [10, 50, 100, 200, 300]),
         "max_depth": hp.randint("max_depth", 2, 10),
-        "criterion": hp.choice("criterion", ["squared_error", "poisson"]),
+        "criterion": hp.choice("criterion", ["squared_error", "absolute_error"]),
         "max_features": hp.choice("max_features", ["auto", "sqrt"]),
         "ccp_alpha": hp.uniform("ccp_alpha", 0.0, 1.0),
-        "max_samples": hp.choice("max_samples", [0.6, 0.75, None]),
     }
 
     def __init__(
@@ -50,7 +46,6 @@ class RandomForestRegressor(ModelBase):
         criterion="squared_error",
         max_features="auto",
         ccp_alpha=0.0,
-        max_samples=None,
         n_jobs=-1,
         **kwargs,
     ):
@@ -60,11 +55,10 @@ class RandomForestRegressor(ModelBase):
             "criterion": criterion,
             "max_features": max_features,
             "ccp_alpha": ccp_alpha,
-            "max_samples": max_samples,
             "n_jobs": n_jobs,
         }
         parameters.update(kwargs)
 
-        random_forest_model = rf_regressor(**parameters)
+        extra_trees_model = et_regressor(**parameters)
 
-        super().__init__(model=random_forest_model, parameters=parameters)
+        super().__init__(model=extra_trees_model, parameters=parameters)
