@@ -21,7 +21,7 @@ class CatBoostRegressor(ModelBase):
     name = "Catboost Regressor"
 
     primary_type = "regression"
-    secondary_type = "tree"
+    secondary_type = "None"
     tertiary_type = "tree"
 
     hyperparameters = {
