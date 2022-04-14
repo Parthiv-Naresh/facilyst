@@ -31,6 +31,8 @@ def test_graph_get_subclasses():
     "problem_type_actual, problem_type_expected, valid",
     [
         ("Regression", "regression", True),
+        ("Classification", "classification", True),
+        ("classifier", "classification", True),
         ("BINARY", "binary", True),
         ("MultiClass", "multiclass", True),
         ("multi Class", "multiclass", True),
