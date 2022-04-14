@@ -3,7 +3,7 @@ Release Notes
 
 **Future Releases**
     * Enhancements
-        * Added common regression and time series regression datasets via git lfs :pr:`15`
+        * Added ``ADABoost``, ``Bagging``, ``CatBoost``, ``DecisionTree``, ``Extra Trees``, and ``XGBoost`` regressors :pr:`15`
         * Added Hyperopt optimizer :pr:`13`
         * Added primary, secondary, and tertiary types to models :pr:`13`
         * Added the ``RandomForestRegressor`` :pr:`13`

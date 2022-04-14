@@ -14,3 +14,6 @@ woodwork>=0.13.0
 faker>=13.3.4
 hyperopt==0.2.7
 hpsklearn>=0.1.0
+catboost>=1.0.5
+xgboost>=1.5.2
+

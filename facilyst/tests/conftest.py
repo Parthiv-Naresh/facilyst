@@ -3,8 +3,6 @@ import pandas as pd
 import pytest
 from sklearn.datasets import make_regression
 
-from facilyst.models import ModelBase
-
 
 @pytest.fixture
 def one_dim_data():
