@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import pytest
-from faker import Faker
 from sklearn.datasets import make_regression
 
 
@@ -36,9 +35,3 @@ def multi_dim_data():
 def numeric_features_regression():
     X, y = make_regression(n_samples=100, n_features=10)
     return X, y
-
-
-@pytest.fixture
-def text_classification():
-    faker = Faker()
-    return faker.sentences(10)
