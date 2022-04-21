@@ -1,5 +1,9 @@
 from .model_base import ModelBase
-from .neural_networks import MultiLayerPerceptronRegressor
+from .neural_networks import (
+    BERTBinaryClassifier,
+    BERTQuestionAnswering,
+    MultiLayerPerceptronRegressor,
+)
 from .regressors import (
     ADABoostRegressor,
     BaggingRegressor,

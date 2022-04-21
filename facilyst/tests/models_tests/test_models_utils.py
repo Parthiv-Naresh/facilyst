@@ -10,7 +10,9 @@ from facilyst.models import (
     RandomForestRegressor,
     XGBoostRegressor,
 )
-from facilyst.models.neural_networks.bert_classifier import BERTBinaryClassifier
+from facilyst.models.neural_networks.bert_classifier import (
+    BERTBinaryClassifier,
+)
 from facilyst.models.neural_networks.bert_qa import BERTQuestionAnswering
 from facilyst.models.utils import get_models
 
@@ -84,7 +86,7 @@ def test_no_model_name_of_problem_type():
         ("tree", "regression", tree_regressors),
         ("regression", None, all_regressors),
         ("all", None, all_regressors + all_classifiers),
-        ("nlp", None, nlp_models)
+        ("nlp", None, nlp_models),
     ],
 )
 def test_get_models(model, problem_type, expected):
