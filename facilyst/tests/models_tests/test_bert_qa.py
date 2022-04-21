@@ -6,7 +6,7 @@ from facilyst.models.neural_networks.bert_qa import BERTQuestionAnswering
 
 def test_bert_qa_class_variables():
     assert BERTQuestionAnswering.name == "BERT Question Answering"
-    assert BERTQuestionAnswering.primary_type == "qa"
+    assert BERTQuestionAnswering.primary_type == "regression"
     assert BERTQuestionAnswering.secondary_type == "neural"
     assert BERTQuestionAnswering.tertiary_type == "nlp"
     assert BERTQuestionAnswering.hyperparameters == {}
