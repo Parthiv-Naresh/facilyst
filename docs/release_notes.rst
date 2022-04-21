@@ -3,6 +3,7 @@ Release Notes
 
 **Future Releases**
     * Enhancements
+        * Added ``BERTBinaryClassifier`` and ``BERTQuestionAnswering`` for NLP problems :pr:`16`
         * Added ``ADABoost``, ``Bagging``, ``CatBoost``, ``DecisionTree``, ``Extra Trees``, and ``XGBoost`` regressors :pr:`15`
         * Added Hyperopt optimizer :pr:`13`
         * Added primary, secondary, and tertiary types to models :pr:`13`

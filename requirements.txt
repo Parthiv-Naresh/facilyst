@@ -16,4 +16,4 @@ hyperopt==0.2.7
 hpsklearn>=0.1.0
 catboost>=1.0.5
 xgboost>=1.5.2
-
+sentencepiece>=0.1.95
