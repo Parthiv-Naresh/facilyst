@@ -13,7 +13,7 @@ class BERTQuestionAnswering(ModelBase):
 
     name = "BERT Question Answering"
 
-    primary_type = "qa"
+    primary_type = "regression"
     secondary_type = "neural"
     tertiary_type = "nlp"
 

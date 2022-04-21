@@ -53,6 +53,7 @@ def get_models(model, problem_type=None):
             )
         else:
             if problem_type:
+                print(subset_models)
                 subset_models = _get_models_by_problem_type(subset_models, problem_type)
                 if not subset_models:
                     raise ValueError(
