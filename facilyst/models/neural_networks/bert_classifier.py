@@ -126,7 +126,7 @@ class BERTBinaryClassifier(ModelBase):
         for sent in input_ids_padded:
             att_mask = [int(token_id > 0) for token_id in sent]
             attention_masks.append(att_mask)
-        return np.ndarray(attention_masks)
+        return np.array(attention_masks)
 
     @staticmethod
     def _split_train_val(features: np.ndarray, target: np.ndarray) -> list:

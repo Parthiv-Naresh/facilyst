@@ -144,7 +144,7 @@ class Wave(MockBase):
                     signal = amplitude * np.cos(2 * np.pi * frequency * samples)
                 split_signals.extend(signal)
             signal = split_signals
-        return np.ndarray(signal)
+        return np.array(signal)
 
     def add_trend(self, signal: np.ndarray) -> np.ndarray:
         """Adds trend to the data.
