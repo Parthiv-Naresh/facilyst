@@ -1,0 +1,3 @@
+[console_scripts]
+facilyst = facilyst.__main__:cli
+
