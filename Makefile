@@ -8,7 +8,7 @@ clean:
 
 .PHONY: type-hint
 type-hint:
-	pytype facilyst
+	pytype facilyst -x facilyst/tests
 
 .PHONY: lint
 lint:
