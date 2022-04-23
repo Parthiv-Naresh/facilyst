@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: facilyst
+Version: 0.0.2
+Summary: facilyst is a library that aggregates functions and utilities commonly used in the course of data science and machine learning to facilitate ease of access.
+Home-page: https://github.com/ParthivNaresh/facilyst/
+Author: Parthiv Naresh
+Author-email: pppn95@gmail.com
+License: MIT License
+Project-URL: Source Code, https://github.com/Parthiv-Naresh/facilyst
+Description: # Facilyst
+        Facil • yst
+        
+        Facilis - Latin for easy, ready, or quick.
+        
+        Analyst - Leaving this blank because I don't think anyone knows.
+        
+        
+        As a software developer in machine learning, I often find myself in the awkward position of building features and expanding use cases without easy access to data to test them with.
+        Sometimes it could be as simple as a Pandas DataFrame with different data types just so I have something basic to throw at my code, and in other cases I might need a sinusoidal wave with varying frequency 
+        and amplitude consisting of an upwards trend projected over a staggered datetime horizon.
+        
+        Instead of having to constantly look up the right functions in order to meet these data needs, and then search through StackOverflow or documentation to figure out
+        how to plot it in a visually appealing way, I wanted a library that could provide a simple interface that made it easy to facilitate the work of an analyst/developer.
+        
+        
+        ## Installation
+        Install from [PyPI](https://pypi.org/project/facilyst/)
+        
+        `pip install facilyst`
+        
+        
+        ## Version - 0.0.2
+        
+        This is a work in progress and there are many features to be added.
+        
+Keywords: python,machine learning,data science
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.8, <4
+Description-Content-Type: text/markdown
