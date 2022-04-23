@@ -1,13 +1,21 @@
 import pytest
 
 from facilyst.models import (
+    ADABoostClassifier,
     ADABoostRegressor,
+    BaggingClassifier,
     BaggingRegressor,
+    CatBoostClassifier,
     CatBoostRegressor,
+    DecisionTreeClassifier,
     DecisionTreeRegressor,
+    ExtraTreesClassifier,
     ExtraTreesRegressor,
+    MultiLayerPerceptronClassifier,
     MultiLayerPerceptronRegressor,
+    RandomForestClassifier,
     RandomForestRegressor,
+    XGBoostClassifier,
     XGBoostRegressor,
 )
 from facilyst.models.neural_networks.bert_classifier import (
@@ -29,7 +37,15 @@ all_regressors = [
 ]
 
 all_classifiers = [
+    ADABoostClassifier,
+    BaggingClassifier,
     BERTBinaryClassifier,
+    CatBoostClassifier,
+    DecisionTreeClassifier,
+    ExtraTreesClassifier,
+    MultiLayerPerceptronClassifier,
+    RandomForestClassifier,
+    XGBoostClassifier,
 ]
 
 tree_regressors = [
@@ -41,6 +57,18 @@ tree_regressors = [
     RandomForestRegressor,
     XGBoostRegressor,
 ]
+
+tree_classifiers = [
+    ADABoostClassifier,
+    BaggingClassifier,
+    CatBoostClassifier,
+    DecisionTreeClassifier,
+    ExtraTreesClassifier,
+    RandomForestClassifier,
+    XGBoostClassifier,
+]
+
+all_tree_models = tree_regressors + tree_classifiers
 
 nlp_models = [
     BERTBinaryClassifier,
@@ -85,7 +113,9 @@ def test_no_model_name_of_problem_type():
         ("Random Forest Regressor", "regression", [RandomForestRegressor]),
         ("tree", "regression", tree_regressors),
         ("regression", None, all_regressors),
+        ("classification", None, all_classifiers),
         ("all", None, all_regressors + all_classifiers),
+        ("tree", None, all_tree_models),
         ("nlp", None, nlp_models),
     ],
 )

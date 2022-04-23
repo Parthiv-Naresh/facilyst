@@ -1,22 +1,32 @@
 import pandas as pd
+import pytest
 
-from facilyst.models import MultiLayerPerceptronRegressor
+from facilyst.models import MultiLayerPerceptronClassifier
 
 
-def test_mlp_regressor(numeric_features_regression):
-    x, y = numeric_features_regression
+@pytest.mark.parametrize("classification_type", ["binary", "multiclass"])
+def test_mlp_classifier(
+    classification_type,
+    numeric_features_binary_classification,
+    numeric_features_multi_classification,
+):
+    x, y = (
+        numeric_features_binary_classification
+        if classification_type == "binary"
+        else numeric_features_multi_classification
+    )
 
-    mlp_regressor = MultiLayerPerceptronRegressor()
-    mlp_regressor.fit(x[:80], y[:80])
-    predictions = mlp_regressor.predict(x[80:])
+    mlp_classifier = MultiLayerPerceptronClassifier()
+    mlp_classifier.fit(x[:80], y[:80])
+    predictions = mlp_classifier.predict(x[80:])
 
     assert isinstance(predictions, pd.Series)
     assert len(predictions) == 20
 
-    score = mlp_regressor.score(x[80:], y[80:])
+    score = mlp_classifier.score(x[80:], y[80:])
     assert isinstance(score, float)
 
-    assert mlp_regressor.get_params() == {
+    assert mlp_classifier.get_params() == {
         "activation": "relu",
         "alpha": 0.0001,
         "batch_size": "auto",

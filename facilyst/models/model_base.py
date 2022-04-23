@@ -65,13 +65,13 @@ class ModelBase(ABC):
         self.model.fit(x_train, y_train)
         return self
 
-    def predict(self, x_test: Union[pd.DataFrame, np.ndarray]) -> np.ndarray:
+    def predict(self, x_test: Union[pd.DataFrame, np.ndarray]) -> pd.Series:
         """Predicts on the data using the model.
 
         :param x_test: The testing data for the model to predict on.
         :type x_test: pd.DataFrame or np.ndarray
-        :return: An np.ndarray of predictions
-        :rtype np.ndarray:
+        :return: The predictions.
+        :rtype pd.Series:
         """
         predictions = pd.Series(self.model.predict(x_test))
         return predictions

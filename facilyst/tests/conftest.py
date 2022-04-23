@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import pytest
-from sklearn.datasets import make_regression
+from sklearn.datasets import make_classification, make_regression
 
 
 @pytest.fixture
@@ -34,4 +34,20 @@ def multi_dim_data():
 @pytest.fixture
 def numeric_features_regression():
     X, y = make_regression(n_samples=100, n_features=10)
+    return X, y
+
+
+@pytest.fixture
+def numeric_features_binary_classification():
+    X, y = make_classification(
+        n_samples=100, n_features=10, n_classes=2, n_informative=2
+    )
+    return X, y
+
+
+@pytest.fixture
+def numeric_features_multi_classification():
+    X, y = make_classification(
+        n_samples=100, n_features=10, n_classes=3, n_informative=3
+    )
     return X, y

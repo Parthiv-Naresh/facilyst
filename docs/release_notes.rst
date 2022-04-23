@@ -3,6 +3,7 @@ Release Notes
 
 **Future Releases**
     * Enhancements
+        * Added ``ADABoost``, ``Bagging``, ``CatBoost``, ``DecisionTree``, ``Extra Trees``, ``MultiLayerPerceptron``, and ``XGBoost`` classifiers :pr:`24`
         * Added type annotations :pr:`21`
         * Added ``BERTBinaryClassifier`` and ``BERTQuestionAnswering`` for NLP problems :pr:`20`
         * Added ``ADABoost``, ``Bagging``, ``CatBoost``, ``DecisionTree``, ``Extra Trees``, and ``XGBoost`` regressors :pr:`15`
