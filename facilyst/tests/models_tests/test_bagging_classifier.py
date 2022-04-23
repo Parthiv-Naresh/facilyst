@@ -1,39 +1,50 @@
 import pandas as pd
+import pytest
 
-from facilyst.models import BaggingRegressor
+from facilyst.models import BaggingClassifier
 
 
 def test_bagging_regressor_class_variables():
-    assert BaggingRegressor.name == "Bagging Regressor"
-    assert BaggingRegressor.primary_type == "regression"
-    assert BaggingRegressor.secondary_type == "ensemble"
-    assert BaggingRegressor.tertiary_type == "tree"
-    assert list(BaggingRegressor.hyperparameters.keys()) == [
+    assert BaggingClassifier.name == "Bagging Classifier"
+    assert BaggingClassifier.primary_type == "classification"
+    assert BaggingClassifier.secondary_type == "ensemble"
+    assert BaggingClassifier.tertiary_type == "tree"
+    assert list(BaggingClassifier.hyperparameters.keys()) == [
         "n_estimators",
         "max_samples",
         "oob_score",
     ]
 
 
-def test_bagging_regressor(numeric_features_regression):
-    x, y = numeric_features_regression
+@pytest.mark.parametrize("classification_type", ["binary", "multiclass"])
+def test_bagging_classifier(
+    classification_type,
+    numeric_features_binary_classification,
+    numeric_features_multi_classification,
+):
+    x, y = (
+        numeric_features_binary_classification
+        if classification_type == "binary"
+        else numeric_features_multi_classification
+    )
 
-    bagging_regressor = BaggingRegressor()
-    bagging_regressor.fit(x, y)
-    bagging_predictions = bagging_regressor.predict(x)
+    bagging_classifier = BaggingClassifier()
+    bagging_classifier.fit(x, y)
+    bagging_predictions = bagging_classifier.predict(x)
 
     assert isinstance(bagging_predictions, pd.Series)
     assert len(bagging_predictions) == 100
 
-    score = bagging_regressor.score(x, y)
+    score = bagging_classifier.score(x, y)
     assert isinstance(score, float)
 
-    actual_params = bagging_regressor.get_params()
+    actual_params = bagging_classifier.get_params()
     actual_params.pop("base_estimator")
 
     assert actual_params == {
         "base_estimator__ccp_alpha": 0.0,
-        "base_estimator__criterion": "squared_error",
+        "base_estimator__class_weight": None,
+        "base_estimator__criterion": "gini",
         "base_estimator__max_depth": None,
         "base_estimator__max_features": None,
         "base_estimator__max_leaf_nodes": None,

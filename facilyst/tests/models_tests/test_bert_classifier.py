@@ -11,7 +11,7 @@ from facilyst.models.neural_networks.bert_classifier import (
 
 def test_bert_binary_classifier_class_variables():
     assert BERTBinaryClassifier.name == "BERT Binary Classifier"
-    assert BERTBinaryClassifier.primary_type == "binary"
+    assert BERTBinaryClassifier.primary_type == "classification"
     assert BERTBinaryClassifier.secondary_type == "neural"
     assert BERTBinaryClassifier.tertiary_type == "nlp"
     assert BERTBinaryClassifier.hyperparameters == {}

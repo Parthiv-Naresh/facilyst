@@ -52,7 +52,7 @@ class BERTBinaryClassifier(ModelBase):
 
     name: str = "BERT Binary Classifier"
 
-    primary_type: str = "binary"
+    primary_type: str = "classification"
     secondary_type: str = "neural"
     tertiary_type: str = "nlp"
 

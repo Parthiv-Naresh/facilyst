@@ -1,13 +1,13 @@
 """A multi-perceptron neural network model."""
 from typing import Optional
 
-from sklearn.neural_network import MLPRegressor
+from sklearn.neural_network import MLPClassifier
 
 from facilyst.models.model_base import ModelBase
 
 
-class MultiLayerPerceptronRegressor(ModelBase):
-    """The Multilayer Perceptron regressor (via sklearn's implementation).
+class MultiLayerPerceptronClassifier(ModelBase):
+    """The Multilayer Perceptron Classifier (via sklearn's implementation).
 
     This is a feedforward neural network made of hidden layers.
 
@@ -31,9 +31,9 @@ class MultiLayerPerceptronRegressor(ModelBase):
     :type max_iter: int, optional
     """
 
-    name: str = "Multilayer Perceptron Regressor"
+    name: str = "Multilayer Perceptron Classifier"
 
-    primary_type: str = "regression"
+    primary_type: str = "classification"
     secondary_type: str = "neural"
     tertiary_type: str = "perceptron"
 
@@ -64,6 +64,6 @@ class MultiLayerPerceptronRegressor(ModelBase):
         }
         parameters.update(kwargs)
 
-        multilayer_perceptron_model = MLPRegressor(**parameters)
+        multilayer_perceptron_model = MLPClassifier(**parameters)
 
         super().__init__(model=multilayer_perceptron_model, parameters=parameters)

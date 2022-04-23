@@ -3,6 +3,18 @@ import pandas as pd
 from facilyst.models import ADABoostRegressor
 
 
+def test_ada_boost_regressor_class_variables():
+    assert ADABoostRegressor.name == "ADA Boost Regressor"
+    assert ADABoostRegressor.primary_type == "regression"
+    assert ADABoostRegressor.secondary_type == "ensemble"
+    assert ADABoostRegressor.tertiary_type == "tree"
+    assert list(ADABoostRegressor.hyperparameters.keys()) == [
+        "n_estimators",
+        "learning_rate",
+        "loss",
+    ]
+
+
 def test_ada_boost_regressor(numeric_features_regression):
     x, y = numeric_features_regression
 
