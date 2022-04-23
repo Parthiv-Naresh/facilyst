@@ -1,4 +1,8 @@
 """A graphing class to handle creating a scatter plot."""
+from typing import Optional, Union
+
+import numpy as np
+import pandas as pd
 import seaborn as sns
 
 from facilyst.graphs import GraphBase
@@ -24,11 +28,17 @@ class Scatter(GraphBase):
     :type plot_size: tuple, optional
     """
 
-    name = "Scatterplot"
+    name: str = "Scatterplot"
 
     def __init__(
-        self, x=None, y=None, dataset=None, hue=None, style=None, plot_size=(11.7, 8.27)
-    ):
+        self,
+        x: Union[pd.Series, np.ndarray, str],
+        y: Union[pd.Series, np.ndarray, str],
+        dataset: Union[pd.DataFrame, np.ndarray] = None,
+        hue: Optional[Union[str, int]] = None,
+        style: Optional[Union[str, int]] = None,
+        plot_size: tuple = (11.7, 8.27),
+    ) -> None:
         parameters = {"data": dataset, "x": x, "y": y, "hue": hue, "style": style}
 
         extra_parameters = {"plot_size": plot_size}

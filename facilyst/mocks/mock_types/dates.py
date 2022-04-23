@@ -1,5 +1,6 @@
 """A mock type that returns datetime data."""
 import re
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -33,9 +34,9 @@ class Dates(MockBase):
     :rtype: pd.DateTimeIndex by default, can also return np.ndarray
     """
 
-    name = "Dates"
+    name: str = "Dates"
 
-    chaos_percentage = {
+    chaos_percentage: dict = {
         0: 0,
         1: 10,
         2: 15,
@@ -51,15 +52,15 @@ class Dates(MockBase):
 
     def __init__(
         self,
-        num_rows=100,
-        library="pandas",
-        start_date="1/1/2001",
-        frequency="1D",
-        missing=False,
-        misaligned=False,
-        duplicates=False,
-        chaos=1,
-    ):
+        num_rows: int = 100,
+        library: Optional[str] = "pandas",
+        start_date: Optional[str] = "1/1/2001",
+        frequency: Optional[str] = "1D",
+        missing: Optional[bool] = False,
+        misaligned: Optional[bool] = False,
+        duplicates: Optional[bool] = False,
+        chaos: Optional[int] = 1,
+    ) -> None:
         self.num_rows = num_rows
         self.start_date = start_date
         self.frequency = frequency
@@ -87,10 +88,11 @@ class Dates(MockBase):
 
         super().__init__(library, num_rows, parameters)
 
-    def create_data(self):
+    def create_data(self) -> Union[pd.DatetimeIndex, np.ndarray]:
         """Main function to be called to create datetime data.
 
         :return: The final datetime data created.
+        :rtype: pd.DatetimeIndex or np.ndarray
         """
         data = pd.date_range(
             start=self.start_date, periods=self.num_rows, freq=self.frequency
@@ -101,7 +103,7 @@ class Dates(MockBase):
         return data
 
     @staticmethod
-    def validate_num_rows(chaos, num_rows):
+    def validate_num_rows(chaos: Optional[int], num_rows: Optional[int]) -> None:
         """Main function to be called to create datetime data.
 
         :param chaos: Determines what percentage of the date range will be modified to be uninferable. Set on a scale
@@ -116,12 +118,13 @@ class Dates(MockBase):
                 f"The `num_rows` parameter must be a minimum of 30 if chaos is not 0."
             )
 
-    def make_uninferrable(self, dates_):
+    def make_uninferrable(self, dates_: pd.DatetimeIndex) -> pd.Series:
         """Main function to be called to create datetime data.
 
         :param dates_: The clean datetime data.
         :type dates_: pd.DatetimeIndex
         :return: The final datetime data created.
+        :rtype: pd.Series
         """
         chaos_percent = Dates.chaos_percentage[self.chaos] / 100
         num_chaos_rows = chaos_percent * self.num_rows
@@ -155,7 +158,9 @@ class Dates(MockBase):
         return dates_
 
     @staticmethod
-    def remove_missing(dates_, missing_indices):
+    def remove_missing(
+        dates_: pd.DatetimeIndex, missing_indices: Union[np.ndarray, list]
+    ) -> pd.Series:
         """Removes random datetime data.
 
         :param dates_: The datetime data.
@@ -163,13 +168,16 @@ class Dates(MockBase):
         :param missing_indices: The indices that will have datetime values set to None.
         :type missing_indices: np.ndarray or list
         :return: The modified datetime data.
+        :rtype: pd.Series
         """
         datetime_series = pd.Series(dates_)
         datetime_series.iloc[missing_indices] = None
         return datetime_series
 
     @staticmethod
-    def shift_misaligned(dates_, misaligned_indices, freq):
+    def shift_misaligned(
+        dates_: pd.DatetimeIndex, misaligned_indices: Union[np.ndarray, list], freq: str
+    ) -> pd.Series:
         """Randomly misaligns the datetime data.
 
         :param dates_: The datetime data.
@@ -179,6 +187,7 @@ class Dates(MockBase):
         :param freq: The frequency of the datetime data.
         :type freq: str
         :return: The modified datetime data.
+        :rtype: pd.Series
         """
         try:
             num_freq = re.findall("\\d+", freq)[0]
@@ -205,7 +214,9 @@ class Dates(MockBase):
         return datetime_series
 
     @staticmethod
-    def add_duplicates(dates_, duplicate_indices):
+    def add_duplicates(
+        dates_: pd.DatetimeIndex, duplicate_indices: Union[np.ndarray, list]
+    ) -> pd.Series:
         """Adds random duplicates to datetime data.
 
         :param dates_: The datetime data.
@@ -213,6 +224,7 @@ class Dates(MockBase):
         :param duplicate_indices: The indices that will have datetime values duplicated.
         :type duplicate_indices: np.ndarray or list
         :return: The modified datetime data.
+        :rtype: pd.Series
         """
         # Currently adds values to entire Series, maybe change logic so num_rows doesn't change
         datetime_series = pd.Series(dates_)
@@ -221,12 +233,15 @@ class Dates(MockBase):
         sorted_datetime_series = datetime_series.sort_values().reset_index(drop=True)
         return sorted_datetime_series
 
-    def handle_library(self, dates_):
+    def handle_library(
+        self, dates_: Union[pd.Series, pd.DatetimeIndex, np.ndarray]
+    ) -> Union[pd.DatetimeIndex, np.ndarray]:
         """Handles the library that was selected to determine the format in which the data will be returned.
 
         :param dates_: The final data to be returned.
         :type dates_: pd.Series, pd.DateTimeIndex, or np.ndarray
-        :return: The final data created from the appropriate library as a pd.DatetimeIndex or ndarray.
+        :return: The final data created from the appropriate library as a pd.
+        :rtype: pd.DatetimeIndex or np.ndarray
         """
         if self.library.lower() == "numpy":
             return dates_.to_numpy()

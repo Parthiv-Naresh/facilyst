@@ -6,3 +6,4 @@ isort==5.0.0
 pydocstyle==6.1.1
 darglint==1.8.0
 toml==0.10.2
+pytype==2022.4.22

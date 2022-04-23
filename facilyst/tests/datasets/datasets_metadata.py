@@ -1,4 +1,6 @@
-datasets_metadata_dict = {
+from typing import Dict, Union
+
+datasets_metadata_dict: Dict[str, Dict[str, Union[int, str, Dict[str, str]]]] = {
     "AirfoilSelfNoise": {
         "num_of_features": 5,
         "num_of_rows": 1503,

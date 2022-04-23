@@ -1,10 +1,14 @@
 """Utility functions for all mock data types."""
+from typing import Optional, Tuple
+
 import numpy as np
 import pandas as pd
 from faker import Faker
 
 
-def handle_mock_and_library_type(mock_type="features", library="pandas"):
+def handle_mock_and_library_type(
+    mock_type: str = "features", library: str = "pandas"
+) -> Tuple[str, str]:
     """Handles the mock_type and library passed to standardize them.
 
     :param mock_type: The name of the type of mock data. Defaults to returning Features data.
@@ -33,17 +37,17 @@ def handle_mock_and_library_type(mock_type="features", library="pandas"):
     return mock_type_, library_
 
 
-def mock_features_dtypes(num_rows=100):
+def mock_features_dtypes(num_rows: int = 100) -> dict:
     """Internal function that returns the default full dataset.
 
     :param num_rows: The number of observations in the final dataset. Defaults to 100.
     :type num_rows: int, optional
     :return: The dataset with all columns included.
-    :rtype tuple: (str, str)
+    :rtype dict:
     """
     fake = Faker()
 
-    def _remove_x_from_number(phone):
+    def _remove_x_from_number(phone: str) -> str:
         if "x" in phone:
             phone = phone[: phone.find("x")]
         return phone
@@ -51,7 +55,7 @@ def mock_features_dtypes(num_rows=100):
     phone_numbers = pd.Series([fake.phone_number() for _ in range(num_rows)])
     phone_numbers = phone_numbers.apply(_remove_x_from_number)
 
-    def _remove_newline_from_address(address):
+    def _remove_newline_from_address(address: str) -> str:
         address = address.replace("\n", ", ")
         return address
 

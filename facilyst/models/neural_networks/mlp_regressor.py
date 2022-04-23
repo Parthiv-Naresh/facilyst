@@ -1,4 +1,6 @@
 """A multi-perceptron neural network model."""
+from typing import Optional
+
 from sklearn.neural_network import MLPRegressor
 
 from facilyst.models.model_base import ModelBase
@@ -29,26 +31,26 @@ class MultiLayerPerceptronRegressor(ModelBase):
     :type max_iter: int, optional
     """
 
-    name = "Multilayer Perceptron"
+    name: str = "Multilayer Perceptron"
 
-    hyperparameters = {}
+    primary_type: str = "regression"
+    secondary_type: str = "neural"
+    tertiary_type: str = "perceptron"
 
-    primary_type = "regression"
-    secondary_type = "neural"
-    tertiary_type = "perceptron"
+    hyperparameters: dict = {}
 
     def __init__(
         self,
-        hidden_layer_sizes=(100,),
-        activation="relu",
-        solver="adam",
-        alpha=0.0001,
-        batch_size="auto",
-        learning_rate="constant",
-        learning_rate_init=0.001,
-        max_iter=200,
+        hidden_layer_sizes: Optional[tuple] = (100,),
+        activation: Optional[str] = "relu",
+        solver: Optional[str] = "adam",
+        alpha: Optional[float] = 0.0001,
+        batch_size: Optional[str] = "auto",
+        learning_rate: Optional[str] = "constant",
+        learning_rate_init: Optional[float] = 0.001,
+        max_iter: Optional[int] = 200,
         **kwargs,
-    ):
+    ) -> None:
 
         parameters = {
             "hidden_layer_sizes": hidden_layer_sizes,

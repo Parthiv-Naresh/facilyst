@@ -1,8 +1,12 @@
 """An optimizer used for hyperparameter tuning via Bayesian optimization."""
+from typing import Optional, Tuple, Union
+
 import numpy as np
+import pandas as pd
 from hyperopt import STATUS_OK, Trials, fmin, space_eval, tpe
 from sklearn.model_selection import train_test_split
 
+from facilyst.models import ModelBase
 from facilyst.models.utils import get_models
 
 
@@ -28,11 +32,15 @@ class HyperoptOptimizer:
     :type split: int or dict, optional
     """
 
-    name = "Hyperopt Optimizer"
+    name: str = "Hyperopt Optimizer"
 
     def __init__(
-        self, classifier=None, regressor=None, split=0.8, iterations_per_model=50
-    ):
+        self,
+        classifier: Optional[str] = None,
+        regressor: Optional[str] = None,
+        split: Optional[float] = 0.8,
+        iterations_per_model: Optional[int] = 50,
+    ) -> None:
         self.classifier = classifier
         self.regressor = regressor
         self.split = split
@@ -54,23 +62,31 @@ class HyperoptOptimizer:
 
         self.space = self.hyperparameter_space()
 
-    def collect_models(self):
-        """Collect all models requested for the optimizer."""
+    def collect_models(self) -> list:
+        """Collect all models requested for the optimizer.
+
+        :rtype list:
+        """
         return (
             get_models(self.classifier)
             if self.classifier
             else get_models(self.regressor)
         )
 
-    def hyperparameter_space(self):
-        """The collected hyperparameter space for all models selected to search through."""
+    def hyperparameter_space(self) -> list:
+        """The collected hyperparameter space for all models selected to search through.
+
+        :rtype list:
+        """
         space = []
         for each_model in self.collected_models:
             model_space = {each_model.name: each_model.hyperparameters}
             space.append(model_space)
         return space
 
-    def optimize(self, x, y):
+    def optimize(
+        self, x: Union[pd.DataFrame, np.ndarray], y: Union[pd.Series, np.ndarray]
+    ) -> Tuple[ModelBase, float]:
         """Convenience function to start optimization job and iterate over collected models.
 
         :param x: All feature data.
@@ -97,17 +113,23 @@ class HyperoptOptimizer:
         best_model = get_models(best_model_name)[0]
         return best_model(**best_model_hyp), best_score
 
-    def _optimize(self, x, y, model, space):
+    def _optimize(
+        self,
+        x: Union[pd.DataFrame, np.ndarray],
+        y: Union[pd.Series, np.ndarray],
+        model: ModelBase,
+        space: dict,
+    ) -> dict:
         """Optimization per model over hyperparameter space."""
 
-        def cost_function(parameters):
+        def cost_function(parameters: dict) -> dict:
             """Cost function definition."""
             parameters = {hyp: parameters[hyp] for hyp in parameters.keys()}
 
             x_train, x_test, y_train, y_test = train_test_split(
                 x, y, train_size=self.split
             )
-            model_ = model(**parameters)
+            model_ = model(**parameters)  # pytype: disable=not-callable
             model_.fit(x_train, y_train)
             score = model_.score(x_test, y_test)
             return {"loss": -score, "status": STATUS_OK}

@@ -1,5 +1,8 @@
 """A BERT Question Answering neural network model."""
+from typing import Any, Optional
+
 import torch
+import transformers
 from transformers import BertForQuestionAnswering, BertTokenizer
 
 from facilyst.models import ModelBase
@@ -11,15 +14,15 @@ class BERTQuestionAnswering(ModelBase):
     This is a pretrained bidirectional encoder.
     """
 
-    name = "BERT Question Answering"
+    name: str = "BERT Question Answering"
 
-    primary_type = "regression"
-    secondary_type = "neural"
-    tertiary_type = "nlp"
+    primary_type: str = "regression"
+    secondary_type: str = "neural"
+    tertiary_type: str = "nlp"
 
-    hyperparameters = {}
+    hyperparameters: dict = {}
 
-    def __init__(self, **kwargs):
+    def __init__(self, **kwargs) -> None:
         self.tokenizer = None
         self.encoded_input = None
         self.all_tokens = None
@@ -35,7 +38,7 @@ class BERTQuestionAnswering(ModelBase):
         super().__init__(model=question_answering_model, parameters=parameters)
 
     @torch.no_grad()
-    def fit(self, question, text):
+    def fit(self, question: str, text: str) -> ModelBase:
         """Fit with BERTQuestionAnswering.
 
         :param question: Question to ask.
@@ -59,7 +62,7 @@ class BERTQuestionAnswering(ModelBase):
 
         return self
 
-    def predict(self, x=None, y=None):
+    def predict(self, x: Optional[Any] = None, y: Optional[Any] = None) -> str:
         """Fit with BERTQuestionAnswering.
 
         :param x: Ignored.
@@ -82,7 +85,7 @@ class BERTQuestionAnswering(ModelBase):
 
         return answer
 
-    def get_tokenizer(self):
+    def get_tokenizer(self) -> transformers.models.bert.tokenization_bert.BertTokenizer:
         """Get the tokenizer.
 
         :return: Returns tokenizer.
@@ -93,7 +96,7 @@ class BERTQuestionAnswering(ModelBase):
         else:
             raise ValueError("Call fit to set the tokenizer.")
 
-    def get_encoded_input(self):
+    def get_encoded_input(self) -> list:
         """Get the encoded input.
 
         :return: Returns encoded input.
@@ -104,7 +107,7 @@ class BERTQuestionAnswering(ModelBase):
         else:
             raise ValueError("Call fit to get the encoded input.")
 
-    def get_all_tokens(self):
+    def get_all_tokens(self) -> list:
         """Get all tokens.
 
         :return: Returns all tokens.
@@ -115,7 +118,7 @@ class BERTQuestionAnswering(ModelBase):
         else:
             raise ValueError("Call fit to get all tokens.")
 
-    def get_num_tokens_question(self):
+    def get_num_tokens_question(self) -> int:
         """Get the number of tokens in the question.
 
         :return: Returns the number of tokens in the question.
@@ -126,7 +129,7 @@ class BERTQuestionAnswering(ModelBase):
         else:
             raise ValueError("Call fit to get the number of tokens in the question.")
 
-    def get_num_tokens_text(self):
+    def get_num_tokens_text(self) -> int:
         """Get the number of tokens in the text.
 
         :return: Returns the number of tokens in the text.
@@ -137,7 +140,7 @@ class BERTQuestionAnswering(ModelBase):
         else:
             raise ValueError("Call fit to get the number of tokens in the text.")
 
-    def get_encoded_answer(self):
+    def get_encoded_answer(self) -> list:
         """Get the encoded answer.
 
         :return: Returns encoded answer..

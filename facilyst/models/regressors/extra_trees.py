@@ -1,4 +1,6 @@
 """An ensemble tree-based model for regression problems."""
+from typing import Optional
+
 from hyperopt import hp
 from sklearn.ensemble import ExtraTreesRegressor as et_regressor
 
@@ -25,13 +27,13 @@ class ExtraTreesRegressor(ModelBase):
     :type n_jobs: int, optional
     """
 
-    name = "Random Forest Regressor"
+    name: str = "Random Forest Regressor"
 
-    primary_type = "regression"
-    secondary_type = "ensemble"
-    tertiary_type = "tree"
+    primary_type: str = "regression"
+    secondary_type: str = "ensemble"
+    tertiary_type: str = "tree"
 
-    hyperparameters = {
+    hyperparameters: dict = {
         "n_estimators": hp.choice("n_estimators", [10, 50, 100, 200, 300]),
         "max_depth": hp.randint("max_depth", 2, 10),
         "criterion": hp.choice("criterion", ["squared_error", "absolute_error"]),
@@ -41,14 +43,14 @@ class ExtraTreesRegressor(ModelBase):
 
     def __init__(
         self,
-        n_estimators=100,
-        max_depth=None,
-        criterion="squared_error",
-        max_features="auto",
-        ccp_alpha=0.0,
-        n_jobs=-1,
+        n_estimators: Optional[int] = 100,
+        max_depth: Optional[int] = None,
+        criterion: Optional[str] = "squared_error",
+        max_features: Optional[str] = "auto",
+        ccp_alpha: Optional[float] = 0.0,
+        n_jobs: Optional[int] = -1,
         **kwargs,
-    ):
+    ) -> None:
         parameters = {
             "n_estimators": n_estimators,
             "max_depth": max_depth,

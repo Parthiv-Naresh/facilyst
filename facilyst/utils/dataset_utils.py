@@ -1,5 +1,6 @@
 """Utility functions for handling LFS stored datasets."""
 import os
+from typing import Tuple
 
 import pandas as pd
 
@@ -7,7 +8,7 @@ from facilyst.tests.datasets.datasets_metadata import datasets_metadata_dict
 from facilyst.utils.gen_utils import handle_problem_type
 
 
-def get_dataset_metadata_by_problem_type(problem_type):
+def get_dataset_metadata_by_problem_type(problem_type: str) -> dict:
     """Function that returns the metadata of locally stored datasets that match the passed problem type.
 
     :param problem_type: The problem type of the datasets to match.
@@ -22,7 +23,7 @@ def get_dataset_metadata_by_problem_type(problem_type):
     return dataset_metadata_dict
 
 
-def get_dataset_metadata_by_name(dataset_name):
+def get_dataset_metadata_by_name(dataset_name: str) -> dict:
     """Function that returns the metadata of locally stored datasets that match the passed name.
 
     :param dataset_name: The name of the datasets to match.
@@ -33,7 +34,7 @@ def get_dataset_metadata_by_name(dataset_name):
     return {dataset_name: datasets_metadata_dict[dataset_name]}
 
 
-def get_dataset(dataset_name):
+def get_dataset(dataset_name: str) -> Tuple[pd.DataFrame, pd.Series]:
     """Function that returns the locally stored dataset that matches the passed problem type.
 
     :param dataset_name: The name of the dataset to match.
@@ -45,9 +46,12 @@ def get_dataset(dataset_name):
         raise ValueError("That dataset doesn't exist in the datasets directory.")
     dataset_metadata = datasets_metadata_dict[dataset_name]
 
+    assert isinstance(dataset_metadata["features"], dict)
     features = list(dataset_metadata["features"].keys())
     target = list(dataset_metadata["target"].keys())[0]
-    type_ = dataset_metadata["target_type"].replace(" ", "_")
+    assert isinstance(dataset_metadata["target_type"], str)
+    type_ = dataset_metadata["target_type"]
+    type_ = type_.replace(" ", "_")
 
     dataset = pd.read_csv(
         f"{os.path.dirname(os.getcwd())}/datasets/{type_}/{dataset_name}.csv"
@@ -62,7 +66,7 @@ def get_dataset(dataset_name):
     return x, y
 
 
-def regression_dataset_names():
+def regression_dataset_names() -> list:
     """Function that returns the names of all regression datasets.
 
     :return: A list of dataset names.
@@ -73,7 +77,7 @@ def regression_dataset_names():
     return names
 
 
-def binary_dataset_names():
+def binary_dataset_names() -> list:
     """Function that returns the names of all binary datasets.
 
     :return: A list of dataset names.
@@ -84,7 +88,7 @@ def binary_dataset_names():
     return names
 
 
-def multiclass_dataset_names():
+def multiclass_dataset_names() -> list:
     """Function that returns the names of all multiclass datasets.
 
     :return: A list of dataset names.
@@ -95,7 +99,7 @@ def multiclass_dataset_names():
     return names
 
 
-def ts_regression_dataset_names():
+def ts_regression_dataset_names() -> list:
     """Function that returns the names of all time series regression datasets.
 
     :return: A list of dataset names.

@@ -1,4 +1,6 @@
 """A tree-based model for regression problems."""
+from typing import Optional
+
 from hyperopt import hp
 from sklearn.tree import DecisionTreeRegressor as dt_regressor
 
@@ -24,13 +26,13 @@ class DecisionTreeRegressor(ModelBase):
     :type n_jobs: int, optional
     """
 
-    name = "Random Forest Regressor"
+    name: str = "Random Forest Regressor"
 
-    primary_type = "regression"
-    secondary_type = "None"
-    tertiary_type = "tree"
+    primary_type: str = "regression"
+    secondary_type: str = "None"
+    tertiary_type: str = "tree"
 
-    hyperparameters = {
+    hyperparameters: dict = {
         "max_depth": hp.randint("max_depth", 2, 10),
         "criterion": hp.choice("criterion", ["squared_error", "absolute_error"]),
         "max_features": hp.choice("max_features", ["auto", "sqrt"]),
@@ -40,13 +42,13 @@ class DecisionTreeRegressor(ModelBase):
 
     def __init__(
         self,
-        max_depth=None,
-        criterion="squared_error",
-        max_features="auto",
-        ccp_alpha=0.0,
-        splitter="best",
+        max_depth: Optional[int] = None,
+        criterion: Optional[str] = "squared_error",
+        max_features: Optional[str] = "auto",
+        ccp_alpha: Optional[float] = 0.0,
+        splitter: Optional[str] = "best",
         **kwargs,
-    ):
+    ) -> None:
         parameters = {
             "max_depth": max_depth,
             "criterion": criterion,

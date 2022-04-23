@@ -6,6 +6,10 @@ clean:
 	find . -name '*~' -delete
 	find . -name '.coverage.*' -delete
 
+.PHONY: type-hint
+type-hint:
+	pytype facilyst -x facilyst/tests
+
 .PHONY: lint
 lint:
 	isort --check-only facilyst --profile black

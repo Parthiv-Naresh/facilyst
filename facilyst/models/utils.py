@@ -1,10 +1,12 @@
 """Utility functions for all model types."""
+from typing import Optional
+
 from facilyst.models.model_base import ModelBase
 from facilyst.utils import _get_subclasses
 from facilyst.utils.gen_utils import handle_problem_type
 
 
-def get_models(model, problem_type=None):
+def get_models(model: str, problem_type: Optional[str] = None) -> list:
     """Return all models that correspond to either the name or type passed.
 
     A model can be selected either by its name, or by its primary, secondary, or tertiary type. If problem type is passed,
@@ -82,7 +84,7 @@ def get_models(model, problem_type=None):
         return model_name_found
 
 
-def _get_models_by_problem_type(models, problem_type):
+def _get_models_by_problem_type(models: list, problem_type: str) -> list:
     accepted_models = []
     for model in models:
         if model.primary_type == handle_problem_type(problem_type):
