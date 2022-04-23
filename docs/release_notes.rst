@@ -24,6 +24,7 @@ Release Notes
         * Added ``handle_data_and_library_type`` and ``mock_dtypes`` helper functions :pr:`3`
     * Fixes
     * Changes
+        * Added and pinned ``pytype==2022.4.22`` :pr:`21`
         * Pinned to ``numpy==1.22.3``, ``scipy==1.8.0``, and ``plotly==5.7.0`` :pr:`6`
         * Removed ``Target`` mock data type :pr:`4`
     * Documentation Changes
@@ -35,12 +36,13 @@ Release Notes
         * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Added ``type_hint_tests`` GitHub Action to check for type hint errors on MRs :pr:`21`
         * Removed testing datasets from CI :pr:`7`
         * Parallelized ``linux_unit_tests`` testing :pr:`6`
         * Added ``setup.py`` to enable the build process :pr:`3`
-        * Added ``lint_tests`` GitHub Action to check for lint errors on PRs :pr:`3`
-        * Added ``linux_unit_tests`` GitHub Action to check that all tests pass on PRs :pr:`3`
-        * Added ``release_notes_updated`` GitHub Action to check that every PR is associated with an update in the release notes :pr:`3`
+        * Added ``lint_tests`` GitHub Action to check for lint errors on MRs :pr:`3`
+        * Added ``linux_unit_tests`` GitHub Action to check that all tests pass on MRs :pr:`3`
+        * Added ``release_notes_updated`` GitHub Action to check that every MRs is associated with an update in the release notes :pr:`3`
         * Added ``codecov`` support :pr:`3`
 
 .. warning::
