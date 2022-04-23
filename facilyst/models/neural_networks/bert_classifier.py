@@ -260,7 +260,9 @@ class BERTBinaryClassifier(ModelBase):
         self.model.train()
 
         for step, batch in enumerate(train_dataloader):
+            print(f"STEP: {step}")
             if step % 40 == 0 and not step == 0:
+                print(f"STEP40: {step}")
                 time_taken = format_time(time.time() - t_0)
 
                 print(

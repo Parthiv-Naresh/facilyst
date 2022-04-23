@@ -31,10 +31,10 @@ sentences_df = pd.DataFrame(
             "Oh my goodness I am so frustrated!",
             "Thank you for this wonderful gift.",
         ]
-        * 10
+        * 50
     }
 )
-target = pd.Series([1, 0, 1, 0, 0, 1, 1, 0, 0, 1] * 10)
+target = pd.Series([1, 0, 1, 0, 0, 1, 1, 0, 0, 1] * 50)
 
 
 @patch(
@@ -44,22 +44,22 @@ target = pd.Series([1, 0, 1, 0, 0, 1, 1, 0, 0, 1] * 10)
     "facilyst.models.neural_networks.bert_classifier.BERTBinaryClassifier.train_batch"
 )
 def test_bert_classifier(mock_train_batch, mock_validate_batch):
-    train_x = sentences_df[:70]
-    train_y = target[:70]
+    train_x = sentences_df[:350]
+    train_y = target[:350]
 
-    test_x = sentences_df[70:100]
-    test_y = target[70:100]
+    test_x = sentences_df[350:500]
+    test_y = target[350:500]
 
     mock_train_batch.return_value = 0.0
     mock_validate_batch.return_value = (1, 1)
 
-    bert_classifier = BERTBinaryClassifier(batch_size=10)
+    bert_classifier = BERTBinaryClassifier(batch_size=6)
     bert_classifier.fit(train_x, train_y)
     predictions = bert_classifier.predict(test_x, test_y)
 
-    assert mock_train_batch.call_count == 28
-    assert mock_validate_batch.call_count == 4
-    assert len(predictions) == 30
+    assert mock_train_batch.call_count == 212
+    assert mock_validate_batch.call_count == 24
+    assert len(predictions) == 150
     assert isinstance(bert_classifier.mcc, float)
     assert isinstance(bert_classifier.max_sentence_length, int)
     assert isinstance(bert_classifier.scheduler, torch.optim.lr_scheduler.LambdaLR)
@@ -68,6 +68,6 @@ def test_bert_classifier(mock_train_batch, mock_validate_batch):
         transformers.models.bert.tokenization_bert.BertTokenizer,
     )
     assert isinstance(bert_classifier.optimizer, transformers.optimization.AdamW)
-    assert bert_classifier.batch_size == 10
+    assert bert_classifier.batch_size == 6
     assert bert_classifier.seed_val == 42
     assert (bert_classifier.predictions == predictions).all()
