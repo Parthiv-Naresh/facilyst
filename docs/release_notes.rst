@@ -36,6 +36,7 @@ Release Notes
         * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Added ``check_latest_dependencies`` GitHub Action to check for updates to the latest dependencies :pr:`23`
         * Added ``type_hint_tests`` GitHub Action to check for type hint errors on MRs :pr:`21`
         * Removed testing datasets from CI :pr:`7`
         * Parallelized ``linux_unit_tests`` testing :pr:`6`
