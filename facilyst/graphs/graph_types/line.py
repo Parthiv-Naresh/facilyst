@@ -44,7 +44,6 @@ class Line(GraphBase):
         extra_parameters = {"plot_size": plot_size}
 
         sns_line = sns.lineplot
-        print(type(sns_line()))
 
         super().__init__(
             graph_obj=sns_line,
