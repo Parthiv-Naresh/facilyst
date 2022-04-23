@@ -1,4 +1,6 @@
 """An ensemble bootstrapping tree-based model for regression problems."""
+from typing import Optional
+
 from hyperopt import hp
 from sklearn.ensemble import RandomForestRegressor as rf_regressor
 
@@ -45,13 +47,13 @@ class RandomForestRegressor(ModelBase):
 
     def __init__(
         self,
-        n_estimators: int = 100,
-        max_depth: int = None,
-        criterion: str = "squared_error",
-        max_features: str = "auto",
-        ccp_alpha: float = 0.0,
-        max_samples: int = None,
-        n_jobs: int = -1,
+        n_estimators: Optional[int] = 100,
+        max_depth: Optional[int] = None,
+        criterion: Optional[str] = "squared_error",
+        max_features: Optional[str] = "auto",
+        ccp_alpha: Optional[float] = 0.0,
+        max_samples: Optional[int] = None,
+        n_jobs: Optional[int] = -1,
         **kwargs,
     ) -> None:
         parameters = {

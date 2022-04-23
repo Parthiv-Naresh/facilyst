@@ -1,4 +1,6 @@
 """A model that uses gradient boosting on decision trees for regression problems."""
+from typing import Optional
+
 from hyperopt import hp
 from xgboost import XGBRegressor as xg_regressor
 
@@ -32,10 +34,10 @@ class XGBoostRegressor(ModelBase):
 
     def __init__(
         self,
-        n_estimators: int = 50,
-        max_depth: int = None,
-        learning_rate: float = None,
-        n_jobs: int = -1,
+        n_estimators: Optional[int] = 50,
+        max_depth: Optional[int] = None,
+        learning_rate: Optional[float] = None,
+        n_jobs: Optional[int] = -1,
         **kwargs,
     ) -> None:
         parameters = {

@@ -1,5 +1,5 @@
 """A mock type that returns wave data."""
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -99,6 +99,7 @@ class Wave(MockBase):
         :return: The initial wave data created.
         :rtype: np.ndarray
         """
+        signal = np.ndarray([])
         if not (self.random_frequency or self.random_amplitudes):
             samples = np.arange(self.num_rows) / self.num_rows
             if self.wave_type == "sine":
@@ -143,7 +144,7 @@ class Wave(MockBase):
                     signal = amplitude * np.cos(2 * np.pi * frequency * samples)
                 split_signals.extend(signal)
             signal = split_signals
-        return signal
+        return np.ndarray(signal)
 
     def add_trend(self, signal: np.ndarray) -> np.ndarray:
         """Adds trend to the data.

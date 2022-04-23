@@ -1,4 +1,6 @@
 """A multi-perceptron neural network model."""
+from typing import Optional
+
 from sklearn.neural_network import MLPRegressor
 
 from facilyst.models.model_base import ModelBase
@@ -39,14 +41,14 @@ class MultiLayerPerceptronRegressor(ModelBase):
 
     def __init__(
         self,
-        hidden_layer_sizes: tuple = (100,),
-        activation: str = "relu",
-        solver: str = "adam",
-        alpha: float = 0.0001,
-        batch_size: str = "auto",
-        learning_rate: str = "constant",
-        learning_rate_init: float = 0.001,
-        max_iter: int = 200,
+        hidden_layer_sizes: Optional[tuple] = (100,),
+        activation: Optional[str] = "relu",
+        solver: Optional[str] = "adam",
+        alpha: Optional[float] = 0.0001,
+        batch_size: Optional[str] = "auto",
+        learning_rate: Optional[str] = "constant",
+        learning_rate_init: Optional[float] = 0.001,
+        max_iter: Optional[int] = 200,
         **kwargs,
     ) -> None:
 

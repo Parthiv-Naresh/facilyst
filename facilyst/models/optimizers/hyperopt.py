@@ -1,5 +1,5 @@
 """An optimizer used for hyperparameter tuning via Bayesian optimization."""
-from typing import Union
+from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -36,10 +36,10 @@ class HyperoptOptimizer:
 
     def __init__(
         self,
-        classifier: str = None,
-        regressor: str = None,
-        split: float = 0.8,
-        iterations_per_model: int = 50,
+        classifier: Optional[str] = None,
+        regressor: Optional[str] = None,
+        split: Optional[float] = 0.8,
+        iterations_per_model: Optional[int] = 50,
     ) -> None:
         self.classifier = classifier
         self.regressor = regressor
@@ -86,7 +86,7 @@ class HyperoptOptimizer:
 
     def optimize(
         self, x: Union[pd.DataFrame, np.ndarray], y: Union[pd.Series, np.ndarray]
-    ) -> ModelBase:
+    ) -> Tuple[ModelBase, float]:
         """Convenience function to start optimization job and iterate over collected models.
 
         :param x: All feature data.
@@ -129,7 +129,7 @@ class HyperoptOptimizer:
             x_train, x_test, y_train, y_test = train_test_split(
                 x, y, train_size=self.split
             )
-            model_ = model(**parameters)
+            model_ = model(**parameters)  # pytype: disable=not-callable
             model_.fit(x_train, y_train)
             score = model_.score(x_test, y_test)
             return {"loss": -score, "status": STATUS_OK}

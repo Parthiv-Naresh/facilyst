@@ -1,5 +1,5 @@
 """A BERT Question Answering neural network model."""
-from typing import Any
+from typing import Any, Optional
 
 import torch
 import transformers
@@ -62,7 +62,7 @@ class BERTQuestionAnswering(ModelBase):
 
         return self
 
-    def predict(self, x: Any = None, y: Any = None) -> str:
+    def predict(self, x: Optional[Any] = None, y: Optional[Any] = None) -> str:
         """Fit with BERTQuestionAnswering.
 
         :param x: Ignored.

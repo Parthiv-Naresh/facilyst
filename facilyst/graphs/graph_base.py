@@ -1,7 +1,7 @@
 """Base class for Graph types."""
 import collections.abc
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Optional
 
 import matplotlib
 import numpy as np
@@ -20,7 +20,7 @@ class GraphBase(ABC):
     """
 
     def __init__(
-        self, graph_obj: object, parameters: dict, extra_parameters: dict
+        self, graph_obj: Any, parameters: dict, extra_parameters: dict
     ) -> None:
         self.parameters = parameters
         self.extra_parameters = extra_parameters
@@ -53,7 +53,9 @@ class GraphBase(ABC):
         """
         return self.graph_obj.figure.get_size_inches()
 
-    def resize(self, width: float = 11.7, height: float = 8.27) -> None:
+    def resize(
+        self, width: Optional[float] = 11.7, height: Optional[float] = 8.27
+    ) -> None:
         """Resize the graph. Call .show() after to display the graph.
 
         :param width: The width of the graph.

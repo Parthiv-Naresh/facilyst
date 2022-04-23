@@ -1,6 +1,6 @@
 """Base class for all models."""
 from abc import ABC, abstractmethod
-from typing import Any, TypeVar, Union
+from typing import Any, Optional, TypeVar, Union
 
 import numpy as np
 import pandas as pd
@@ -13,7 +13,9 @@ class ModelBase(ABC):
     :type model: object
     """
 
-    def __init__(self, model: Any = None, parameters: dict = None) -> None:
+    def __init__(
+        self, model: Optional[Any] = None, parameters: Optional[dict] = None
+    ) -> None:
         self.model = model
         self.parameters = parameters
 

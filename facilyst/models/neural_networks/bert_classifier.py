@@ -2,7 +2,7 @@
 import datetime
 import random
 import time
-from typing import TypeVar
+from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
@@ -58,7 +58,9 @@ class BERTBinaryClassifier(ModelBase):
 
     hyperparameters: dict = {}
 
-    def __init__(self, batch_size: int = 30, seed_val: int = 42, **kwargs) -> None:
+    def __init__(
+        self, batch_size: Optional[int] = 30, seed_val: Optional[int] = 42, **kwargs
+    ) -> None:
         self.predictions = None
         self.mcc = None
         self.scheduler = None
@@ -119,12 +121,12 @@ class BERTBinaryClassifier(ModelBase):
         )
 
     @staticmethod
-    def _get_attention_masks(input_ids_padded: np.ndarray) -> list:
+    def _get_attention_masks(input_ids_padded: np.ndarray) -> np.ndarray:
         attention_masks = []
         for sent in input_ids_padded:
             att_mask = [int(token_id > 0) for token_id in sent]
             attention_masks.append(att_mask)
-        return attention_masks
+        return np.ndarray(attention_masks)
 
     @staticmethod
     def _split_train_val(features: np.ndarray, target: np.ndarray) -> list:
@@ -227,7 +229,7 @@ class BERTBinaryClassifier(ModelBase):
 
     def validate_batch(
         self, batch: list, eval_accuracy: float, nb_eval_steps: int
-    ) -> (float, int):
+    ) -> Tuple[float, int]:
         """Validate batch.
 
         :param batch: Batch of padded input ids for validation.
@@ -393,7 +395,7 @@ class BERTBinaryClassifier(ModelBase):
     @staticmethod
     def _get_matthews_correlation(
         true_labels: list, predictions: list
-    ) -> (float, list):
+    ) -> Tuple[float, np.ndarray]:
         matthews_set = []
 
         print("Calculating Matthews Corr. Coef. for each batch...")
@@ -410,14 +412,14 @@ class BERTBinaryClassifier(ModelBase):
         print("MCC: %.3f" % mcc)
         return mcc, flat_predictions
 
-    def predict(self, x: pd.DataFrame, y: pd.Series = None) -> np.ndarray:
+    def predict(self, x: pd.DataFrame, y: pd.Series = pd.Series) -> np.ndarray:
         """Predict with BertForSequenceClassification.
 
         :param x: DataFrame with one column of sentences.
         :type x: pd.DataFrame
         :param y: Series of binary classification labels.
         :type y: pd.Series
-        :return: Returns an np.ndarray of predicted classes.
+        :return: Returns predicted classes.
         :rtype np.ndarray:
         """
         sentences = x.iloc[:, 0].values

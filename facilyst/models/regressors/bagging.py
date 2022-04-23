@@ -1,4 +1,6 @@
 """An ensemble bagging model for regression problems."""
+from typing import Optional
+
 from hyperopt import hp
 from sklearn.ensemble import BaggingRegressor as bagging_regressor
 from sklearn.tree import DecisionTreeRegressor
@@ -37,11 +39,11 @@ class BaggingRegressor(ModelBase):
 
     def __init__(
         self,
-        base_estimator: object = DecisionTreeRegressor(),
-        n_estimators: int = 50,
-        max_samples: float = 1.0,
-        oob_score: bool = False,
-        n_jobs: int = -1,
+        base_estimator: Optional[object] = DecisionTreeRegressor(),
+        n_estimators: Optional[int] = 50,
+        max_samples: Optional[float] = 1.0,
+        oob_score: Optional[bool] = False,
+        n_jobs: Optional[int] = -1,
         **kwargs,
     ) -> None:
         parameters = {

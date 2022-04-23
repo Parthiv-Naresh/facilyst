@@ -1,5 +1,5 @@
 """A mock type that returns features data."""
-from typing import Union
+from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
@@ -70,31 +70,31 @@ class Features(MockBase):
 
     def __init__(
         self,
-        num_rows: int = 100,
-        library: str = "pandas",
-        ints: bool = True,
-        rand_ints: bool = True,
-        floats: bool = True,
-        rand_floats: bool = True,
-        booleans: bool = False,
-        categoricals: bool = False,
-        dates: bool = False,
-        texts: bool = False,
-        ints_nullable: bool = False,
-        floats_nullable: bool = False,
-        booleans_nullable: bool = False,
-        full_names: bool = False,
-        phone_numbers: bool = False,
-        addresses: bool = False,
-        countries: bool = False,
-        email_addresses: bool = False,
-        urls: bool = False,
-        currencies: bool = False,
-        file_paths: bool = False,
-        ipv4: bool = False,
-        ipv6: bool = False,
-        lat_longs: bool = False,
-        all_dtypes: bool = False,
+        num_rows: Optional[int] = 100,
+        library: Optional[str] = "pandas",
+        ints: Optional[bool] = True,
+        rand_ints: Optional[bool] = True,
+        floats: Optional[bool] = True,
+        rand_floats: Optional[bool] = True,
+        booleans: Optional[bool] = False,
+        categoricals: Optional[bool] = False,
+        dates: Optional[bool] = False,
+        texts: Optional[bool] = False,
+        ints_nullable: Optional[bool] = False,
+        floats_nullable: Optional[bool] = False,
+        booleans_nullable: Optional[bool] = False,
+        full_names: Optional[bool] = False,
+        phone_numbers: Optional[bool] = False,
+        addresses: Optional[bool] = False,
+        countries: Optional[bool] = False,
+        email_addresses: Optional[bool] = False,
+        urls: Optional[bool] = False,
+        currencies: Optional[bool] = False,
+        file_paths: Optional[bool] = False,
+        ipv4: Optional[bool] = False,
+        ipv6: Optional[bool] = False,
+        lat_longs: Optional[bool] = False,
+        all_dtypes: Optional[bool] = False,
     ) -> None:
         kw_args = locals()
 
@@ -127,7 +127,7 @@ class Features(MockBase):
         data = self.handle_library(data, dtypes_to_keep)
         return data
 
-    def get_data_from_dict(self) -> (pd.DataFrame, list):
+    def get_data_from_dict(self) -> Tuple[pd.DataFrame, list]:
         """Returns the data based on the dtypes specified during class instantiation.
 
         :return: The final data created from the appropriate library.
@@ -162,7 +162,7 @@ class Features(MockBase):
             return data
 
     @staticmethod
-    def _refine_dtypes(dtypes: list, num_rows: int = 100) -> dict:
+    def _refine_dtypes(dtypes: list, num_rows: Optional[int] = 100) -> dict:
         """Internal function that selects the dtypes to be kept from the full dataset.
 
         :param dtypes: All data format options from the class initialization. Defaults to returning the full dataset.

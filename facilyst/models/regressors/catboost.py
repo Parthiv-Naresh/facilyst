@@ -1,4 +1,6 @@
 """A model that uses gradient boosting on decision trees alongside categorical encoding for regression problems."""
+from typing import Optional
+
 from catboost import CatBoostRegressor as cat_regressor
 from hyperopt import hp
 
@@ -32,9 +34,9 @@ class CatBoostRegressor(ModelBase):
 
     def __init__(
         self,
-        n_estimators: int = 50,
-        max_depth: int = None,
-        learning_rate: float = None,
+        n_estimators: Optional[int] = 50,
+        max_depth: Optional[int] = None,
+        learning_rate: Optional[float] = None,
         **kwargs,
     ) -> None:
         parameters = {

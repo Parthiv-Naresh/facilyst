@@ -1,6 +1,6 @@
 """Base class for mock types."""
 from abc import ABC, abstractmethod
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -18,7 +18,10 @@ class MockBase(ABC):
     """
 
     def __init__(
-        self, library: str = None, num_rows: int = 100, parameters: dict = None
+        self,
+        library: Optional[str] = None,
+        num_rows: Optional[int] = 100,
+        parameters: Optional[dict] = None,
     ) -> None:
         self.library = library
         self.num_rows = num_rows

@@ -1,5 +1,5 @@
 """A graphing class to handle creating a scatter plot."""
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -35,8 +35,8 @@ class Scatter(GraphBase):
         x: Union[pd.Series, np.ndarray, str],
         y: Union[pd.Series, np.ndarray, str],
         dataset: Union[pd.DataFrame, np.ndarray] = None,
-        hue: Union[str, int] = None,
-        style: Union[str, int] = None,
+        hue: Optional[Union[str, int]] = None,
+        style: Optional[Union[str, int]] = None,
         plot_size: tuple = (11.7, 8.27),
     ) -> None:
         parameters = {"data": dataset, "x": x, "y": y, "hue": hue, "style": style}

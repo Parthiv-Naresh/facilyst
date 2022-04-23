@@ -1,5 +1,6 @@
 """Utility functions for handling LFS stored datasets."""
 import os
+from typing import Tuple
 
 import pandas as pd
 
@@ -33,7 +34,7 @@ def get_dataset_metadata_by_name(dataset_name: str) -> dict:
     return {dataset_name: datasets_metadata_dict[dataset_name]}
 
 
-def get_dataset(dataset_name: str) -> (pd.DataFrame, pd.Series):
+def get_dataset(dataset_name: str) -> Tuple[pd.DataFrame, pd.Series]:
     """Function that returns the locally stored dataset that matches the passed problem type.
 
     :param dataset_name: The name of the dataset to match.
@@ -45,9 +46,12 @@ def get_dataset(dataset_name: str) -> (pd.DataFrame, pd.Series):
         raise ValueError("That dataset doesn't exist in the datasets directory.")
     dataset_metadata = datasets_metadata_dict[dataset_name]
 
+    assert isinstance(dataset_metadata["features"], dict)
     features = list(dataset_metadata["features"].keys())
     target = list(dataset_metadata["target"].keys())[0]
-    type_ = dataset_metadata["target_type"].replace(" ", "_")
+    assert isinstance(dataset_metadata["target_type"], str)
+    type_ = dataset_metadata["target_type"]
+    type_ = type_.replace(" ", "_")
 
     dataset = pd.read_csv(
         f"{os.path.dirname(os.getcwd())}/datasets/{type_}/{dataset_name}.csv"

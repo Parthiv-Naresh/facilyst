@@ -1,4 +1,6 @@
 """A tree-based model for regression problems."""
+from typing import Optional
+
 from hyperopt import hp
 from sklearn.tree import DecisionTreeRegressor as dt_regressor
 
@@ -40,11 +42,11 @@ class DecisionTreeRegressor(ModelBase):
 
     def __init__(
         self,
-        max_depth: int = None,
-        criterion: str = "squared_error",
-        max_features: str = "auto",
-        ccp_alpha: float = 0.0,
-        splitter: str = "best",
+        max_depth: Optional[int] = None,
+        criterion: Optional[str] = "squared_error",
+        max_features: Optional[str] = "auto",
+        ccp_alpha: Optional[float] = 0.0,
+        splitter: Optional[str] = "best",
         **kwargs,
     ) -> None:
         parameters = {

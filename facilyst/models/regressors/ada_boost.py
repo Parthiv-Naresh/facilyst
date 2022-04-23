@@ -1,4 +1,6 @@
 """An ensemble weighted model for regression problems."""
+from typing import Optional
+
 from hyperopt import hp
 from sklearn.ensemble import AdaBoostRegressor as ada_regressor
 from sklearn.tree import DecisionTreeRegressor
@@ -39,10 +41,10 @@ class ADABoostRegressor(ModelBase):
 
     def __init__(
         self,
-        base_estimator: object = DecisionTreeRegressor(),
-        n_estimators: int = 50,
-        learning_rate: float = 1.0,
-        loss: str = "linear",
+        base_estimator: Optional[object] = DecisionTreeRegressor(),
+        n_estimators: Optional[int] = 50,
+        learning_rate: Optional[float] = 1.0,
+        loss: Optional[str] = "linear",
         **kwargs,
     ) -> None:
         parameters = {

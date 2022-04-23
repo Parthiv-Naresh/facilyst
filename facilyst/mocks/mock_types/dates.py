@@ -1,6 +1,6 @@
 """A mock type that returns datetime data."""
 import re
-from typing import Union
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -53,13 +53,13 @@ class Dates(MockBase):
     def __init__(
         self,
         num_rows: int = 100,
-        library: str = "pandas",
-        start_date: str = "1/1/2001",
-        frequency: str = "1D",
-        missing: bool = False,
-        misaligned: bool = False,
-        duplicates: bool = False,
-        chaos: int = 1,
+        library: Optional[str] = "pandas",
+        start_date: Optional[str] = "1/1/2001",
+        frequency: Optional[str] = "1D",
+        missing: Optional[bool] = False,
+        misaligned: Optional[bool] = False,
+        duplicates: Optional[bool] = False,
+        chaos: Optional[int] = 1,
     ) -> None:
         self.num_rows = num_rows
         self.start_date = start_date
@@ -103,7 +103,7 @@ class Dates(MockBase):
         return data
 
     @staticmethod
-    def validate_num_rows(chaos: int, num_rows: int) -> None:
+    def validate_num_rows(chaos: Optional[int], num_rows: Optional[int]) -> None:
         """Main function to be called to create datetime data.
 
         :param chaos: Determines what percentage of the date range will be modified to be uninferable. Set on a scale
