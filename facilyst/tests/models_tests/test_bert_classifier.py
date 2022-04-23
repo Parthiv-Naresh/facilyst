@@ -37,13 +37,29 @@ sentences_df = pd.DataFrame(
 target = pd.Series([1, 0, 1, 0, 0, 1, 1, 0, 0, 1] * 50)
 
 
+def test_bert_classifier():
+    train_x = sentences_df[:10]
+    train_y = target[:10]
+
+    test_x = sentences_df[10:15]
+    test_y = target[10:15]
+
+    bert_classifier = BERTBinaryClassifier(batch_size=6)
+    bert_classifier.fit(train_x, train_y)
+    predictions = bert_classifier.predict(test_x, test_y)
+
+    assert len(predictions) == 5
+
+
 @patch(
     "facilyst.models.neural_networks.bert_classifier.BERTBinaryClassifier.validate_batch"
 )
 @patch(
     "facilyst.models.neural_networks.bert_classifier.BERTBinaryClassifier.train_batch"
 )
-def test_bert_classifier(mock_train_batch, mock_validate_batch):
+def test_bert_classifier_mock_train_validate_batches(
+    mock_train_batch, mock_validate_batch
+):
     train_x = sentences_df[:350]
     train_y = target[:350]
 
