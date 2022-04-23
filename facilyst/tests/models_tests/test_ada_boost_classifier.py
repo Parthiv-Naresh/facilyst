@@ -1,7 +1,20 @@
 import pandas as pd
 import pytest
+from hyperopt import hp
 
 from facilyst.models import ADABoostClassifier
+
+
+def test_ada_boost_classifier_class_variables():
+    assert ADABoostClassifier.name == "ADA Boost Classifier"
+    assert ADABoostClassifier.primary_type == "classification"
+    assert ADABoostClassifier.secondary_type == "ensemble"
+    assert ADABoostClassifier.tertiary_type == "tree"
+    assert list(ADABoostClassifier.hyperparameters.keys()) == [
+        "n_estimators",
+        "learning_rate",
+        "algorithm",
+    ]
 
 
 @pytest.mark.parametrize("classification_type", ["binary", "multiclass"])

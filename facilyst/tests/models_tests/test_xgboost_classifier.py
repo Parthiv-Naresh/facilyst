@@ -5,6 +5,18 @@ import pytest
 from facilyst.models import XGBoostClassifier
 
 
+def test_xgboost_classifier_class_variables():
+    assert XGBoostClassifier.name == "XGBoost Classifier"
+    assert XGBoostClassifier.primary_type == "classification"
+    assert XGBoostClassifier.secondary_type == "ensemble"
+    assert XGBoostClassifier.tertiary_type == "tree"
+    assert list(XGBoostClassifier.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_depth",
+        "learning_rate",
+    ]
+
+
 @pytest.mark.parametrize("classification_type", ["binary", "multiclass"])
 def test_xgboost_classifier(
     classification_type,

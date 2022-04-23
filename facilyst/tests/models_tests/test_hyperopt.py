@@ -10,6 +10,10 @@ from facilyst.models.utils import get_models
 from facilyst.utils import get_dataset
 
 
+def test_hyperopt_class_variables():
+    assert HyperoptOptimizer.name == "Hyperopt Optimizer"
+
+
 def test_invalid_classifier_regressor_error():
     with pytest.raises(ValueError, match="Either classifier or regressor must be set."):
         HyperoptOptimizer(classifier=None, regressor=None)

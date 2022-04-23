@@ -6,6 +6,20 @@ from sklearn.tree import DecisionTreeClassifier as sk_DecisionTreeClassifier
 from facilyst.models import DecisionTreeClassifier
 
 
+def test_decision_tree_classifier_class_variables():
+    assert DecisionTreeClassifier.name == "Decision Tree Classifier"
+    assert DecisionTreeClassifier.primary_type == "classification"
+    assert DecisionTreeClassifier.secondary_type == "None"
+    assert DecisionTreeClassifier.tertiary_type == "tree"
+    assert list(DecisionTreeClassifier.hyperparameters.keys()) == [
+        "max_depth",
+        "criterion",
+        "max_features",
+        "ccp_alpha",
+        "splitter",
+    ]
+
+
 @pytest.mark.parametrize("classification_type", ["binary", "multiclass"])
 def test_decision_tree_classifier(
     classification_type,

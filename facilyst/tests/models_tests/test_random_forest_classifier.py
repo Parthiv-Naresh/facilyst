@@ -4,6 +4,21 @@ import pytest
 from facilyst.models import RandomForestClassifier
 
 
+def test_random_forest_classifier_class_variables():
+    assert RandomForestClassifier.name == "Random Forest Classifier"
+    assert RandomForestClassifier.primary_type == "classification"
+    assert RandomForestClassifier.secondary_type == "ensemble"
+    assert RandomForestClassifier.tertiary_type == "tree"
+    assert list(RandomForestClassifier.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_depth",
+        "criterion",
+        "max_features",
+        "ccp_alpha",
+        "max_samples",
+    ]
+
+
 @pytest.mark.parametrize("classification_type", ["binary", "multiclass"])
 def test_random_forest_classifier(
     classification_type,

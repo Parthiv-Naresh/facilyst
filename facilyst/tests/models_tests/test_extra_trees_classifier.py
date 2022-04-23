@@ -4,6 +4,20 @@ import pytest
 from facilyst.models import ExtraTreesClassifier
 
 
+def test_extra_trees_classifier_class_variables():
+    assert ExtraTreesClassifier.name == "Extra Trees Classifier"
+    assert ExtraTreesClassifier.primary_type == "classification"
+    assert ExtraTreesClassifier.secondary_type == "ensemble"
+    assert ExtraTreesClassifier.tertiary_type == "tree"
+    assert list(ExtraTreesClassifier.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_depth",
+        "criterion",
+        "max_features",
+        "ccp_alpha",
+    ]
+
+
 @pytest.mark.parametrize("classification_type", ["binary", "multiclass"])
 def test_extra_trees_classifier(
     classification_type,

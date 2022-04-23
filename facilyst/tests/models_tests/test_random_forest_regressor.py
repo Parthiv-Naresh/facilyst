@@ -3,6 +3,21 @@ import pandas as pd
 from facilyst.models import RandomForestRegressor
 
 
+def test_random_forest_regressor_class_variables():
+    assert RandomForestRegressor.name == "Random Forest Regressor"
+    assert RandomForestRegressor.primary_type == "regression"
+    assert RandomForestRegressor.secondary_type == "ensemble"
+    assert RandomForestRegressor.tertiary_type == "tree"
+    assert list(RandomForestRegressor.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_depth",
+        "criterion",
+        "max_features",
+        "ccp_alpha",
+        "max_samples",
+    ]
+
+
 def test_random_forest_regressor(numeric_features_regression):
     x, y = numeric_features_regression
 

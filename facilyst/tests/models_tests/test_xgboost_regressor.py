@@ -4,6 +4,18 @@ import pandas as pd
 from facilyst.models import XGBoostRegressor
 
 
+def test_xgboost_regressor_class_variables():
+    assert XGBoostRegressor.name == "XGBoost Regressor"
+    assert XGBoostRegressor.primary_type == "regression"
+    assert XGBoostRegressor.secondary_type == "ensemble"
+    assert XGBoostRegressor.tertiary_type == "tree"
+    assert list(XGBoostRegressor.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_depth",
+        "learning_rate",
+    ]
+
+
 def test_xgboost_regressor(numeric_features_regression):
     x, y = numeric_features_regression
 

@@ -31,7 +31,7 @@ class MultiLayerPerceptronClassifier(ModelBase):
     :type max_iter: int, optional
     """
 
-    name: str = "Multilayer Perceptron"
+    name: str = "Multilayer Perceptron Classifier"
 
     primary_type: str = "classification"
     secondary_type: str = "neural"

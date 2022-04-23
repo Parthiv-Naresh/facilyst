@@ -53,6 +53,13 @@ class CatBoostClassifier(ModelBase):
         super().__init__(model=catboost_model, parameters=parameters)
 
     def predict(self, x_test: Union[pd.DataFrame, np.ndarray]) -> pd.Series:
+        """Predicts on the data using the model. Catboost returns an n-dimension array and needs to be flattened.
+
+        :param x_test: The testing data for the model to predict on.
+        :type x_test: pd.DataFrame or np.ndarray
+        :return: The predictions.
+        :rtype pd.Series:
+        """
         predictions = self.model.predict(x_test)
         if predictions.ndim == 2 and predictions.shape[1] == 1:
             predictions = predictions.flatten()

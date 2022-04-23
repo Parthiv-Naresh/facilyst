@@ -3,6 +3,18 @@ import pandas as pd
 from facilyst.models import BaggingRegressor
 
 
+def test_bagging_regressor_class_variables():
+    assert BaggingRegressor.name == "Bagging Regressor"
+    assert BaggingRegressor.primary_type == "regression"
+    assert BaggingRegressor.secondary_type == "ensemble"
+    assert BaggingRegressor.tertiary_type == "tree"
+    assert list(BaggingRegressor.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_samples",
+        "oob_score",
+    ]
+
+
 def test_bagging_regressor(numeric_features_regression):
     x, y = numeric_features_regression
 

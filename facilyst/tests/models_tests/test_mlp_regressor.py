@@ -3,6 +3,14 @@ import pandas as pd
 from facilyst.models import MultiLayerPerceptronRegressor
 
 
+def test_mlp_regressor_class_variables():
+    assert MultiLayerPerceptronRegressor.name == "Multilayer Perceptron Regressor"
+    assert MultiLayerPerceptronRegressor.primary_type == "regression"
+    assert MultiLayerPerceptronRegressor.secondary_type == "neural"
+    assert MultiLayerPerceptronRegressor.tertiary_type == "perceptron"
+    assert MultiLayerPerceptronRegressor.hyperparameters == {}
+
+
 def test_mlp_regressor(numeric_features_regression):
     x, y = numeric_features_regression
 

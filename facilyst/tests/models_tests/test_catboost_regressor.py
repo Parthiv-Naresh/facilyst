@@ -3,6 +3,18 @@ import pandas as pd
 from facilyst.models import CatBoostRegressor
 
 
+def test_catboost_classifier_class_variables():
+    assert CatBoostRegressor.name == "Catboost Regressor"
+    assert CatBoostRegressor.primary_type == "regression"
+    assert CatBoostRegressor.secondary_type == "None"
+    assert CatBoostRegressor.tertiary_type == "tree"
+    assert list(CatBoostRegressor.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_depth",
+        "learning_rate",
+    ]
+
+
 def test_catboost_regressor(numeric_features_regression):
     x, y = numeric_features_regression
 

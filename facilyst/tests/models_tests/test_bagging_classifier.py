@@ -4,6 +4,18 @@ import pytest
 from facilyst.models import BaggingClassifier
 
 
+def test_bagging_regressor_class_variables():
+    assert BaggingClassifier.name == "Bagging Classifier"
+    assert BaggingClassifier.primary_type == "classification"
+    assert BaggingClassifier.secondary_type == "ensemble"
+    assert BaggingClassifier.tertiary_type == "tree"
+    assert list(BaggingClassifier.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_samples",
+        "oob_score",
+    ]
+
+
 @pytest.mark.parametrize("classification_type", ["binary", "multiclass"])
 def test_bagging_classifier(
     classification_type,

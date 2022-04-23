@@ -27,7 +27,7 @@ class ADABoostClassifier(ModelBase):
     :type loss: str, optional
     """
 
-    name: str = "ADA Boost Regressor"
+    name: str = "ADA Boost Classifier"
 
     primary_type: str = "classification"
     secondary_type: str = "ensemble"

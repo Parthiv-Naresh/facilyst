@@ -31,7 +31,7 @@ class MultiLayerPerceptronRegressor(ModelBase):
     :type max_iter: int, optional
     """
 
-    name: str = "Multilayer Perceptron"
+    name: str = "Multilayer Perceptron Regressor"
 
     primary_type: str = "regression"
     secondary_type: str = "neural"

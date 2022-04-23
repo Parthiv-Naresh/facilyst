@@ -4,6 +4,14 @@ import pytest
 from facilyst.models import MultiLayerPerceptronClassifier
 
 
+def test_mlp_classifier_class_variables():
+    assert MultiLayerPerceptronClassifier.name == "Multilayer Perceptron Classifier"
+    assert MultiLayerPerceptronClassifier.primary_type == "classification"
+    assert MultiLayerPerceptronClassifier.secondary_type == "neural"
+    assert MultiLayerPerceptronClassifier.tertiary_type == "perceptron"
+    assert MultiLayerPerceptronClassifier.hyperparameters == {}
+
+
 @pytest.mark.parametrize("classification_type", ["binary", "multiclass"])
 def test_mlp_classifier(
     classification_type,

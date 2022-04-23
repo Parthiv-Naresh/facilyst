@@ -3,6 +3,20 @@ import pandas as pd
 from facilyst.models import ExtraTreesRegressor
 
 
+def test_extra_trees_regressor_class_variables():
+    assert ExtraTreesRegressor.name == "Extra Trees Regressor"
+    assert ExtraTreesRegressor.primary_type == "regression"
+    assert ExtraTreesRegressor.secondary_type == "ensemble"
+    assert ExtraTreesRegressor.tertiary_type == "tree"
+    assert list(ExtraTreesRegressor.hyperparameters.keys()) == [
+        "n_estimators",
+        "max_depth",
+        "criterion",
+        "max_features",
+        "ccp_alpha",
+    ]
+
+
 def test_extra_trees_regressor(numeric_features_regression):
     x, y = numeric_features_regression
 

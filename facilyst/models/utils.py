@@ -55,7 +55,6 @@ def get_models(model: str, problem_type: Optional[str] = None) -> list:
             )
         else:
             if problem_type:
-                print(subset_models)
                 subset_models = _get_models_by_problem_type(subset_models, problem_type)
                 if not subset_models:
                     raise ValueError(

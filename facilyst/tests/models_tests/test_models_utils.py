@@ -89,9 +89,9 @@ def test_model_type_doesnt_exist():
 def test_no_model_type_of_problem_type():
     with pytest.raises(
         ValueError,
-        match="There are no neural models belong to the classification problem type available.",
+        match="There are no neural models belong to the time series regression problem type available.",
     ):
-        get_models(model="neural", problem_type="classification")
+        get_models(model="neural", problem_type="time series regression")
 
 
 def test_model_name_doesnt_exist():

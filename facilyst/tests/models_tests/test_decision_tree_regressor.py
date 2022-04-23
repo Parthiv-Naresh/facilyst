@@ -5,6 +5,20 @@ from sklearn.tree import DecisionTreeRegressor as sk_DecisionTreeRegressor
 from facilyst.models import DecisionTreeRegressor
 
 
+def test_decision_tree_regressor_class_variables():
+    assert DecisionTreeRegressor.name == "Decision Tree Regressor"
+    assert DecisionTreeRegressor.primary_type == "regression"
+    assert DecisionTreeRegressor.secondary_type == "None"
+    assert DecisionTreeRegressor.tertiary_type == "tree"
+    assert list(DecisionTreeRegressor.hyperparameters.keys()) == [
+        "max_depth",
+        "criterion",
+        "max_features",
+        "ccp_alpha",
+        "splitter",
+    ]
+
+
 def test_decision_tree_regressor(numeric_features_regression):
     x, y = numeric_features_regression
 
