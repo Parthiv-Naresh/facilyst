@@ -18,13 +18,13 @@ class XGBoostRegressor(ModelBase):
     :type learning_rate: float, optional
     """
 
-    name = "XGBoost Regressor"
+    name: str = "XGBoost Regressor"
 
-    primary_type = "regression"
-    secondary_type = "ensemble"
-    tertiary_type = "tree"
+    primary_type: str = "regression"
+    secondary_type: str = "ensemble"
+    tertiary_type: str = "tree"
 
-    hyperparameters = {
+    hyperparameters: dict = {
         "n_estimators": hp.choice("n_estimators", [10, 50, 100, 200, 300]),
         "max_depth": hp.randint("max_depth", 2, 10),
         "learning_rate": hp.uniform("learning_rate", 0.001, 1.0),
@@ -32,12 +32,12 @@ class XGBoostRegressor(ModelBase):
 
     def __init__(
         self,
-        n_estimators=50,
-        max_depth=None,
-        learning_rate=None,
-        n_jobs=-1,
+        n_estimators: int = 50,
+        max_depth: int = None,
+        learning_rate: float = None,
+        n_jobs: int = -1,
         **kwargs,
-    ):
+    ) -> None:
         parameters = {
             "n_estimators": n_estimators,
             "max_depth": max_depth,

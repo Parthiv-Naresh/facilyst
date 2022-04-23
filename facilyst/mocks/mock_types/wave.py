@@ -1,4 +1,6 @@
 """A mock type that returns wave data."""
+from typing import Union
+
 import numpy as np
 import pandas as pd
 
@@ -32,19 +34,19 @@ class Wave(MockBase):
     :raises ValueError: If frequency is not a positive integer if `random_amplitude` or `random_frequency` are True.
     """
 
-    name = "Wave"
+    name: str = "Wave"
 
     def __init__(
         self,
-        num_rows=100,
-        library="numpy",
-        wave_type="sine",
-        amplitude=1,
-        frequency=1,
-        random_amplitudes=False,
-        random_frequency=False,
-        trend=0,
-    ):
+        num_rows: int = 100,
+        library: str = "numpy",
+        wave_type: str = "sine",
+        amplitude: int = 1,
+        frequency: int = 1,
+        random_amplitudes: bool = False,
+        random_frequency: bool = False,
+        trend: int = 0,
+    ) -> None:
         if wave_type.lower() in ["sin", "sine"]:
             wave_type = "sine"
         elif wave_type.lower() in ["cos", "cosine"]:
@@ -79,10 +81,11 @@ class Wave(MockBase):
 
         super().__init__(library, num_rows, parameters)
 
-    def create_data(self):
+    def create_data(self) -> Union[pd.Series, np.ndarray]:
         """Main function to be called to create wave data.
 
         :return: The final wave data created.
+        :rtype: pd.DataFrame, list
         """
         data = self.generate_wave()
         if self.trend != 0:
@@ -90,10 +93,11 @@ class Wave(MockBase):
         data = self.handle_library(data)
         return data
 
-    def generate_wave(self):
+    def generate_wave(self) -> np.ndarray:
         """Generates wave data.
 
         :return: The initial wave data created.
+        :rtype: np.ndarray
         """
         if not (self.random_frequency or self.random_amplitudes):
             samples = np.arange(self.num_rows) / self.num_rows
@@ -141,12 +145,13 @@ class Wave(MockBase):
             signal = split_signals
         return signal
 
-    def add_trend(self, signal):
+    def add_trend(self, signal: np.ndarray) -> np.ndarray:
         """Adds trend to the data.
 
         :param signal: Wave data.
         :type signal: np.ndarray
         :return: The initial wave data with a trend added.
+        :rtype: np.ndarray
         """
         trend_line = np.arange(
             0, np.abs(self.trend), np.abs(self.trend) / self.num_rows
@@ -156,12 +161,15 @@ class Wave(MockBase):
         signal = signal + trend_line if self.trend > 0 else signal - trend_line
         return signal
 
-    def handle_library(self, data):
+    def handle_library(
+        self, data: Union[pd.Series, np.ndarray]
+    ) -> Union[pd.Series, np.ndarray]:
         """Handles the library that was selected to determine the format in which the data will be returned.
 
         :param data: The final data to be returned.
         :type data: pd.Series or np.ndarray
-        :return: The final data created from the appropriate library as a pd.Series or ndarray.
+        :return: The final data created from the appropriate library.
+        :rtype: pd.Series or np.ndarray
         """
         if self.library.lower() == "numpy":
             return data

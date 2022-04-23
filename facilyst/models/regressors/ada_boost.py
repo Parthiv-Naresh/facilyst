@@ -25,13 +25,13 @@ class ADABoostRegressor(ModelBase):
     :type loss: str, optional
     """
 
-    name = "ADA Boost Regressor"
+    name: str = "ADA Boost Regressor"
 
-    primary_type = "regression"
-    secondary_type = "ensemble"
-    tertiary_type = "tree"
+    primary_type: str = "regression"
+    secondary_type: str = "ensemble"
+    tertiary_type: str = "tree"
 
-    hyperparameters = {
+    hyperparameters: dict = {
         "n_estimators": hp.choice("n_estimators", [10, 50, 100, 200, 300]),
         "learning_rate": hp.uniform("learning_rate", 0, 1),
         "loss": hp.choice("loss", ["linear", "square", "exponential"]),
@@ -39,12 +39,12 @@ class ADABoostRegressor(ModelBase):
 
     def __init__(
         self,
-        base_estimator=DecisionTreeRegressor(),
-        n_estimators=50,
-        learning_rate=1.0,
-        loss="linear",
+        base_estimator: object = DecisionTreeRegressor(),
+        n_estimators: int = 50,
+        learning_rate: float = 1.0,
+        loss: str = "linear",
         **kwargs,
-    ):
+    ) -> None:
         parameters = {
             "base_estimator": base_estimator,
             "n_estimators": n_estimators,

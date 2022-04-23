@@ -1,7 +1,7 @@
 """General utility functions."""
 
 
-def _get_subclasses(base_class):
+def _get_subclasses(base_class: object) -> list:
     """Returns all subclasses to the base class passed.
 
     :param base_class:
@@ -20,7 +20,7 @@ def _get_subclasses(base_class):
     return subclasses
 
 
-def handle_problem_type(problem_type):
+def handle_problem_type(problem_type: str) -> str:
     """Handles the problem type passed to be returned in a consistent way.
 
     :param problem_type: The problem type to match.

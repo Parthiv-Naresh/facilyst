@@ -23,13 +23,13 @@ class BaggingRegressor(ModelBase):
     :type oob_score: bool, optional
     """
 
-    name = "ADA Boost Regressor"
+    name: str = "ADA Boost Regressor"
 
-    primary_type = "regression"
-    secondary_type = "ensemble"
-    tertiary_type = "tree"
+    primary_type: str = "regression"
+    secondary_type: str = "ensemble"
+    tertiary_type: str = "tree"
 
-    hyperparameters = {
+    hyperparameters: dict = {
         "n_estimators": hp.choice("n_estimators", [10, 50, 100, 200, 300]),
         "max_samples": hp.uniform("max_samples", 0.5, 1.0),
         "oob_score": hp.choice("oob_score", [True, False]),
@@ -37,13 +37,13 @@ class BaggingRegressor(ModelBase):
 
     def __init__(
         self,
-        base_estimator=DecisionTreeRegressor(),
-        n_estimators=50,
-        max_samples=1.0,
-        oob_score=False,
-        n_jobs=-1,
+        base_estimator: object = DecisionTreeRegressor(),
+        n_estimators: int = 50,
+        max_samples: float = 1.0,
+        oob_score: bool = False,
+        n_jobs: int = -1,
         **kwargs,
-    ):
+    ) -> None:
         parameters = {
             "base_estimator": base_estimator,
             "n_estimators": n_estimators,

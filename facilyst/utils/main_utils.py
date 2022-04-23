@@ -1,14 +1,19 @@
 """Main utility functions."""
+from typing import Union
+
+import numpy as np
+import pandas as pd
+
 from facilyst.mocks import Dates, Features, Wave
 from facilyst.mocks.mock_types import handle_mock_and_library_type
 
 
 def create_data(
-    mock_type,
-    num_rows=100,
-    library="pandas",
+    mock_type: str,
+    num_rows: int = 100,
+    library: str = "pandas",
     **kwargs,
-):
+) -> Union[pd.DataFrame, pd.DatetimeIndex, np.ndarray]:
     """Function that creates data based on the mock_type requested.
 
     :param mock_type: The mock data type to create.
@@ -37,32 +42,32 @@ def create_data(
 
 
 def make_features(
-    num_rows=100,
-    library="pandas",
-    ints=True,
-    rand_ints=True,
-    floats=True,
-    rand_floats=True,
-    booleans=False,
-    categoricals=False,
-    dates=False,
-    texts=False,
-    ints_nullable=False,
-    floats_nullable=False,
-    booleans_nullable=False,
-    full_names=False,
-    phone_numbers=False,
-    addresses=False,
-    countries=False,
-    email_addresses=False,
-    urls=False,
-    currencies=False,
-    file_paths=False,
-    ipv4=False,
-    ipv6=False,
-    lat_longs=False,
-    all_dtypes=False,
-):
+    num_rows: int = 100,
+    library: str = "pandas",
+    ints: bool = True,
+    rand_ints: bool = True,
+    floats: bool = True,
+    rand_floats: bool = True,
+    booleans: bool = False,
+    categoricals: bool = False,
+    dates: bool = False,
+    texts: bool = False,
+    ints_nullable: bool = False,
+    floats_nullable: bool = False,
+    booleans_nullable: bool = False,
+    full_names: bool = False,
+    phone_numbers: bool = False,
+    addresses: bool = False,
+    countries: bool = False,
+    email_addresses: bool = False,
+    urls: bool = False,
+    currencies: bool = False,
+    file_paths: bool = False,
+    ipv4: bool = False,
+    ipv6: bool = False,
+    lat_longs: bool = False,
+    all_dtypes: bool = False,
+) -> Union[pd.DataFrame, np.ndarray]:
     """Convenience function that allows for the creation of mock features data.
 
     :param num_rows: The number of observations in the final dataset. Defaults to 100.
@@ -123,15 +128,15 @@ def make_features(
 
 
 def make_dates(
-    num_rows=100,
-    library="pandas",
-    start_date="1/1/2001",
-    frequency="1D",
-    missing=False,
-    misaligned=False,
-    duplicates=False,
-    chaos=1,
-):
+    num_rows: int = 100,
+    library: str = "pandas",
+    start_date: str = "1/1/2001",
+    frequency: str = "1D",
+    missing: bool = False,
+    misaligned: bool = False,
+    duplicates: bool = False,
+    chaos: int = 1,
+) -> Union[pd.DatetimeIndex, np.ndarray]:
     """Convenience function that allows for the creation of mock datetime data.
 
     :param num_rows: The number of observations in the final dataset. Defaults to 100.
@@ -161,15 +166,15 @@ def make_dates(
 
 
 def make_wave(
-    num_rows=100,
-    library="numpy",
-    wave_type="sine",
-    amplitude=1,
-    frequency=1,
-    random_amplitudes=False,
-    random_frequency=False,
-    trend=0.0,
-):
+    num_rows: int = 100,
+    library: str = "numpy",
+    wave_type: str = "sine",
+    amplitude: int = 1,
+    frequency: int = 1,
+    random_amplitudes: bool = False,
+    random_frequency: bool = False,
+    trend: float = 0.0,
+) -> Union[np.ndarray, pd.DataFrame]:
     """Convenience function that allows for the creation of mock wave data.
 
     :param num_rows: The number of observations in the final dataset. Defaults to 100.

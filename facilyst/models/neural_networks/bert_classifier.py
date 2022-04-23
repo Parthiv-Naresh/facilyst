@@ -2,9 +2,12 @@
 import datetime
 import random
 import time
+from typing import TypeVar
 
 import numpy as np
+import pandas as pd
 import torch
+import transformers
 from keras_preprocessing.sequence import pad_sequences
 from sklearn.metrics import matthews_corrcoef
 from sklearn.model_selection import train_test_split
@@ -24,7 +27,7 @@ from transformers import (
 from facilyst.models import ModelBase
 
 
-def format_time(time_):
+def format_time(time_: float) -> str:
     """Formats the passed time.
 
     :param time_: The time.
@@ -47,15 +50,15 @@ class BERTBinaryClassifier(ModelBase):
     :type activation: int, optional
     """
 
-    name = "BERT Binary Classifier"
+    name: str = "BERT Binary Classifier"
 
-    primary_type = "binary"
-    secondary_type = "neural"
-    tertiary_type = "nlp"
+    primary_type: str = "binary"
+    secondary_type: str = "neural"
+    tertiary_type: str = "nlp"
 
-    hyperparameters = {}
+    hyperparameters: dict = {}
 
-    def __init__(self, batch_size=30, seed_val=42, **kwargs):
+    def __init__(self, batch_size: int = 30, seed_val: int = 42, **kwargs) -> None:
         self.predictions = None
         self.mcc = None
         self.scheduler = None
@@ -76,7 +79,7 @@ class BERTBinaryClassifier(ModelBase):
 
         super().__init__(model=question_answering_model, parameters=parameters)
 
-    def encode(self, sentences):
+    def encode(self, sentences: pd.Series) -> list:
         """Encode all sentences.
 
         :param sentences: Collection of sentences.
@@ -90,7 +93,7 @@ class BERTBinaryClassifier(ModelBase):
             input_ids.append(encoded_sent)
         return input_ids
 
-    def set_max_length(self, input_ids):
+    def set_max_length(self, input_ids: list) -> None:
         """Set the maximum sentence length.
 
         :param input_ids: List of encoded sentences.
@@ -98,7 +101,7 @@ class BERTBinaryClassifier(ModelBase):
         """
         self.max_sentence_length = max([len(sen) for sen in input_ids])
 
-    def pad_sequences(self, input_ids):
+    def pad_sequences(self, input_ids: list) -> np.ndarray:
         """Pad all sentences.
 
         :param input_ids: List of encoded sentences.
@@ -116,7 +119,7 @@ class BERTBinaryClassifier(ModelBase):
         )
 
     @staticmethod
-    def _get_attention_masks(input_ids_padded):
+    def _get_attention_masks(input_ids_padded: np.ndarray) -> list:
         attention_masks = []
         for sent in input_ids_padded:
             att_mask = [int(token_id > 0) for token_id in sent]
@@ -124,10 +127,15 @@ class BERTBinaryClassifier(ModelBase):
         return attention_masks
 
     @staticmethod
-    def _split_train_val(features, target):
+    def _split_train_val(features: np.ndarray, target: np.ndarray) -> list:
         return train_test_split(features, target, random_state=0, test_size=0.1)
 
-    def get_train_dataloader(self, train_inputs, train_masks, train_labels):
+    def get_train_dataloader(
+        self,
+        train_inputs: torch.tensor,
+        train_masks: torch.tensor,
+        train_labels: torch.tensor,
+    ) -> DataLoader:
         """Get DataLoader for training data.
 
         :param train_inputs: Tensor of padded input ids for training.
@@ -147,8 +155,11 @@ class BERTBinaryClassifier(ModelBase):
         return train_dataloader
 
     def get_validation_dataloader(
-        self, validation_inputs, validation_masks, validation_labels
-    ):
+        self,
+        validation_inputs: torch.tensor,
+        validation_masks: torch.tensor,
+        validation_labels: torch.tensor,
+    ) -> DataLoader:
         """Get DataLoader for validation data.
 
         :param validation_inputs: Tensor of padded input ids for validation.
@@ -169,7 +180,7 @@ class BERTBinaryClassifier(ModelBase):
         )
         return validation_dataloader
 
-    def get_optimizer(self):
+    def get_optimizer(self) -> transformers.AdamW:
         """Get the optimizer.
 
         :return: Optimizer for the model parameters.
@@ -177,12 +188,12 @@ class BERTBinaryClassifier(ModelBase):
         """
         return AdamW(self.model.parameters(), lr=2e-5, eps=1e-8)
 
-    def _set_seeds(self):
+    def _set_seeds(self) -> None:
         random.seed(self.seed_val)
         np.random.seed(self.seed_val)
         torch.manual_seed(self.seed_val)
 
-    def train_batch(self, batch, total_loss):
+    def train_batch(self, batch: list, total_loss: int) -> float:
         """Train batch.
 
         :param batch: Batch of padded input ids for training.
@@ -214,7 +225,9 @@ class BERTBinaryClassifier(ModelBase):
         self.scheduler.step()
         return total_loss
 
-    def validate_batch(self, batch, eval_accuracy, nb_eval_steps):
+    def validate_batch(
+        self, batch: list, eval_accuracy: float, nb_eval_steps: int
+    ) -> (float, int):
         """Validate batch.
 
         :param batch: Batch of padded input ids for validation.
@@ -243,7 +256,12 @@ class BERTBinaryClassifier(ModelBase):
         nb_eval_steps += 1
         return eval_accuracy, nb_eval_steps
 
-    def epoch_iteration(self, train_dataloader, validation_dataloader, loss_values):
+    def epoch_iteration(
+        self,
+        train_dataloader: DataLoader,
+        validation_dataloader: DataLoader,
+        loss_values: list,
+    ) -> list:
         """Iterate through epoch.
 
         :param train_dataloader: DataLoader for the training data.
@@ -296,7 +314,7 @@ class BERTBinaryClassifier(ModelBase):
         print("  Validation took: {:}".format(format_time(time.time() - t0)))
         return loss_values
 
-    def fit(self, x, y):
+    def fit(self, x: pd.DataFrame, y: pd.Series) -> ModelBase:
         """Fit with BertForSequenceClassification.
 
         :param x: DataFrame with one column of sentences.
@@ -367,13 +385,15 @@ class BERTBinaryClassifier(ModelBase):
         return self
 
     @staticmethod
-    def _flat_accuracy(preds, labels):
+    def _flat_accuracy(preds: np.ndarray, labels: np.ndarray) -> float:
         pred_flat = np.argmax(preds, axis=1).flatten()
         labels_flat = labels.flatten()
         return np.sum(pred_flat == labels_flat) / len(labels_flat)
 
     @staticmethod
-    def _get_matthews_correlation(true_labels, predictions):
+    def _get_matthews_correlation(
+        true_labels: list, predictions: list
+    ) -> (float, list):
         matthews_set = []
 
         print("Calculating Matthews Corr. Coef. for each batch...")
@@ -390,7 +410,7 @@ class BERTBinaryClassifier(ModelBase):
         print("MCC: %.3f" % mcc)
         return mcc, flat_predictions
 
-    def predict(self, x, y=None):
+    def predict(self, x: pd.DataFrame, y: pd.Series = None) -> np.ndarray:
         """Predict with BertForSequenceClassification.
 
         :param x: DataFrame with one column of sentences.

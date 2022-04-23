@@ -1,5 +1,9 @@
 """Base class for mock types."""
 from abc import ABC, abstractmethod
+from typing import Union
+
+import numpy as np
+import pandas as pd
 
 
 class MockBase(ABC):
@@ -13,7 +17,9 @@ class MockBase(ABC):
     :type parameters: dict
     """
 
-    def __init__(self, library=None, num_rows=100, parameters=None):
+    def __init__(
+        self, library: str = None, num_rows: int = 100, parameters: dict = None
+    ) -> None:
         self.library = library
         self.num_rows = num_rows
         self.parameters = parameters
@@ -27,6 +33,9 @@ class MockBase(ABC):
     def create_data(self):
         """Abstract method to be called by child classes to create the final data."""
 
-    def get_data(self):
-        """Returns the final data."""
+    def get_data(self) -> Union[pd.DataFrame, np.ndarray]:
+        """Returns the final data.
+
+        :rtype: pd.DataFrame or np.ndarray
+        """
         return self.create_data()

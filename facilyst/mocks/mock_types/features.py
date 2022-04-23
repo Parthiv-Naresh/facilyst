@@ -1,4 +1,7 @@
 """A mock type that returns features data."""
+from typing import Union
+
+import numpy as np
 import pandas as pd
 import woodwork as ww
 
@@ -67,32 +70,32 @@ class Features(MockBase):
 
     def __init__(
         self,
-        num_rows=100,
-        library="pandas",
-        ints=True,
-        rand_ints=True,
-        floats=True,
-        rand_floats=True,
-        booleans=False,
-        categoricals=False,
-        dates=False,
-        texts=False,
-        ints_nullable=False,
-        floats_nullable=False,
-        booleans_nullable=False,
-        full_names=False,
-        phone_numbers=False,
-        addresses=False,
-        countries=False,
-        email_addresses=False,
-        urls=False,
-        currencies=False,
-        file_paths=False,
-        ipv4=False,
-        ipv6=False,
-        lat_longs=False,
-        all_dtypes=False,
-    ):
+        num_rows: int = 100,
+        library: str = "pandas",
+        ints: bool = True,
+        rand_ints: bool = True,
+        floats: bool = True,
+        rand_floats: bool = True,
+        booleans: bool = False,
+        categoricals: bool = False,
+        dates: bool = False,
+        texts: bool = False,
+        ints_nullable: bool = False,
+        floats_nullable: bool = False,
+        booleans_nullable: bool = False,
+        full_names: bool = False,
+        phone_numbers: bool = False,
+        addresses: bool = False,
+        countries: bool = False,
+        email_addresses: bool = False,
+        urls: bool = False,
+        currencies: bool = False,
+        file_paths: bool = False,
+        ipv4: bool = False,
+        ipv6: bool = False,
+        lat_longs: bool = False,
+        all_dtypes: bool = False,
+    ) -> None:
         kw_args = locals()
 
         if all_dtypes:
@@ -114,19 +117,21 @@ class Features(MockBase):
 
         super().__init__(library, num_rows, parameters)
 
-    def create_data(self):
+    def create_data(self) -> Union[pd.DatetimeIndex, np.ndarray]:
         """Main function to be called to create features data.
 
         :return: The final features data created.
+        :rtype: pd.DatetimeIndex or np.ndarray
         """
         data, dtypes_to_keep = self.get_data_from_dict()
         data = self.handle_library(data, dtypes_to_keep)
         return data
 
-    def get_data_from_dict(self):
+    def get_data_from_dict(self) -> (pd.DataFrame, list):
         """Returns the data based on the dtypes specified during class instantiation.
 
-        :return: The final data created from the appropriate library as a pd.DataFrame or ndarray.
+        :return: The final data created from the appropriate library.
+        :rtype: pd.DataFrame, list
         """
         dtypes_to_keep = list(self.parameters.keys())
         mocked = Features._refine_dtypes(dtypes_to_keep, self.num_rows)
@@ -134,14 +139,17 @@ class Features(MockBase):
         mocked_df = pd.DataFrame.from_dict(mocked)
         return mocked_df, dtypes_to_keep
 
-    def handle_library(self, data, dtypes_to_keep):
+    def handle_library(
+        self, data: pd.DataFrame, dtypes_to_keep: list
+    ) -> Union[pd.DataFrame, np.ndarray]:
         """Handles the library that was selected to determine the format in which the data will be returned.
 
         :param data: The final data to be returned.
         :type data: pd.DataFrame
         :param dtypes_to_keep: All data format options from the class initialization. Defaults to returning the full dataset.
         :type dtypes_to_keep: list
-        :return: The final data created from the appropriate library as a pd.DataFrame or ndarray.
+        :return: The final data created from the appropriate library.
+        :rtype: pd.DataFrame or np.ndarray
         """
         if self.library == "numpy":
             return data.to_numpy()
@@ -154,7 +162,7 @@ class Features(MockBase):
             return data
 
     @staticmethod
-    def _refine_dtypes(dtypes, num_rows=100):
+    def _refine_dtypes(dtypes: list, num_rows: int = 100) -> dict:
         """Internal function that selects the dtypes to be kept from the full dataset.
 
         :param dtypes: All data format options from the class initialization. Defaults to returning the full dataset.
@@ -162,6 +170,7 @@ class Features(MockBase):
         :param num_rows : The number of observations in the final dataset. Defaults to 100.
         :type num_rows: int
         :return: A refined form of the full set of columns available.
+        :rtype: dict
         """
         full_mock = mock_features_dtypes(num_rows)
         return {k: v for k, v in full_mock.items() if k in dtypes}

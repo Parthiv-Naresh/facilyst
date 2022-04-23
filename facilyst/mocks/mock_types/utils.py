@@ -4,7 +4,9 @@ import pandas as pd
 from faker import Faker
 
 
-def handle_mock_and_library_type(mock_type="features", library="pandas"):
+def handle_mock_and_library_type(
+    mock_type: str = "features", library: str = "pandas"
+) -> (str, str):
     """Handles the mock_type and library passed to standardize them.
 
     :param mock_type: The name of the type of mock data. Defaults to returning Features data.
@@ -33,7 +35,7 @@ def handle_mock_and_library_type(mock_type="features", library="pandas"):
     return mock_type_, library_
 
 
-def mock_features_dtypes(num_rows=100):
+def mock_features_dtypes(num_rows: int = 100) -> (str, str):
     """Internal function that returns the default full dataset.
 
     :param num_rows: The number of observations in the final dataset. Defaults to 100.
