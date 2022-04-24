@@ -3,7 +3,7 @@ name: Release Notes Updated
 on:
   pull_request:
     types: [opened, synchronize]
-    branches-ignore
+    branches-ignore:
       - '**update_latest_dependencies-**'
 
 jobs:
