@@ -33,4 +33,3 @@ jobs:
           delete-branch: true
           base: main
           assignees: Parthiv-Naresh
-          reviewers: Parthiv-Naresh
