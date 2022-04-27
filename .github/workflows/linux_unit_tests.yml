@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         python_version: ["3.8", "3.9", "3.10"]
-        command: ["Models", "Mocks", "Graphs", "Utils"]
+        command: ["Graphs", "Mocks", "Models", "Preprocessors", "Utils"]
     steps:
       - name: Set up Python ${{ matrix.python_version }}
         uses: actions/setup-python@v2
@@ -39,21 +39,26 @@ jobs:
         run: |
           source test_python/bin/activate
           coverage erase
-      - if: ${{ matrix.command == 'Models' }}
-        name: Running Models Tests
-        run: |
-          source test_python/bin/activate
-          make test-models
-      - if: ${{ matrix.command == 'Mocks' }}
-        name: Running Mocks Tests
-        run: |
-          source test_python/bin/activate
-          make test-mocks
       - if: ${{ matrix.command == 'Graphs' }}
         name: Running Graphs Tests
         run: |
           source test_python/bin/activate
           make test-graphs
+      - if: ${{ matrix.command == 'Mocks' }}
+        name: Running Mocks Tests
+        run: |
+          source test_python/bin/activate
+          make test-mocks
+      - if: ${{ matrix.command == 'Models' }}
+        name: Running Models Tests
+        run: |
+          source test_python/bin/activate
+          make test-models
+      - if: ${{ matrix.command == 'Preprocessors' }}
+        name: Running Preprocessors Tests
+        run: |
+          source test_python/bin/activate
+          make test-preprocessors
       - if: ${{ matrix.command == 'Utils' }}
         name: Running Utils Tests
         run: |
