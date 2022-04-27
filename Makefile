@@ -44,17 +44,21 @@ test:
 test-datasets:
 	pytest facilyst/tests/dataset_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
+.PHONY: test-graphs
+test-graphs:
+	pytest facilyst/tests/graphs_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+
+.PHONY: test-mocks
+test-mocks:
+	pytest facilyst/tests/mock_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+
 .PHONY: test-models
 test-models:
 	pytest facilyst/tests/models_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
-.PHONY: test-mocks
-test-mocks:
-	pytest facilyst/tests//mock_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
-
-.PHONY: test-graphs
-test-graphs:
-	pytest facilyst/tests//graphs_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+.PHONY: test-preprocessors
+test-preprocessors:
+	pytest facilyst/tests/preprocessing_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
 
 .PHONY: test-utils
 test-utils:
