@@ -64,6 +64,7 @@ class AggregateDatetime(PreprocessorBase):
         name_aggregated: Optional[str] = "Aggregated_Datetime",
         **kwargs,
     ):
+        name_aggregated = name_aggregated or "Aggregated_Datetime"
         self.year = year
         self.month = month
         self.day = day
@@ -71,7 +72,7 @@ class AggregateDatetime(PreprocessorBase):
         self.minute = minute
         self.second = second
         self.time_zone = time_zone
-        self.name_aggregated = name_aggregated or "Aggregated_Datetime"
+        self.name_aggregated = name_aggregated
 
         parameters = {
             "year": year,
@@ -98,12 +99,15 @@ class AggregateDatetime(PreprocessorBase):
         :type x: pd.DataFrame or np.ndarray
         :param y: The testing data for the preprocessor to fit on. Ignored.
         :type y: pd.Series or np.array
-        :raises ValueError: If `name_aggregated` is set to a column name already in the dataset.
+        :raises ValueError: If `name_aggregated` is set to a column name in the dataset that will not be dropped.
         """
-        if self.name_aggregated in x.columns:
+        if self.name_aggregated in set(x.columns) - {
+            col for col in self.parameters.values() if col != self.name_aggregated
+        }:
             raise ValueError(
                 f"The parameter `name_aggregated` is set to `{self.name_aggregated}` which is already a column in x. "
-                f"Please drop that column or set `name_aggregated` to a different value."
+                f"Please drop that column or set `name_aggregated` to a different value. `name_aggregated` can be set "
+                f"to a column name that is passed into one of the other parameters, as the original column will be dropped."
             )
 
         return self
