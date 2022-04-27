@@ -3,8 +3,6 @@ name: Release Notes Updated
 on:
   pull_request:
     types: [opened, synchronize]
-    branches-ignore:
-      - '**update_latest_dependencies-**'
 
 jobs:
   release_notes_updated:
@@ -18,4 +16,8 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Release notes added
         run: |
+          if [[ $(expr match "${{ github.event.pull_request.head.ref }}" "update_latest_dependencies-[a-zA-Z0-9]*") -gt 0 ]]; then
+            echo This is a latest dependency update PR;
+            exit 0;
+          fi
           cat docs/release_notes.rst | grep ":pr:\`${{ github.event.number }}\`"
