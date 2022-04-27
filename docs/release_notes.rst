@@ -3,7 +3,7 @@ Release Notes
 
 **Future Releases**
     * Enhancements
-        * Added ``AggregateDatetime`` as a preprocessor to aggregate datetime components into a datetime column :pr:`27`
+        * Added ``AggregateDatetime`` as a preprocessor to aggregate datetime components into a datetime column :pr:`29`
         * Added ``ADABoost``, ``Bagging``, ``CatBoost``, ``DecisionTree``, ``Extra Trees``, ``MultiLayerPerceptron``, and ``XGBoost`` classifiers :pr:`25`
         * Added type annotations :pr:`21`
         * Added ``BERTBinaryClassifier`` and ``BERTQuestionAnswering`` for NLP problems :pr:`20`
