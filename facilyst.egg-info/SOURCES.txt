@@ -52,7 +52,10 @@ facilyst/models/regressors/decision_tree.py
 facilyst/models/regressors/extra_trees.py
 facilyst/models/regressors/random_forest.py
 facilyst/models/regressors/xgboost.py
-facilyst/preprocessing/__init__.py
+facilyst/preprocessors/__init__.py
+facilyst/preprocessors/preprocessor_base.py
+facilyst/preprocessors/datetime/__init__.py
+facilyst/preprocessors/datetime/aggregate_datetime.py
 facilyst/tests/__init__.py
 facilyst/tests/conftest.py
 facilyst/tests/dataset_tests/__init__.py
@@ -95,6 +98,8 @@ facilyst/tests/models_tests/test_random_forest_classifier.py
 facilyst/tests/models_tests/test_random_forest_regressor.py
 facilyst/tests/models_tests/test_xgboost_classifier.py
 facilyst/tests/models_tests/test_xgboost_regressor.py
+facilyst/tests/preprocessing_tests/__init__.py
+facilyst/tests/preprocessing_tests/test_aggregate_datetime.py
 facilyst/tests/utils_tests/__init__.py
 facilyst/tests/utils_tests/test_cli_utils.py
 facilyst/tests/utils_tests/test_gen_utils.py
