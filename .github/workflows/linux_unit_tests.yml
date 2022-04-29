@@ -31,15 +31,11 @@ jobs:
         run: make package_facilyst
       - name: Installing Dependencies
         run: |
-          pip install virtualenv
-          virtualenv test_python -q
-          source test_python/bin/activate
           python -m pip install -e unpacked_sdist/
           python -m pip install -e unpacked_sdist/[test]
           pip freeze
       - name: Erase Coverage
         run: |
-          source test_python/bin/activate
           python -m pip install "$(cat setup.cfg | grep codecov)"
           coverage erase
           cd unpacked_sdist
@@ -48,29 +44,26 @@ jobs:
         name: Running Graphs Tests
         run: |
           cd unpacked_sdist
-          source test_python/bin/activate
           make test-graphs
       - if: ${{ matrix.command == 'Mocks' }}
         name: Running Mocks Tests
         run: |
           cd unpacked_sdist
-          source test_python/bin/activate
           make test-mocks
       - if: ${{ matrix.command == 'Models' }}
         name: Running Models Tests
         run: |
           cd unpacked_sdist
-          source test_python/bin/activate
           make test-models
       - if: ${{ matrix.command == 'Preprocessors' }}
         name: Running Preprocessors Tests
         run: |
-          source test_python/bin/activate
+          cd unpacked_sdist
           make test-preprocessors
       - if: ${{ matrix.command == 'Utils' }}
         name: Running Utils Tests
         run: |
-          source test_python/bin/activate
+          cd unpacked_sdist
           make test-utils
       - name: Upload pytest duration artifact
         uses: actions/upload-artifact@v2
