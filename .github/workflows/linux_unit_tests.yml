@@ -38,6 +38,7 @@ jobs:
       - name: Erase Coverage
         run: |
           source test_python/bin/activate
+          python -m pip install "$(cat setup.cfg | grep codecov)"
           coverage erase
       - if: ${{ matrix.command == 'Graphs' }}
         name: Running Graphs Tests
