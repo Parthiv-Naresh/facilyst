@@ -44,27 +44,27 @@ jobs:
         name: Running Graphs Tests
         run: |
           cd unpacked_sdist
-          make test-graphs
+          pytest facilyst/tests/graphs_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
       - if: ${{ matrix.command == 'Mocks' }}
         name: Running Mocks Tests
         run: |
           cd unpacked_sdist
-          make test-mocks
+          pytest facilyst/tests/mock_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
       - if: ${{ matrix.command == 'Models' }}
         name: Running Models Tests
         run: |
           cd unpacked_sdist
-          make test-models
+          pytest facilyst/tests/models_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
       - if: ${{ matrix.command == 'Preprocessors' }}
         name: Running Preprocessors Tests
         run: |
           cd unpacked_sdist
-          make test-preprocessors
+          pytest facilyst/tests/preprocessing_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
       - if: ${{ matrix.command == 'Utils' }}
         name: Running Utils Tests
         run: |
           cd unpacked_sdist
-          make test-utils
+          pytest facilyst/tests//utils_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
       - name: Upload pytest duration artifact
         uses: actions/upload-artifact@v2
         with:
