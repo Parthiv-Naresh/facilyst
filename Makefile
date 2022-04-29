@@ -6,9 +6,12 @@ clean:
 	find . -name '*~' -delete
 	find . -name '.coverage.*' -delete
 
+.PHONY: upgradepip
+upgradepip:
+	python -m pip install --upgrade pip
+
 .PHONY: type-hint
-type-hint:
-	pip install --upgrade pip -q
+type-hint: upgradepip
 	pytype facilyst -x facilyst/tests
 
 .PHONY: lint
@@ -23,18 +26,15 @@ lint-fix:
 	pydocstyle facilyst/ --convention=google --add-ignore=D104,D105,D107 --add-select=D400 --match-dir='^(?!(tests)).*'
 
 .PHONY: installdeps
-installdeps:
-	pip install --upgrade pip -q
+installdeps: upgradepip
 	pip install -e .
 
 .PHONY: installdeps-test
-installdeps-test:
-	pip install --upgrade pip -q
+installdeps-test: upgradepip
 	pip install -e ".[test]"
 
 .PHONY: installdeps-dev
-installdeps-dev:
-	pip install --upgrade pip -q
+installdeps-dev: upgradepip
 	pip install -e ".[dev]"
 
 .PHONY: test
@@ -64,3 +64,11 @@ test-preprocessors:
 .PHONY: test-utils
 test-utils:
 	pytest facilyst/tests//utils_tests -n 2 --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+
+.PHONY: package_facilyst
+package_facilyst: upgradepip
+	python -m pip install --upgrade build
+	python -m build
+	$(eval DT_VERSION := $(shell grep '__version__\s=' facilyst/version.py | grep -o '[^ ]*$$'))
+	tar -zxvf "dist/facilyst-${DT_VERSION}.tar.gz"
+	mv "facilyst-${DT_VERSION}" unpacked_sdist
