@@ -8,6 +8,7 @@ clean:
 
 .PHONY: type-hint
 type-hint:
+	pip install --upgrade pip -q
 	pytype facilyst -x facilyst/tests
 
 .PHONY: lint
@@ -28,11 +29,13 @@ installdeps:
 
 .PHONY: installdeps-test
 installdeps-test:
+	pip install --upgrade pip -q
 	pip install -e . -q
 	pip install -r test-requirements.txt
 
 .PHONY: installdeps-dev
 installdeps-dev:
+	pip install --upgrade pip -q
 	pip install -e . -q
 	pip install -r dev-requirements.txt
 
