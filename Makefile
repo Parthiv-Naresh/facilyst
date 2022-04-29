@@ -30,14 +30,12 @@ installdeps:
 .PHONY: installdeps-test
 installdeps-test:
 	pip install --upgrade pip -q
-	pip install -e . -q
-	pip install -r test-requirements.txt
+	pip install -e ".[test]"
 
 .PHONY: installdeps-dev
 installdeps-dev:
 	pip install --upgrade pip -q
-	pip install -e . -q
-	pip install -r dev-requirements.txt
+	pip install -e ".[dev]"
 
 .PHONY: test
 test:
