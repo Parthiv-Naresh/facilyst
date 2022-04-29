@@ -1,4 +1,14 @@
 # Facilyst
+
+[![PyPI Latest Release](https://img.shields.io/pypi/v/facilyst.svg)](https://pypi.org/project/facilyst/)
+[![Package Status](https://img.shields.io/pypi/status/facilyst.svg)](https://pypi.org/project/facilyst/)
+[![Unit Tests - Linux](https://github.com/Parthiv-Naresh/facilyst/actions/workflows/linux_unit_tests.yml/badge.svg?branch=main&event=push)](https://github.com/Parthiv-Naresh/facilyst/actions/workflows/linux_unit_tests.yml)
+[![Coverage](https://codecov.io/gh/ParthivNaresh/facilyst/branch/main/graphs/badge.svg?branch=main)](https://codecov.io/gh/ParthivNaresh/facilyst)
+[![License](https://img.shields.io/pypi/l/facilyst.svg)](https://github.com/Parthiv-Naresh/facilyst/blob/main/LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
+
+
 Facil • yst
 
 Facilis - Latin for easy, ready, or quick.

@@ -30,6 +30,7 @@ Release Notes
         * Pinned to ``numpy==1.22.3``, ``scipy==1.8.0``, and ``plotly==5.7.0`` :pr:`6`
         * Removed ``Target`` mock data type :pr:`4`
     * Documentation Changes
+        * Added status badges to README.md :pr:`31`
         * Added black profile to isort command to get parity between the two for new lint errors :pr:`6`
         * Updated docstrings for numerous files :pr:`6`
         * Added and updated docstrings for a variety of classes and functions :pr:`4`
@@ -38,6 +39,7 @@ Release Notes
         * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Added ``pyproject.toml`` and simplified ``setup.py`` :pr:`31`
         * Added ``check_latest_dependencies`` GitHub Action to check for updates to the latest dependencies :pr:`23`
         * Added ``type_hint_tests`` GitHub Action to check for type hint errors on MRs :pr:`21`
         * Removed testing datasets from CI :pr:`7`
