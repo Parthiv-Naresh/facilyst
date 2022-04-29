@@ -26,10 +26,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
       - name: Update Dependencies
         run: |
-          pip install virtualenv
-          virtualenv test_python -q
-          source test_python/bin/activate
-          make installdeps-dev
+          python -m pip install -e .[dev]
       - name: Run Lint Test
         run: |
           source test_python/bin/activate
