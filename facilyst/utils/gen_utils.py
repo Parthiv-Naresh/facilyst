@@ -34,7 +34,6 @@ import_errors_dict = {
     "hyperopt": error_str.format(name="hyperopt"),
     "transformers": error_str.format(name="transformers"),
     "sentencepiece": error_str.format(name="sentencepiece"),
-    "keras": error_str.format(name="keras"),
     "keras_preprocessing": error_str.format(name="keras_preprocessing"),
 }
 

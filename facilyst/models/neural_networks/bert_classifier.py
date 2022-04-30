@@ -108,6 +108,7 @@ class BERTBinaryClassifier(ModelBase):
         :rtype np.ndarray:
         """
         from keras_preprocessing.sequence import pad_sequences
+
         return pad_sequences(
             input_ids,
             maxlen=self.max_sentence_length,
