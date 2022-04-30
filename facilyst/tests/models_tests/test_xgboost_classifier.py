@@ -4,6 +4,8 @@ import pytest
 
 from facilyst.models import XGBoostClassifier
 
+pytestmark = pytest.mark.needs_extra_dependency
+
 
 def test_xgboost_classifier_class_variables():
     assert XGBoostClassifier.name == "XGBoost Classifier"

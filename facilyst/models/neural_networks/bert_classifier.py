@@ -6,25 +6,11 @@ from typing import Optional, Tuple
 
 import numpy as np
 import pandas as pd
-import torch
-import transformers
-from keras_preprocessing.sequence import pad_sequences
 from sklearn.metrics import matthews_corrcoef
 from sklearn.model_selection import train_test_split
-from torch.utils.data import (
-    DataLoader,
-    RandomSampler,
-    SequentialSampler,
-    TensorDataset,
-)
-from transformers import (
-    AdamW,
-    BertForSequenceClassification,
-    BertTokenizer,
-    get_linear_schedule_with_warmup,
-)
 
 from facilyst.models import ModelBase
+from facilyst.utils import import_errors_dict, import_or_raise
 
 
 def format_time(time_: float) -> str:
@@ -72,11 +58,21 @@ class BERTBinaryClassifier(ModelBase):
         parameters = {}
         parameters.update(kwargs)
 
-        question_answering_model = BertForSequenceClassification.from_pretrained(
-            "bert-base-uncased",
-            num_labels=2,
-            output_attentions=False,
-            output_hidden_states=False,
+        self.torch = import_or_raise("torch", import_errors_dict["torch"])
+        self.kp = import_or_raise(
+            "keras_preprocessing", import_errors_dict["keras_preprocessing"]
+        )
+        self.transformers = import_or_raise(
+            "transformers", import_errors_dict["transformers"]
+        )
+
+        question_answering_model = (
+            self.transformers.BertForSequenceClassification.from_pretrained(
+                "bert-base-uncased",
+                num_labels=2,
+                output_attentions=False,
+                output_hidden_states=False,
+            )
         )
 
         super().__init__(model=question_answering_model, parameters=parameters)
@@ -111,7 +107,7 @@ class BERTBinaryClassifier(ModelBase):
         :return: Numpy array with shape `(len(input_ids), self.max_sentence_length)`.
         :rtype np.ndarray:
         """
-        return pad_sequences(
+        return self.kp.sequence.pad_sequences(
             input_ids,
             maxlen=self.max_sentence_length,
             dtype="long",
@@ -134,10 +130,10 @@ class BERTBinaryClassifier(ModelBase):
 
     def get_train_dataloader(
         self,
-        train_inputs: torch.tensor,
-        train_masks: torch.tensor,
-        train_labels: torch.tensor,
-    ) -> DataLoader:
+        train_inputs,
+        train_masks,
+        train_labels,
+    ):
         """Get DataLoader for training data.
 
         :param train_inputs: Tensor of padded input ids for training.
@@ -149,19 +145,21 @@ class BERTBinaryClassifier(ModelBase):
         :return: DataLoader for the training data.
         :rtype DataLoader:
         """
-        train_data = TensorDataset(train_inputs, train_masks, train_labels)
-        train_sampler = RandomSampler(train_data)
-        train_dataloader = DataLoader(
+        train_data = self.torch.utils.data.TensorDataset(
+            train_inputs, train_masks, train_labels
+        )
+        train_sampler = self.torch.utils.data.RandomSampler(train_data)
+        train_dataloader = self.torch.utils.data.DataLoader(
             train_data, sampler=train_sampler, batch_size=self.batch_size
         )
         return train_dataloader
 
     def get_validation_dataloader(
         self,
-        validation_inputs: torch.tensor,
-        validation_masks: torch.tensor,
-        validation_labels: torch.tensor,
-    ) -> DataLoader:
+        validation_inputs,
+        validation_masks,
+        validation_labels,
+    ):
         """Get DataLoader for validation data.
 
         :param validation_inputs: Tensor of padded input ids for validation.
@@ -173,27 +171,27 @@ class BERTBinaryClassifier(ModelBase):
         :return: DataLoader for the validation data.
         :rtype DataLoader:
         """
-        validation_data = TensorDataset(
+        validation_data = self.torch.utils.data.TensorDataset(
             validation_inputs, validation_masks, validation_labels
         )
-        validation_sampler = SequentialSampler(validation_data)
-        validation_dataloader = DataLoader(
+        validation_sampler = self.torch.utils.data.SequentialSampler(validation_data)
+        validation_dataloader = self.torch.utils.data.DataLoader(
             validation_data, sampler=validation_sampler, batch_size=self.batch_size
         )
         return validation_dataloader
 
-    def get_optimizer(self) -> transformers.AdamW:
+    def get_optimizer(self):
         """Get the optimizer.
 
         :return: Optimizer for the model parameters.
         :rtype transformers.AdamW:
         """
-        return AdamW(self.model.parameters(), lr=2e-5, eps=1e-8)
+        return self.transformers.AdamW(self.model.parameters(), lr=2e-5, eps=1e-8)
 
     def _set_seeds(self) -> None:
         random.seed(self.seed_val)
         np.random.seed(self.seed_val)
-        torch.manual_seed(self.seed_val)
+        self.torch.manual_seed(self.seed_val)
 
     def train_batch(self, batch: list, total_loss: int) -> float:
         """Train batch.
@@ -222,7 +220,7 @@ class BERTBinaryClassifier(ModelBase):
         loss = outputs[0]
         total_loss += loss.item()
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
+        self.torch.nn.utils.clip_grad_norm_(self.model.parameters(), 1.0)
         self.optimizer.step()
         self.scheduler.step()
         return total_loss
@@ -243,7 +241,7 @@ class BERTBinaryClassifier(ModelBase):
         """
         b_input_ids, b_input_mask, b_labels = batch
 
-        with torch.no_grad():
+        with self.torch.no_grad():
             # noinspection PyCallingNonCallable
             outputs = self.model(
                 b_input_ids, token_type_ids=None, attention_mask=b_input_mask
@@ -260,8 +258,8 @@ class BERTBinaryClassifier(ModelBase):
 
     def epoch_iteration(
         self,
-        train_dataloader: DataLoader,
-        validation_dataloader: DataLoader,
+        train_dataloader,
+        validation_dataloader,
         loss_values: list,
     ) -> list:
         """Iterate through epoch.
@@ -329,7 +327,7 @@ class BERTBinaryClassifier(ModelBase):
         sentences = x.iloc[:, 0]
         labels = y.values
 
-        self.tokenizer = BertTokenizer.from_pretrained(
+        self.tokenizer = self.transformers.BertTokenizer.from_pretrained(
             "bert-base-uncased", do_lower_case=True
         )
 
@@ -348,12 +346,12 @@ class BERTBinaryClassifier(ModelBase):
             attention_masks, labels
         )
 
-        train_inputs = torch.tensor(train_inputs)
-        validation_inputs = torch.tensor(validation_inputs)
-        train_masks = torch.tensor(train_masks)
-        validation_masks = torch.tensor(validation_masks)
-        train_labels = torch.tensor(train_labels)
-        validation_labels = torch.tensor(validation_labels)
+        train_inputs = self.torch.tensor(train_inputs)
+        validation_inputs = self.torch.tensor(validation_inputs)
+        train_masks = self.torch.tensor(train_masks)
+        validation_masks = self.torch.tensor(validation_masks)
+        train_labels = self.torch.tensor(train_labels)
+        validation_labels = self.torch.tensor(validation_labels)
 
         train_dataloader = self.get_train_dataloader(
             train_inputs, train_masks, train_labels
@@ -365,7 +363,7 @@ class BERTBinaryClassifier(ModelBase):
 
         epochs = 4
         total_steps = len(train_dataloader) * epochs
-        self.scheduler = get_linear_schedule_with_warmup(
+        self.scheduler = self.transformers.get_linear_schedule_with_warmup(
             self.optimizer,
             num_warmup_steps=0,
             num_training_steps=total_steps,
@@ -429,9 +427,9 @@ class BERTBinaryClassifier(ModelBase):
         input_ids_padded = self.pad_sequences(input_ids)
         attention_masks = BERTBinaryClassifier._get_attention_masks(input_ids_padded)
 
-        prediction_inputs = torch.tensor(input_ids_padded)
-        prediction_masks = torch.tensor(attention_masks)
-        prediction_labels = torch.tensor(labels)
+        prediction_inputs = self.torch.tensor(input_ids_padded)
+        prediction_masks = self.torch.tensor(attention_masks)
+        prediction_labels = self.torch.tensor(labels)
 
         prediction_dataloader = self.get_validation_dataloader(
             prediction_inputs, prediction_masks, prediction_labels
@@ -450,7 +448,7 @@ class BERTBinaryClassifier(ModelBase):
         for batch in prediction_dataloader:
             b_input_ids, b_input_mask, b_labels = batch
 
-            with torch.no_grad():
+            with self.torch.no_grad():
                 # noinspection PyCallingNonCallable
                 outputs = self.model(
                     b_input_ids, token_type_ids=None, attention_mask=b_input_mask

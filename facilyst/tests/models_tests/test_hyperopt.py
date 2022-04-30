@@ -1,13 +1,10 @@
-import hyperopt.pyll.stochastic
 import pandas as pd
 import pytest
-from hyperopt import Trials, fmin, hp, space_eval, tpe
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
 
 from facilyst.models.optimizers.hyperopt import HyperoptOptimizer
 from facilyst.models.utils import get_models
-from facilyst.utils import get_dataset
+
+pytestmark = pytest.mark.needs_extra_dependency
 
 
 def test_hyperopt_class_variables():

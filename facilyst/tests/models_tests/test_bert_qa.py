@@ -3,6 +3,8 @@ import transformers
 
 from facilyst.models.neural_networks.bert_qa import BERTQuestionAnswering
 
+pytestmark = pytest.mark.needs_extra_dependency
+
 
 def test_bert_qa_class_variables():
     assert BERTQuestionAnswering.name == "BERT Question Answering"

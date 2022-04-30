@@ -1,7 +1,15 @@
+import os
+
 import numpy as np
 import pandas as pd
 import pytest
 from sklearn.datasets import make_classification, make_regression
+
+
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers", "needs_extra_dependency: marks test as needing [extra] dependencies"
+    )
 
 
 @pytest.fixture
@@ -51,3 +59,25 @@ def numeric_features_multi_classification():
         n_samples=100, n_features=10, n_classes=3, n_informative=3
     )
     return X, y
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--no-extra-dependencies",
+        action="store_true",
+        default=False,
+        help="If true, tests will assume no [extra] dependencies have been installed.",
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    if config.getoption("--no-extra-dependencies"):
+        skip_extra = pytest.mark.skip(reason="Needs an [extra] dependency")
+        for item in items:
+            if "needs_extra_dependency" in item.keywords:
+                item.add_marker(skip_extra)
+
+
+@pytest.fixture
+def has_no_extra_dependencies(pytestconfig):
+    return pytestconfig.getoption("--no-extra-dependencies")

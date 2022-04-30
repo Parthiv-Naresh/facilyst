@@ -1,9 +1,17 @@
+import os
+import pathlib
+import re
+
 import pytest
 
 from facilyst.graphs import GraphBase, Line, Scatter
 from facilyst.mocks import Dates, Features, MockBase, Wave
 from facilyst.utils import _get_subclasses
-from facilyst.utils.gen_utils import handle_problem_type
+from facilyst.utils.gen_utils import (
+    handle_problem_type,
+    import_errors_dict,
+    import_or_raise,
+)
 
 expected_mock_subclasses = [
     Wave,
@@ -25,6 +33,29 @@ def test_mock_get_subclasses():
 def test_graph_get_subclasses():
     actual_graph_subclasses = _get_subclasses(GraphBase)
     assert actual_graph_subclasses == expected_graph_subclasses
+
+
+@pytest.fixture
+def current_dir():
+    return os.path.dirname(os.path.abspath(__file__))
+
+
+def test_import_or_raise(has_no_extra_dependencies, current_dir):
+    extra_reqs = open(
+        os.path.join(
+            current_dir, pathlib.Path("..", "..", "..", "extra-requirements.txt")
+        )
+    ).readlines()[1:]
+    extra_reqs = [re.match(r"([a-zA-Z\-]+)", extra)[0] for extra in extra_reqs]
+
+    if has_no_extra_dependencies:
+        for extra in extra_reqs:
+            with pytest.raises(
+                ImportError, match=f"Missing extra dependency '{extra}'"
+            ):
+                import_or_raise(extra, import_errors_dict[extra])
+    else:
+        _ = [import_or_raise(extra) for extra in extra_reqs]
 
 
 @pytest.mark.parametrize(

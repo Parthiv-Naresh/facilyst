@@ -1,7 +1,10 @@
 import numpy as np
 import pandas as pd
+import pytest
 
 from facilyst.models import XGBoostRegressor
+
+pytestmark = pytest.mark.needs_extra_dependency
 
 
 def test_xgboost_regressor_class_variables():

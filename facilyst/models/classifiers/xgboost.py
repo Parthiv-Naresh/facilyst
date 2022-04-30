@@ -2,9 +2,9 @@
 from typing import Optional
 
 from hyperopt import hp
-from xgboost import XGBClassifier as xg_classifier
 
 from facilyst.models.model_base import ModelBase
+from facilyst.utils import import_errors_dict, import_or_raise
 
 
 class XGBoostClassifier(ModelBase):
@@ -48,6 +48,8 @@ class XGBoostClassifier(ModelBase):
         }
         parameters.update(kwargs)
 
-        xg_boost_model = xg_classifier(**parameters)
+        xg_classifier = import_or_raise("xgboost", import_errors_dict["xgboost"])
+
+        xg_boost_model = xg_classifier.XGBClassifier(**parameters)
 
         super().__init__(model=xg_boost_model, parameters=parameters)

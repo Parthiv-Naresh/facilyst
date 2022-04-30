@@ -1,6 +1,7 @@
 """General utility functions."""
 import importlib
 from types import ModuleType
+from typing import Optional
 
 
 def _get_subclasses(base_class: object) -> list:
@@ -26,19 +27,19 @@ error_str = (
     "{name} is not installed. Please install {name} using pip install {name} or install facilyst with extra "
     "dependencies using pip install facilyst[extra]."
 )
-import_errors = {
-    "catboost": error_str.format("catboost"),
-    "xgboost": error_str.format("xgboost"),
-    "torch": error_str.format("torch"),
-    "hyperopt": error_str.format("hyperopt"),
-    "transformers": error_str.format("transformers"),
-    "sentencepiece": error_str.format("sentencepiece"),
-    "keras": error_str.format("keras"),
-    "Keras-Preprocessing": error_str.format("Keras-Preprocessing"),
+import_errors_dict = {
+    "catboost": error_str.format(name="catboost"),
+    "xgboost": error_str.format(name="xgboost"),
+    "torch": error_str.format(name="torch"),
+    "hyperopt": error_str.format(name="hyperopt"),
+    "transformers": error_str.format(name="transformers"),
+    "sentencepiece": error_str.format(name="sentencepiece"),
+    "keras": error_str.format(name="keras"),
+    "keras_preprocessing": error_str.format(name="keras_preprocessing"),
 }
 
 
-def import_or_raise(library: str, error_msg: bool = None) -> ModuleType:
+def import_or_raise(library: str, error_msg: Optional[str] = None) -> ModuleType:
     """Import the requested library.
 
     :param library: The name of the library.
@@ -55,7 +56,7 @@ def import_or_raise(library: str, error_msg: bool = None) -> ModuleType:
     except ImportError:
         if error_msg is None:
             error_msg = ""
-        msg = f"Missing optional dependency '{library}'. Please use pip to install {library}. {error_msg}"
+        msg = f"Missing extra dependency '{library}'. {error_msg}"
         raise ImportError(msg)
     except Exception as exception_msg:
         msg = f"An exception occurred while trying to import `{library}`: {str(exception_msg)}"

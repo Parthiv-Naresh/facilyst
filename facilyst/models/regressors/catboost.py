@@ -1,10 +1,10 @@
 """A model that uses gradient boosting on decision trees alongside categorical encoding for regression problems."""
 from typing import Optional
 
-from catboost import CatBoostRegressor as cat_regressor
 from hyperopt import hp
 
 from facilyst.models.model_base import ModelBase
+from facilyst.utils import import_errors_dict, import_or_raise
 
 
 class CatBoostRegressor(ModelBase):
@@ -46,6 +46,8 @@ class CatBoostRegressor(ModelBase):
         }
         parameters.update(kwargs)
 
-        catboost_model = cat_regressor(**parameters)
+        cat_regressor = import_or_raise("catboost", import_errors_dict["catboost"])
+
+        catboost_model = cat_regressor.CatBoostRegressor(**parameters)
 
         super().__init__(model=catboost_model, parameters=parameters)

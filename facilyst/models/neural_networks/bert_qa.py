@@ -1,11 +1,8 @@
 """A BERT Question Answering neural network model."""
 from typing import Any, Optional
 
-import torch
-import transformers
-from transformers import BertForQuestionAnswering, BertTokenizer
-
 from facilyst.models import ModelBase
+from facilyst.utils import import_errors_dict, import_or_raise
 
 
 class BERTQuestionAnswering(ModelBase):
@@ -31,13 +28,23 @@ class BERTQuestionAnswering(ModelBase):
         parameters = {}
         parameters.update(kwargs)
 
-        question_answering_model = BertForQuestionAnswering.from_pretrained(
-            "bert-large-uncased-whole-word-masking-finetuned-squad"
+        self.torch = import_or_raise("torch", import_errors_dict["torch"])
+        self.kp = import_or_raise(
+            "keras_preprocessing", import_errors_dict["keras_preprocessing"]
+        )
+        self.transformers = import_or_raise(
+            "transformers", import_errors_dict["transformers"]
+        )
+
+        question_answering_model = (
+            self.transformers.BertForQuestionAnswering.from_pretrained(
+                "bert-large-uncased-whole-word-masking-finetuned-squad"
+            )
         )
 
         super().__init__(model=question_answering_model, parameters=parameters)
 
-    @torch.no_grad()
+    # @torch.no_grad()
     def fit(self, question: str, text: str) -> ModelBase:
         """Fit with BERTQuestionAnswering.
 
@@ -48,7 +55,7 @@ class BERTQuestionAnswering(ModelBase):
         :return: Returns self.
         :rtype class:
         """
-        self.tokenizer = BertTokenizer.from_pretrained(
+        self.tokenizer = self.transformers.BertTokenizer.from_pretrained(
             "bert-large-uncased-whole-word-masking-finetuned-squad"
         )
 
@@ -72,20 +79,20 @@ class BERTQuestionAnswering(ModelBase):
         :return: Returns answer.
         :rtype str:
         """
-        token_tensors = torch.tensor([self.encoded_input])
-        segment_tensors = torch.tensor([self.segment_ids])
+        token_tensors = self.torch.tensor([self.encoded_input])
+        segment_tensors = self.torch.tensor([self.segment_ids])
 
         output = self.model(token_tensors, token_type_ids=segment_tensors)
 
-        start_tensor = torch.argmax(output.start_logits)
-        end_tensor = torch.argmax(output.end_logits) + 1
+        start_tensor = self.torch.argmax(output.start_logits)
+        end_tensor = self.torch.argmax(output.end_logits) + 1
         self.encoded_answer = self.encoded_input[start_tensor:end_tensor]
         answer = self.tokenizer.decode(self.encoded_answer)
         answer = answer.capitalize()
 
         return answer
 
-    def get_tokenizer(self) -> transformers.models.bert.tokenization_bert.BertTokenizer:
+    def get_tokenizer(self):
         """Get the tokenizer.
 
         :return: Returns tokenizer.
