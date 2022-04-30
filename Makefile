@@ -29,6 +29,10 @@ lint-fix:
 installdeps: upgradepip
 	pip install -e .
 
+.PHONY: installdeps-extra
+installdeps-extra: upgradepip
+	pip install -e ".[extra]"
+
 .PHONY: installdeps-test
 installdeps-test: upgradepip
 	pip install -e ".[test]"

@@ -1,0 +1,8 @@
+catboost==1.0.5
+hyperopt==0.2.7
+keras==2.8.0
+Keras-Preprocessing==1.1.2
+sentencepiece==0.1.95
+torch==1.11.0
+transformers==4.14.1
+xgboost==1.6.0
