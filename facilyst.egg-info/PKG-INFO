@@ -23,6 +23,7 @@ Classifier: Topic :: Scientific/Engineering :: Image Recognition
 Classifier: Topic :: Scientific/Engineering :: Visualization
 Classifier: License :: OSI Approved :: MIT License
 Requires-Python: <4,>=3.7
+Description-Content-Type: text/markdown
 Provides-Extra: extra
 Provides-Extra: dev
 Provides-Extra: test
