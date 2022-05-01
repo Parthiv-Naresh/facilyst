@@ -1,7 +1,18 @@
 Release Notes
 -------------
 
-**Future Releases**
+Future Release
+==============
+    * Enhancements
+    * Fixes
+    * Changes
+    * Documentation Changes
+    * Testing Changes
+    * CI/CD Changes
+
+
+v0.0.3 May 1, 2022
+==================
     * Enhancements
         * Added ``AggregateDatetime`` as a preprocessor to aggregate datetime components into a datetime column :pr:`29`
         * Added ``ADABoost``, ``Bagging``, ``CatBoost``, ``DecisionTree``, ``Extra Trees``, ``MultiLayerPerceptron``, and ``XGBoost`` classifiers :pr:`25`
@@ -53,7 +64,3 @@ Release Notes
         * Added ``linux_unit_tests`` GitHub Action to check that all tests pass on MRs :pr:`3`
         * Added ``release_notes_updated`` GitHub Action to check that every MRs is associated with an update in the release notes :pr:`3`
         * Added ``codecov`` support :pr:`3`
-
-.. warning::
-
-    **Breaking Changes**
