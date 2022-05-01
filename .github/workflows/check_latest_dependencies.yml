@@ -14,12 +14,22 @@ jobs:
         with:
           python-version: '3.8.x'
       - name: Update Dependencies
-        id: vars
         run: |
-          make installdeps
+          python -m pip install .[test]
+          export ALLOWED_DEPENDENCY_FILEPATH=../facilyst/requirements.txt
           export LATEST_DEPENDENCY_FILEPATH=facilyst/tests/dependency_tests/latest_dependencies.txt
           facilyst/tests/dependency_tests/dependency_diff.sh
           cat facilyst/tests/dependency_tests/latest_dependencies.txt
+      - name: Update Extra Dependencies
+        run: |
+          python -m pip install .[test]
+          python -m pip install .[extra]
+          export ALLOWED_DEPENDENCY_FILEPATH=../facilyst/extra-requirements.txt
+          export LATEST_DEPENDENCY_FILEPATH=facilyst/tests/dependency_tests/latest_extra_dependencies.txt
+          facilyst/tests/dependency_tests/dependency_diff.sh
+          cat facilyst/tests/dependency_tests/latest_extra_dependencies.txt
+          rm -r ./facilyst/facilyst.egg-info
+          rm -r ./facilyst/build
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:

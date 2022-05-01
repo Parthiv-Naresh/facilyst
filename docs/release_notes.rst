@@ -26,8 +26,6 @@ Release Notes
         * Added ``handle_data_and_library_type`` and ``mock_dtypes`` helper functions :pr:`3`
     * Fixes
     * Changes
-        * Added and pinned ``pytype==2022.4.22`` :pr:`21`
-        * Pinned to ``numpy==1.22.3``, ``scipy==1.8.0``, and ``plotly==5.7.0`` :pr:`6`
         * Removed ``Target`` mock data type :pr:`4`
     * Documentation Changes
         * Added status badges to README.md :pr:`35`
@@ -39,12 +37,17 @@ Release Notes
         * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Pinned ``setup.cfg`` test dependencies :pr:`43`
+        * Updated ``check_latest_dependencies`` to handle extra dependencies :pr:`41`
+        * Removed ``catboost`` from `latest_dependencies`` :pr:`40`
         * Separated ``extra-requirements`` from ``requirements`` :pr:`35`
         * Added ``pyproject.toml`` and simplified ``setup.py`` :pr:`35`
         * Added ``check_latest_dependencies`` GitHub Action to check for updates to the latest dependencies :pr:`23`
         * Added ``type_hint_tests`` GitHub Action to check for type hint errors on MRs :pr:`21`
+        * Added and pinned ``pytype==2022.4.22`` :pr:`21`
         * Removed testing datasets from CI :pr:`7`
         * Parallelized ``linux_unit_tests`` testing :pr:`6`
+        * Pinned to ``numpy==1.22.3``, ``scipy==1.8.0``, and ``plotly==5.7.0`` :pr:`6`
         * Added ``setup.py`` to enable the build process :pr:`3`
         * Added ``lint_tests`` GitHub Action to check for lint errors on MRs :pr:`3`
         * Added ``linux_unit_tests`` GitHub Action to check that all tests pass on MRs :pr:`3`
