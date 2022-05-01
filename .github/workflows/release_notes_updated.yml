@@ -19,5 +19,7 @@ jobs:
           if [[ $(expr match "${{ github.event.pull_request.head.ref }}" "update_latest_dependencies-[a-zA-Z0-9]*") -gt 0 ]]; then
             echo This is a latest dependency update PR;
             exit 0;
+          elif [[ $(expr match "${{ github.event.pull_request.head.ref }}" "release_v[0-9.]\+") -gt 0 ]]; then
+            exit 0;
           fi
           cat docs/release_notes.rst | grep ":pr:\`${{ github.event.number }}\`"
