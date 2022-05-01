@@ -3,11 +3,11 @@ from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
-from hyperopt import STATUS_OK, Trials, fmin, space_eval, tpe
 from sklearn.model_selection import train_test_split
 
 from facilyst.models import ModelBase
 from facilyst.models.utils import get_models
+from facilyst.utils import import_errors_dict, import_or_raise
 
 
 class HyperoptOptimizer:
@@ -57,6 +57,10 @@ class HyperoptOptimizer:
                 "The parameter `iterations_per_model` must be either an int or a dict specifying the "
                 "number of iterations per model."
             )
+
+        self._hyperopt_module = import_or_raise(
+            "hyperopt", import_errors_dict["hyperopt"]
+        )
 
         self.collected_models = self.collect_models()
 
@@ -132,25 +136,27 @@ class HyperoptOptimizer:
             model_ = model(**parameters)  # pytype: disable=not-callable
             model_.fit(x_train, y_train)
             score = model_.score(x_test, y_test)
-            return {"loss": -score, "status": STATUS_OK}
+            return {"loss": -score, "status": self._hyperopt_module.STATUS_OK}
 
-        trials = Trials()
+        trials = self._hyperopt_module.Trials()
 
         model_iter = None
         if isinstance(self.iterations_per_model, dict):
             model_iter = self.iterations_per_model.get(model.name, 50)
 
-        best_hyp = fmin(
+        best_hyp = self._hyperopt_module.fmin(
             fn=cost_function,
             space=space,
-            algo=tpe.suggest,
+            algo=self._hyperopt_module.tpe.suggest,
             max_evals=model_iter or 50,
             trials=trials,
         )
 
         best_trial = trials.best_trial
         best_dict = {
-            "best_hyperparameters": space_eval(model.hyperparameters, best_hyp),
+            "best_hyperparameters": self._hyperopt_module.space_eval(
+                model.hyperparameters, best_hyp
+            ),
             "best_score": round(best_trial["result"]["loss"], 3),
         }
 

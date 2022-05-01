@@ -3,10 +3,10 @@ from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
-from catboost import CatBoostClassifier as cat_classifier
 from hyperopt import hp
 
 from facilyst.models.model_base import ModelBase
+from facilyst.utils import import_errors_dict, import_or_raise
 
 
 class CatBoostClassifier(ModelBase):
@@ -48,7 +48,9 @@ class CatBoostClassifier(ModelBase):
         }
         parameters.update(kwargs)
 
-        catboost_model = cat_classifier(**parameters)
+        cat_classifier = import_or_raise("catboost", import_errors_dict["catboost"])
+
+        catboost_model = cat_classifier.CatBoostClassifier(**parameters)
 
         super().__init__(model=catboost_model, parameters=parameters)
 

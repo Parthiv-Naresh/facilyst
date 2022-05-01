@@ -2,9 +2,9 @@
 from typing import Optional
 
 from hyperopt import hp
-from xgboost import XGBRegressor as xg_regressor
 
 from facilyst.models.model_base import ModelBase
+from facilyst.utils import import_errors_dict, import_or_raise
 
 
 class XGBoostRegressor(ModelBase):
@@ -48,6 +48,8 @@ class XGBoostRegressor(ModelBase):
         }
         parameters.update(kwargs)
 
-        xg_boost_model = xg_regressor(**parameters)
+        xg_regressor = import_or_raise("xgboost", import_errors_dict["xgboost"])
+
+        xg_boost_model = xg_regressor.XGBRegressor(**parameters)
 
         super().__init__(model=xg_boost_model, parameters=parameters)

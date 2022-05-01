@@ -1,12 +1,15 @@
 from unittest.mock import patch
 
 import pandas as pd
+import pytest
 import torch
 import transformers
 
 from facilyst.models.neural_networks.bert_classifier import (
     BERTBinaryClassifier,
 )
+
+pytestmark = pytest.mark.needs_extra_dependency
 
 
 def test_bert_binary_classifier_class_variables():

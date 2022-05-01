@@ -1,6 +1,9 @@
 import pandas as pd
+import pytest
 
 from facilyst.models import CatBoostRegressor
+
+pytestmark = pytest.mark.needs_extra_dependency
 
 
 def test_catboost_classifier_class_variables():

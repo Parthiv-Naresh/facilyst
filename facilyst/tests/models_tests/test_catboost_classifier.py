@@ -3,6 +3,8 @@ import pytest
 
 from facilyst.models import CatBoostClassifier
 
+pytestmark = pytest.mark.needs_extra_dependency
+
 
 def test_catboost_classifier_class_variables():
     assert CatBoostClassifier.name == "Catboost Classifier"
