@@ -14,6 +14,7 @@ facilyst/version.py
 facilyst.egg-info/PKG-INFO
 facilyst.egg-info/SOURCES.txt
 facilyst.egg-info/dependency_links.txt
+facilyst.egg-info/entry_points.txt
 facilyst.egg-info/not-zip-safe
 facilyst.egg-info/requires.txt
 facilyst.egg-info/top_level.txt
