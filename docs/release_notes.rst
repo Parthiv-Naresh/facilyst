@@ -39,6 +39,7 @@ Release Notes
         * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Separated ``extra-requirements`` from ``requirements`` :pr:`35`
         * Added ``pyproject.toml`` and simplified ``setup.py`` :pr:`35`
         * Added ``check_latest_dependencies`` GitHub Action to check for updates to the latest dependencies :pr:`23`
         * Added ``type_hint_tests`` GitHub Action to check for type hint errors on MRs :pr:`21`
