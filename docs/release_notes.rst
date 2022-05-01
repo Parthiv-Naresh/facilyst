@@ -37,6 +37,7 @@ Release Notes
         * Added tests for locally stored datasets :pr:`6`
         * Added and updated testing for subclasses :pr:`4`
     * CI/CD Changes
+        * Pinned ``setup.cfg`` test dependencies :pr:`43`
         * Updated ``check_latest_dependencies`` to handle extra dependencies :pr:`41`
         * Removed ``catboost`` from `latest_dependencies`` :pr:`40`
         * Separated ``extra-requirements`` from ``requirements`` :pr:`35`
