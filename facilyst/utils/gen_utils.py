@@ -57,9 +57,6 @@ def import_or_raise(library: str, error_msg: Optional[str] = None) -> ModuleType
             error_msg = ""
         msg = f"Missing extra dependency '{library}'. {error_msg}"
         raise ImportError(msg)
-    except Exception as exception_msg:
-        msg = f"An exception occurred while trying to import `{library}`: {str(exception_msg)}"
-        raise Exception(msg)
 
 
 def handle_problem_type(problem_type: str) -> str:
