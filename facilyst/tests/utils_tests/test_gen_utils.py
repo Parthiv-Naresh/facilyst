@@ -48,6 +48,11 @@ def test_import_or_raise(has_no_extra_dependencies, current_dir):
     ).readlines()[1:]
     extra_reqs = {re.match(r"([a-zA-Z_\-]+)", extra)[0] for extra in extra_reqs}
 
+    with pytest.raises(ImportError, match=f"Missing extra dependency 'facilyst_'"):
+        import_or_raise(
+            "facilyst_",
+        )
+
     if has_no_extra_dependencies:
         for extra in extra_reqs:
             with pytest.raises(
