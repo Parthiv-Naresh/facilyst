@@ -26,6 +26,7 @@ Release Notes
         * Added ``handle_data_and_library_type`` and ``mock_dtypes`` helper functions :pr:`3`
     * Fixes
     * Changes
+        * Removed ``catboost`` from `latest_dependencies`` :pr:`40`
         * Added and pinned ``pytype==2022.4.22`` :pr:`21`
         * Pinned to ``numpy==1.22.3``, ``scipy==1.8.0``, and ``plotly==5.7.0`` :pr:`6`
         * Removed ``Target`` mock data type :pr:`4`
