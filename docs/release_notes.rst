@@ -9,6 +9,7 @@ Future Release
     * Documentation Changes
     * Testing Changes
     * CI/CD Changes
+        * Made ``Hyperopt`` a required dependency :pr:`48`
 
 
 v0.0.3 May 1, 2022
