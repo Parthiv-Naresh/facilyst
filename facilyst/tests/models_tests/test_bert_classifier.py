@@ -2,8 +2,6 @@ from unittest.mock import patch
 
 import pandas as pd
 import pytest
-import torch
-import transformers
 
 from facilyst.models.neural_networks.bert_classifier import (
     BERTBinaryClassifier,
@@ -63,6 +61,9 @@ def test_bert_classifier():
 def test_bert_classifier_mock_train_validate_batches(
     mock_train_batch, mock_validate_batch
 ):
+    import torch
+    import transformers
+
     train_x = sentences_df[:350]
     train_y = target[:350]
 
