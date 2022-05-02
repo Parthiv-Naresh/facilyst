@@ -1,5 +1,4 @@
 import pytest
-import transformers
 
 from facilyst.models.neural_networks.bert_qa import BERTQuestionAnswering
 
@@ -86,6 +85,8 @@ def test_bert_qa_error_before_predict():
 def test_bert_qa(
     question, answer, expected_num_tokens_question, expected_encoded_answer
 ):
+    import transformers
+
     bert.fit(question, text)
 
     tokenizer = bert.get_tokenizer()
