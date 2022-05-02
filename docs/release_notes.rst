@@ -8,8 +8,8 @@ Future Release
     * Changes
     * Documentation Changes
     * Testing Changes
-        * Added ``linux_unit_tests_without_extra_dependencies`` GitHub Action to check that all tests pass on MRs without extra dependencies :pr:`52`
     * CI/CD Changes
+        * Added ``linux_unit_tests_without_extra_dependencies`` GitHub Action to check that all tests pass on MRs without extra dependencies :pr:`52`
         * Made ``Hyperopt`` a required dependency :pr:`48`
 
 
