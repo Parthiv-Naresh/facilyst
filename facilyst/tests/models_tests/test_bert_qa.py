@@ -35,8 +35,6 @@ def test_bert_qa_errors_before_fit():
         bert.get_num_tokens_text()
 
 
-bert = BERTQuestionAnswering()
-
 text = (
     "New York (CNN) -- More than 80 Michael Jackson collectibles -- "
     "including the late pop star's famous rhinestone-studded glove from a 1983 performance -- "
@@ -58,6 +56,7 @@ text = (
 
 
 def test_bert_qa_error_before_predict():
+    bert = BERTQuestionAnswering()
     bert.fit("Who died?", text)
     with pytest.raises(ValueError, match="Call predict to get the encoded answer."):
         bert.get_encoded_answer()
@@ -87,6 +86,7 @@ def test_bert_qa(
 ):
     import transformers
 
+    bert = BERTQuestionAnswering()
     bert.fit(question, text)
 
     tokenizer = bert.get_tokenizer()
