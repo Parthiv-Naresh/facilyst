@@ -1,0 +1,70 @@
+name: Unit Tests without Extra Dependencies - Linux
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+
+jobs:
+  unit_tests:
+    name: ${{ matrix.python_version }} ${{ matrix.command }} Unit Tests without Extra Dependencies
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version: ["3.8"]
+        command: ["Graphs", "Mocks", "Models", "Preprocessors", "Utils"]
+    steps:
+      - name: Set up Python ${{ matrix.python_version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          fetch-depth: 2
+      - name: Build Facilyst Package
+        run: make package_facilyst
+      - name: Installing Dependencies
+        run: |
+          python -m pip install -e unpacked_sdist/
+          pip freeze
+      - name: Installing Test Dependencies
+        run: |
+          python -m pip install -e unpacked_sdist/[test]
+          pip freeze
+      - name: Erase Coverage
+        run: |
+          python -m pip install "$(cat setup.cfg | grep codecov)"
+          coverage erase
+          cd unpacked_sdist
+          coverage erase
+      - if: ${{ matrix.command == 'Graphs' }}
+        name: Running Graphs Tests
+        run: |
+          cd unpacked_sdist
+          pytest facilyst/tests/graphs_tests -n 2 --no-extra-dependencies --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+      - if: ${{ matrix.command == 'Mocks' }}
+        name: Running Mocks Tests
+        run: |
+          cd unpacked_sdist
+          pytest facilyst/tests/mock_tests -n 2 --no-extra-dependencies --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+      - if: ${{ matrix.command == 'Models' }}
+        name: Running Models Tests
+        run: |
+          cd unpacked_sdist
+          pytest facilyst/tests/models_tests -n 2 --no-extra-dependencies --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+      - if: ${{ matrix.command == 'Preprocessors' }}
+        name: Running Preprocessors Tests
+        run: |
+          cd unpacked_sdist
+          pytest facilyst/tests/preprocessing_tests -n 2 --no-extra-dependencies --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
+      - if: ${{ matrix.command == 'Utils' }}
+        name: Running Utils Tests
+        run: |
+          cd unpacked_sdist
+          pytest facilyst/tests/utils_tests facilyst/tests/test_version.py -n 2 --no-extra-dependencies --durations 0 --cov=facilyst --junitxml=test-reports/git-all-tests-junit.xml
