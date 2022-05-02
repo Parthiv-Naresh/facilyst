@@ -6,3 +6,4 @@ seaborn>=0.11.1
 click>=7.1.2
 woodwork>=0.15.0
 faker>=13.3.4
+hyperopt>=0.2.7

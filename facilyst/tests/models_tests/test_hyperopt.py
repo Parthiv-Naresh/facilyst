@@ -4,8 +4,6 @@ import pytest
 from facilyst.models.optimizers.hyperopt import HyperoptOptimizer
 from facilyst.models.utils import get_models
 
-pytestmark = pytest.mark.needs_extra_dependency
-
 
 def test_hyperopt_class_variables():
     assert HyperoptOptimizer.name == "Hyperopt Optimizer"
