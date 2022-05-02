@@ -28,8 +28,3 @@ how to plot it in a visually appealing way, I wanted a library that could provid
 Install from [PyPI](https://pypi.org/project/facilyst/)
 
 `pip install facilyst`
-
-
-## Version - 0.0.2
-
-This is a work in progress and there are many features to be added.
