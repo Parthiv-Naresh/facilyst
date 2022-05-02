@@ -31,6 +31,7 @@ import_errors_dict = {
     "catboost": error_str.format(name="catboost"),
     "xgboost": error_str.format(name="xgboost"),
     "torch": error_str.format(name="torch"),
+    "hyperopt": error_str.format(name="hyperopt"),
     "transformers": error_str.format(name="transformers"),
     "sentencepiece": error_str.format(name="sentencepiece"),
     "keras_preprocessing": error_str.format(name="keras_preprocessing"),

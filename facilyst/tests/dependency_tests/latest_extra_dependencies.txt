@@ -1,5 +1,4 @@
 catboost==1.0.5
-hyperopt==0.2.7
 sentencepiece==0.1.95
 torch==1.11.0
 transformers==4.14.1
