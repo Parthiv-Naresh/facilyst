@@ -9,6 +9,16 @@ Future Release
     * Documentation Changes
     * Testing Changes
     * CI/CD Changes
+
+
+v0.0.4 May 1, 2022
+==================
+    * Enhancements
+    * Fixes
+    * Changes
+    * Documentation Changes
+    * Testing Changes
+    * CI/CD Changes
         * Added ``linux_unit_tests_without_extra_dependencies`` GitHub Action to check that all tests pass on MRs without extra dependencies :pr:`52`
         * Made ``Hyperopt`` a required dependency :pr:`48`
 
