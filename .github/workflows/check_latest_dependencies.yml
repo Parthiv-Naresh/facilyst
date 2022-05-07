@@ -28,15 +28,8 @@ jobs:
           export LATEST_DEPENDENCY_FILEPATH=facilyst/tests/dependency_tests/latest_extra_dependencies.txt
           facilyst/tests/dependency_tests/dependency_diff.sh
           cat facilyst/tests/dependency_tests/latest_extra_dependencies.txt
-          echo "=============================================="
-          ls
-          cd ..
-          echo "=============================================="
-          ls
-          cd ..
-          echo "=============================================="
-          rm -r ./facilyst/facilyst.egg-info
-          rm -r ./facilyst/build
+          rm -r facilyst.egg-info
+          rm -r facilyst/build
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
