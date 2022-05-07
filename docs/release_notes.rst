@@ -4,7 +4,7 @@ Release Notes
 Future Release
 ==============
     * Enhancements
-        * Added ``FTDatetime`` as a preprocessor to perform feature engineering on datetime columns :pr:`53`
+        * Added ``FTDatetime`` as a preprocessor to perform feature engineering on datetime columns :pr:`55`
     * Fixes
     * Changes
     * Documentation Changes
