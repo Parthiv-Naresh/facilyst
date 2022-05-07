@@ -1,6 +1,8 @@
 name: Check Latest Dependencies
 
 on:
+  pull_request:
+    types: [ opened, synchronize ]
   schedule:
       - cron: '*/2 * * * *'
 
