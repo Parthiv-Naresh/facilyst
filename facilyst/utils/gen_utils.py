@@ -33,7 +33,7 @@ import_errors_dict = {
     "torch": error_str.format(name="torch"),
     "transformers": error_str.format(name="transformers"),
     "sentencepiece": error_str.format(name="sentencepiece"),
-    "keras_preprocessing": error_str.format(name="keras_preprocessing"),
+    "Keras_Preprocessing": error_str.format(name="Keras_Preprocessing"),
 }
 
 
