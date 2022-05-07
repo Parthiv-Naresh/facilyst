@@ -10,6 +10,7 @@ Future Release
     * Documentation Changes
     * Testing Changes
     * CI/CD Changes
+        * Update ``latest_dependency_checker`` to remove the correct folders :pr:`55`
         * Update ``latest_dependency_checker`` to find source of egg-info folder :pr:`56`
 
 
