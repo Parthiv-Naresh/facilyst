@@ -37,8 +37,8 @@ jobs:
           ls
           cd ..
           echo "=============================================="
-          rm -r ./facilyst/facilyst.egg-info
-          rm -r ./facilyst/build
+          rm -r facilyst.egg-info
+          rm -r build
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
