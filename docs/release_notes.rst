@@ -4,11 +4,13 @@ Release Notes
 Future Release
 ==============
     * Enhancements
+        * Added ``FTDatetime`` as a preprocessor to perform feature engineering on datetime columns :pr:`55`
     * Fixes
     * Changes
     * Documentation Changes
     * Testing Changes
     * CI/CD Changes
+        * Update ``latest_dependency_checker`` to remove the correct folders :pr:`55`
         * Update ``latest_dependency_checker`` to find source of egg-info folder :pr:`56`
 
 
