@@ -42,12 +42,8 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
-      - name: Install make
-        run: |
-          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
-          conda config --add channels conda-forge
-          conda activate curr_py
-          conda install make -q -y
+      - name: Build Facilyst Package
+        run: make package_facilyst
       - name: Installing Dependencies
         shell: pwsh
         run: |
