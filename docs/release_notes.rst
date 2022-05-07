@@ -9,6 +9,7 @@ Future Release
     * Documentation Changes
     * Testing Changes
     * CI/CD Changes
+        * Update ``latest_dependency_checker`` to find source of egg-info folder :pr:`56`
 
 
 v0.0.4 May 1, 2022
