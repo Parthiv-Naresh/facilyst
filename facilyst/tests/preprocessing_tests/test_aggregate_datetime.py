@@ -35,6 +35,7 @@ def test_aggregate_datetime_naming_errors(name_agg):
     "year, month, day, hour, min, sec, tz, name_agg",
     [
         (None, None, None, None, None, None, None, None),
+        (None, None, "d", None, None, None, None, ""),
         ("yr", "mon", "d", None, None, None, "tz", ""),
         (None, None, None, "hr", "min", "sec", None, "Aggregated_Datetime"),
         ("yr", False, "d", None, "min", None, "tz", "Another name"),

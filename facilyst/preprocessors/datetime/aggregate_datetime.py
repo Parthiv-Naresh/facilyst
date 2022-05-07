@@ -1,4 +1,4 @@
-"""preprocessor that combines datetime-relevant fields into a datetime column."""
+"""Preprocessor that combines datetime-relevant fields into a datetime column."""
 from typing import Any, Optional, Tuple, Union
 
 import numpy as np
