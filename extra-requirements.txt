@@ -4,4 +4,4 @@ catboost>=1.0.5
 torch==1.11.0
 transformers==4.14.1
 sentencepiece==0.1.95
-keras-preprocessing==1.1.2
+keras_preprocessing==1.1.2
