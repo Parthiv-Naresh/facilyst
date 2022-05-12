@@ -157,11 +157,13 @@ class GraphBase(ABC):
             data.ww.init()
             self.parameters["data"] = data
         else:
+            x = self.parameters["x"]
+            y = self.parameters["y"]
             if not isinstance(self.parameters["x"], pd.Series):
-                x = pd.Series(self.parameters["x"])
-                x.ww.init()
-                self.parameters["x"] = x
+                x = pd.Series(x)
             if not isinstance(self.parameters["y"], pd.Series):
-                y = pd.Series(self.parameters["y"])
-                y.ww.init()
-                self.parameters["y"] = y
+                y = pd.Series(y)
+            x.ww.init()
+            y.ww.init()
+            self.parameters["x"] = x
+            self.parameters["y"] = y
