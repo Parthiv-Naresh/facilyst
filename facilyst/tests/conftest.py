@@ -1,5 +1,3 @@
-import os
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -17,7 +15,7 @@ def one_dim_data():
     one_dim = [i for i in range(10)]
     one_dim_types = {
         "pandas": pd.Series(one_dim),
-        "numpy": np.array(one_dim),
+        "numpy": np.array(one_dim, dtype=np.int64),
         "list": one_dim,
         "str": 0,
         "None": None,

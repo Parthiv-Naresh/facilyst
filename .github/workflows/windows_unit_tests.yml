@@ -1,0 +1,98 @@
+name: Unit tests - Windows
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - main
+
+jobs:
+  win_unit_tests:
+    name: ${{ matrix.python_version }} ${{ matrix.command}} Unit Tests
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python_version: ['3.8']
+        command: ["Graphs", "Mocks", "Models", "Preprocessors", "Utils"]
+    steps:
+      - name: Download Miniconda
+        shell: pwsh
+        run: |
+          $File = "Miniconda3-4.7.12.1-Windows-x86_64.exe"
+          $Uri = "https://repo.anaconda.com/miniconda/$File"
+          $ProgressPreference = "silentlyContinue"
+          Invoke-WebRequest -Uri $Uri -Outfile "$env:USERPROFILE/$File"
+          $hashFromFile = Get-FileHash "$env:USERPROFILE/$File" -Algorithm SHA256
+          $hashFromUrl = "f18060cc0bb50ae75e4d602b7ce35197c8e31e81288d069b758594f1bb46ab45"
+          if ($hashFromFile.Hash -ne "$hashFromUrl") {
+            Throw "File hashes did not match!"
+          }
+      - name: Install Miniconda
+        shell: cmd
+        run: start /wait "" %UserProfile%\Miniconda3-4.7.12.1-Windows-x86_64.exe /InstallationType=JustMe /RegisterPython=0 /AddToPath=1 /S /D=%UserProfile%\Miniconda3
+      - name: Set Python ${{ matrix.python_version }} Version
+        shell: pwsh
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda create -n curr_py python=${{ matrix.python_version }}
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+      - name: Build Facilyst Package
+        run: make package_facilyst
+      - name: Installing Dependencies
+        shell: pwsh
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda activate curr_py
+          python -m pip install -e unpacked_sdist/
+          pip freeze
+      - name: Installing Extra Dependencies
+        shell: pwsh
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda activate curr_py
+          python -m pip install -e unpacked_sdist/[extra]
+          pip freeze
+      - name: Installing Test Dependencies
+        shell: pwsh
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda activate curr_py
+          python -m pip install -e unpacked_sdist/[test]
+          pip freeze
+      - if: ${{ matrix.command == 'Graphs' }}
+        name: Running Graphs Tests
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda activate curr_py
+          pytest facilyst/tests/graphs_tests -n 2 --durations 0 --cov=facilyst --junitxml=unpacked_sdist/test-reports/${{matrix.command}}-junit.xml
+      - if: ${{ matrix.command == 'Mocks' }}
+        name: Running Mocks Tests
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda activate curr_py
+          pytest facilyst/tests/mock_tests -n 2 --durations 0 --cov=facilyst --junitxml=unpacked_sdist/test-reports/${{matrix.command}}-junit.xml
+      - if: ${{ matrix.command == 'Models' }}
+        name: Running Models Tests
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda activate curr_py
+          pytest facilyst/tests/models_tests -n 2 --durations 0 --cov=facilyst --junitxml=unpacked_sdist/test-reports/${{matrix.command}}-junit.xml
+      - if: ${{ matrix.command == 'Preprocessors' }}
+        name: Running Preprocessors Tests
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda activate curr_py
+          pytest facilyst/tests/preprocessing_tests -n 2 --durations 0 --cov=facilyst --junitxml=unpacked_sdist/test-reports/${{matrix.command}}-junit.xml
+      - if: ${{ matrix.command == 'Utils' }}
+        name: Running Utils Tests
+        run: |
+          . $env:USERPROFILE\Miniconda3\shell\condabin\conda-hook.ps1
+          conda activate curr_py
+          ls
+          pytest facilyst/tests/utils_tests facilyst/tests/test_version.py -n 2 --durations 0 --cov=facilyst --junitxml=unpacked_sdist/test-reports/${{matrix.command}}-junit.xml
