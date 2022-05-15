@@ -10,6 +10,7 @@ Future Release
     * Documentation Changes
     * Testing Changes
     * CI/CD Changes
+        * Update ``latest_dependency_checker`` to edit ``Keras-Preprocessing`` :pr:`65`
         * Formatted ``dependency_diff.sh`` to include Keras_Preprocessing dependency :pr:`59`
         * Added ``windows_unit_tests`` GitHub Action to check that all tests pass on MRs in a windows environment :pr:`59`
         * Update ``latest_dependency_checker`` to remove the correct folders :pr:`55`
