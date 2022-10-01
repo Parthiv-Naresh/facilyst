@@ -98,6 +98,7 @@ def test_features_parameters(
         and len(features_included) == 22
         and num_rows != 10
     ):
+        print(features.ww)
         assert (
             len(
                 features.ww.select(
@@ -127,7 +128,7 @@ def test_features_parameters(
                         include=["Categorical"], return_schema=True
                     ).logical_types
                 )
-                == 3
+                == 2
             )
         else:
             assert (
@@ -136,7 +137,7 @@ def test_features_parameters(
                         include=["Categorical"], return_schema=True
                     ).logical_types
                 )
-                == 2
+                == 1
             )
         assert (
             len(
