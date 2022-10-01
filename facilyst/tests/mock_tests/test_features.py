@@ -127,7 +127,7 @@ def test_features_parameters(
                         include=["Categorical"], return_schema=True
                     ).logical_types
                 )
-                == 3
+                == 2
             )
         else:
             assert (
@@ -136,7 +136,7 @@ def test_features_parameters(
                         include=["Categorical"], return_schema=True
                     ).logical_types
                 )
-                == 2
+                == 1
             )
         assert (
             len(
