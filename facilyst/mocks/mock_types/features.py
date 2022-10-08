@@ -154,8 +154,6 @@ class Features(MockBase):
         if self.library == "numpy":
             return data.to_numpy()
         else:
-            if "ints_nullable" in dtypes_to_keep:
-                data["ints_nullable"] = data["ints_nullable"].astype("Int64")
             if "floats_nullable" in dtypes_to_keep:
                 data["floats_nullable"] = data["floats_nullable"].astype("Float64")
             data.ww.init()
