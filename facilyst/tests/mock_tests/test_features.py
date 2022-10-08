@@ -98,8 +98,6 @@ def test_features_parameters(
         and len(features_included) == 22
         and num_rows != 10
     ):
-        print("CHECKING THE SCHEMA")
-        print(features.ww)
         assert (
             len(
                 features.ww.select(
