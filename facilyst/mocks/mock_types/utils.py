@@ -65,7 +65,7 @@ def mock_features_dtypes(num_rows: int = 100) -> dict:
     dtypes_dict = {
         "ints": [i for i in range(-num_rows // 2, num_rows // 2)],
         "rand_ints": np.random.choice([i for i in range(-5, 5)], num_rows),
-        "floats": [float(i) for i in range(-num_rows // 2, num_rows // 2)],
+        "floats": [float(i * 1.1) for i in range(-num_rows // 2, num_rows // 2)],
         "rand_floats": np.random.uniform(low=-5.0, high=5.0, size=num_rows),
         "booleans": np.random.choice([True, False], num_rows),
         "categoricals": np.random.choice(
@@ -80,7 +80,7 @@ def mock_features_dtypes(num_rows: int = 100) -> dict:
             [i for i in range(-10 // 2, 10 // 2)] + [pd.NA], num_rows
         ),
         "floats_nullable": np.random.choice(
-            np.append([float(i) for i in range(-5, 5)], pd.NA), num_rows
+            np.append([float(i * 1.1) for i in range(-5, 5)], pd.NA), num_rows
         ),
         "booleans_nullable": np.random.choice([True, False, None], num_rows),
         "full_names": pd.Series([fake.name() for _ in range(num_rows)]),
