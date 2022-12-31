@@ -45,6 +45,7 @@ def test_bagging_regressor(numeric_features_regression):
         "base_estimator__splitter": "best",
         "bootstrap": True,
         "bootstrap_features": False,
+        "estimator": None,
         "max_features": 1.0,
         "max_samples": 1.0,
         "n_estimators": 50,

@@ -57,6 +57,7 @@ def test_ada_boost_classifier(
         "base_estimator__min_weight_fraction_leaf": 0.0,
         "base_estimator__random_state": None,
         "base_estimator__splitter": "best",
+        "estimator": None,
         "learning_rate": 1.0,
         "n_estimators": 50,
         "random_state": None,

@@ -42,6 +42,7 @@ def test_ada_boost_regressor(numeric_features_regression):
         "base_estimator__min_samples_split": 2,
         "base_estimator__min_weight_fraction_leaf": 0.0,
         "base_estimator__random_state": None,
+        "estimator": None,
         "base_estimator__splitter": "best",
         "learning_rate": 1.0,
         "loss": "linear",
