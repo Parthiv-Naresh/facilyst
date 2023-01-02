@@ -13,9 +13,8 @@ def get_models(model: str, problem_type: Optional[str] = None) -> list:
     then only models belonging to that type will be returned. If the name of a model is passed that conflicts with the
     problem type passed, then an error will be raised.
 
-    :param model: The name or type of model(s) to return.
-    :type model: str
-    :param problem_type: The problem type to which the models should belong, `regression` or `classification`.
+    model (str): The name or type of model(s) to return.
+    problem_type (str): The problem type to which the models should belong, `regression` or `classification`.
     :type problem_type: str, optional
     :return: A list of all models found.
     :rtype list:
@@ -24,7 +23,7 @@ def get_models(model: str, problem_type: Optional[str] = None) -> list:
         raise ValueError("No model name passed.")
 
     all_models = _get_subclasses(ModelBase)
-    if " " not in model:
+    if model == "time series" or " " not in model:
         if model.lower() in ["all", "any"]:
             return all_models
         subset_models_primary = [

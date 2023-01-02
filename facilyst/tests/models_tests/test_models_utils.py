@@ -1,20 +1,29 @@
+from typing import Any, List
+
 import pytest
 
 from facilyst.models import (
     ADABoostClassifier,
     ADABoostRegressor,
+    ADIDARegressor,
+    AutoARIMARegressor,
+    AutoETSRegressor,
+    AutoThetaRegressor,
     BaggingClassifier,
     BaggingRegressor,
     CatBoostClassifier,
     CatBoostRegressor,
+    CrostonOptimizedRegressor,
     DecisionTreeClassifier,
     DecisionTreeRegressor,
     ExtraTreesClassifier,
     ExtraTreesRegressor,
+    IMAPARegressor,
     MultiLayerPerceptronClassifier,
     MultiLayerPerceptronRegressor,
     RandomForestClassifier,
     RandomForestRegressor,
+    TSBRegressor,
     XGBoostClassifier,
     XGBoostRegressor,
 )
@@ -24,7 +33,17 @@ from facilyst.models.neural_networks.bert_classifier import (
 from facilyst.models.neural_networks.bert_qa import BERTQuestionAnswering
 from facilyst.models.utils import get_models
 
-all_regressors = [
+all_time_series_regressors: List[Any] = [
+    ADIDARegressor,
+    AutoARIMARegressor,
+    AutoETSRegressor,
+    AutoThetaRegressor,
+    CrostonOptimizedRegressor,
+    IMAPARegressor,
+    TSBRegressor,
+]
+
+all_regressors: List[Any] = [
     ADABoostRegressor,
     BaggingRegressor,
     BERTQuestionAnswering,
@@ -34,9 +53,9 @@ all_regressors = [
     MultiLayerPerceptronRegressor,
     RandomForestRegressor,
     XGBoostRegressor,
-]
+] + all_time_series_regressors
 
-all_classifiers = [
+all_classifiers: List[Any] = [
     ADABoostClassifier,
     BaggingClassifier,
     BERTBinaryClassifier,
@@ -48,7 +67,7 @@ all_classifiers = [
     XGBoostClassifier,
 ]
 
-tree_regressors = [
+tree_regressors: List[Any] = [
     ADABoostRegressor,
     BaggingRegressor,
     CatBoostRegressor,
@@ -58,7 +77,7 @@ tree_regressors = [
     XGBoostRegressor,
 ]
 
-tree_classifiers = [
+tree_classifiers: List[Any] = [
     ADABoostClassifier,
     BaggingClassifier,
     CatBoostClassifier,
@@ -68,9 +87,9 @@ tree_classifiers = [
     XGBoostClassifier,
 ]
 
-all_tree_models = tree_regressors + tree_classifiers
+all_tree_models: List[Any] = tree_regressors + tree_classifiers
 
-nlp_models = [
+nlp_models: List[Any] = [
     BERTBinaryClassifier,
     BERTQuestionAnswering,
 ]
@@ -117,6 +136,7 @@ def test_no_model_name_of_problem_type():
         ("all", None, all_regressors + all_classifiers),
         ("tree", None, all_tree_models),
         ("nlp", None, nlp_models),
+        ("time series", None, all_time_series_regressors),
     ],
 )
 def test_get_models(model, problem_type, expected):

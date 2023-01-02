@@ -9,8 +9,7 @@ import pandas as pd
 class ModelBase(ABC):
     """Base initialization for all models.
 
-    :param model: The model to be used.
-    :type model: object
+    model (object): The model to be used.
     """
 
     def __init__(
@@ -68,10 +67,8 @@ class ModelBase(ABC):
     def predict(self, x_test: Union[pd.DataFrame, np.ndarray]) -> pd.Series:
         """Predicts on the data using the model.
 
-        :param x_test: The testing data for the model to predict on.
-        :type x_test: pd.DataFrame or np.ndarray
-        :return: The predictions.
-        :rtype pd.Series:
+        x_test (pd.DataFrame or np.ndarray): The testing data for the model to predict on.
+        return (pd.Series): The predictions.
         """
         predictions = pd.Series(self.model.predict(x_test))
         return predictions

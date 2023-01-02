@@ -17,9 +17,9 @@ class Wave(MockBase):
     :param wave_type: The function off of which the wave will be based. Options are `sine` and `cosine`. Defaults to `sine`.
     :type wave_type: str, optional
     :param amplitude: The amplitude (height) of the wave. Defaults to 1.
-    :type amplitude: int, optional
+    :type amplitude: int, float, optional
     :param frequency: The frequency (thickness) of the wave. Defaults to 1.
-    :type frequency: int, optional
+    :type frequency: int, float, optional
     :param random_amplitudes: Flag that determines if different sections of the wave will have different amplitudes. Defaults to False.
     :type random_amplitudes: bool, optional
     :param random_frequency: Flag that determines if different sections of the wave will have different frequencies. Defaults to False.
@@ -41,8 +41,8 @@ class Wave(MockBase):
         num_rows: int = 100,
         library: str = "numpy",
         wave_type: str = "sine",
-        amplitude: int = 1,
-        frequency: int = 1,
+        amplitude: Union[int, float] = 1,
+        frequency: Union[int, float] = 1,
         random_amplitudes: bool = False,
         random_frequency: bool = False,
         trend: int = 0,

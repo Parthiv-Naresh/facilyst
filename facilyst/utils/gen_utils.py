@@ -12,14 +12,15 @@ def _get_subclasses(base_class: object) -> list:
     :return: The list of child classes.
     :rtype: list
     """
-    classes_to_check = base_class.__subclasses__()
-
+    classes = base_class.__subclasses__()
     subclasses = []
-
-    while classes_to_check:
-        subclass = classes_to_check.pop()
-        subclasses.append(subclass)
-
+    while classes:
+        subclass = classes.pop()
+        children_of_subclass = subclass.__subclasses__()
+        if children_of_subclass:
+            classes.extend(children_of_subclass)
+        else:
+            subclasses.append(subclass)
     return subclasses
 
 
