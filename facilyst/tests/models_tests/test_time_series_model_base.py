@@ -5,6 +5,24 @@ from facilyst.models import TimeSeriesModelBase
 from facilyst.models.utils import get_models
 
 
+def test_time_series_models_equivalency(mock_time_series_model_class):
+    mock_class_1 = mock_time_series_model_class()
+    mock_class_2 = mock_time_series_model_class()
+
+    assert mock_class_1 == mock_class_2
+
+    mock_class_1 = mock_time_series_model_class(first_arg=4)
+    mock_class_2 = mock_time_series_model_class(first_arg=1)
+
+    assert not mock_class_1 == mock_class_2
+
+    mock_class_1 = mock_time_series_model_class()
+    mock_class_1.name = "mock TS Model"
+    mock_class_2 = mock_time_series_model_class()
+
+    assert not mock_class_1 == mock_class_2
+
+
 def test_time_series_models_warning_horizon_and_x_none(
     time_series_data, mock_time_series_model_class
 ):
@@ -73,8 +91,17 @@ def test_time_series_models_predict_and_forecast_are_equal(
         x_train=x_train,
         x_test=x_test,
     )
+    ts_predictions_no_horizon = ts_regressor.predict(horizon=None, x_test=x_test)
+    ts_forecasts_no_horizon = ts_regressor.forecast(
+        y_train=y_train,
+        horizon=None,
+        x_train=x_train,
+        x_test=x_test,
+    )
 
     pd.testing.assert_series_equal(ts_predictions, ts_forecasts)
+    pd.testing.assert_series_equal(ts_predictions, ts_predictions_no_horizon)
+    pd.testing.assert_series_equal(ts_predictions_no_horizon, ts_forecasts_no_horizon)
     assert isinstance(ts_predictions, pd.Series)
     assert len(ts_predictions) == 20
     if make_index_datetime_x or make_index_datetime_y:

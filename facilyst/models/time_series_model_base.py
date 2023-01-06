@@ -24,9 +24,8 @@ class TimeSeriesModelBase(ModelBase):
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, TimeSeriesModelBase):
-            return NotImplemented
-
-        return self.get_params() == other.get_params()
+            return False
+        return super().__eq__(other)
 
     def _store_final_training_index(
         self, y_train, x_train
@@ -89,11 +88,11 @@ class TimeSeriesModelBase(ModelBase):
 
     def _get_forecast_index(self, x_test, horizon):
         if isinstance(x_test, pd.DataFrame):
-            predictions_index = x_test.index  # noqa
-            x_test = x_test.to_numpy()  # noqa
+            predictions_index = x_test.index
+            x_test = x_test.to_numpy()
         else:
             predictions_index = self._create_predict_index(horizon)
-        return predictions_index
+        return x_test, predictions_index
 
     @staticmethod
     def _check_for_errors(x_test, horizon):
@@ -125,7 +124,9 @@ class TimeSeriesModelBase(ModelBase):
         """
         _, x_test = TimeSeriesModelBase._convert_data(y=None, x=x_test)
         x_test, horizon = TimeSeriesModelBase._check_for_errors(x_test, horizon)
-        predictions_index = self._get_forecast_index(x_test=x_test, horizon=horizon)
+        x_test, predictions_index = self._get_forecast_index(
+            x_test=x_test, horizon=horizon
+        )
         forecasts_dict = self.model.predict(h=horizon, X=x_test)
         predictions = pd.Series(forecasts_dict["mean"], index=predictions_index)
 
@@ -152,7 +153,9 @@ class TimeSeriesModelBase(ModelBase):
         _, x_test = TimeSeriesModelBase._convert_data(y=None, x=x_test)
         x_test, horizon = TimeSeriesModelBase._check_for_errors(x_test, horizon)
 
-        predictions_index = self._get_forecast_index(x_test=x_test, horizon=horizon)
+        x_test, predictions_index = self._get_forecast_index(
+            x_test=x_test, horizon=horizon
+        )
         forecasts_dict = self.model.forecast(
             y=y_train, h=horizon, X=x_train, X_future=x_test
         )

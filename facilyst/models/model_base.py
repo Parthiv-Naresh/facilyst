@@ -20,9 +20,19 @@ class ModelBase(ABC):
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, ModelBase):
-            return NotImplemented
-
-        return self.get_params() == other.get_params()
+            return False
+        name_equal = self.name == other.name
+        primary_equal = self.primary_type == other.primary_type
+        secondary_equal = self.secondary_type == other.secondary_type
+        tertiary_equal = self.tertiary_type == other.tertiary_type
+        params_equal = self.parameters == other.parameters
+        return (
+            name_equal
+            and primary_equal
+            and secondary_equal
+            and tertiary_equal
+            and params_equal
+        )
 
     @property
     @abstractmethod

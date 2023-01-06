@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 from sklearn.datasets import make_classification, make_regression
 
-from facilyst.models import TimeSeriesModelBase
+from facilyst.models import ModelBase, TimeSeriesModelBase
 from facilyst.utils import make_wave
 
 
@@ -67,7 +67,6 @@ def time_series_data():
     def _get_data(
         make_index_datetime_x=True,
         make_index_datetime_y=True,
-        datetime_features=False,
         numeric_features=True,
         freq="D",
         target_wave=(1.0, 1.0, 0.0),
@@ -85,8 +84,6 @@ def time_series_data():
             y_index = rangeindex_
 
         x = pd.DataFrame(index=x_index)
-        if datetime_features:
-            x["dates"] = dateindex_
 
         y = make_wave(
             num_rows=num_rows,
@@ -114,6 +111,30 @@ def time_series_data():
 
 
 @pytest.fixture()
+def mock_regression_model_class():
+    class MockRegressionModel(ModelBase):
+        name = "Mock Regression Model"
+        primary_type = "regression"
+        secondary_type = "ensemble"
+        tertiary_type = "tree"
+        hyperparameters = {}
+
+        def __init__(self, first_arg=10):
+            super().__init__(
+                model=None,
+                parameters={"first_arg": first_arg},
+            )
+
+        def fit(self, y_train, x_train=None):
+            return self
+
+        def get_params(self):
+            return {}
+
+    return MockRegressionModel
+
+
+@pytest.fixture()
 def mock_time_series_model_class():
     class MockTSModel(TimeSeriesModelBase):
         name = "Mock TS Model"
@@ -122,14 +143,17 @@ def mock_time_series_model_class():
         tertiary_type = "random"
         hyperparameters = {}
 
-        def __init__(self):
+        def __init__(self, first_arg=10):
             super().__init__(
                 model=None,
-                parameters={},
+                parameters={"first_arg": first_arg},
             )
 
         def fit(self, y_train, x_train=None):
             return self
+
+        def get_params(self):
+            return {}
 
     return MockTSModel
 

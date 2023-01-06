@@ -1,7 +1,16 @@
-from facilyst.models import RandomForestRegressor
+def test_models_equivalency(mock_regression_model_class):
+    mock_class_1 = mock_regression_model_class()
+    mock_class_2 = mock_regression_model_class()
 
+    assert mock_class_1 == mock_class_2
 
-def test_equals():
-    rf_regressor = RandomForestRegressor()
+    mock_class_1 = mock_regression_model_class(first_arg=4)
+    mock_class_2 = mock_regression_model_class(first_arg=1)
 
-    assert isinstance(rf_regressor.__eq__(4), NotImplemented.__class__)
+    assert not mock_class_1 == mock_class_2
+
+    mock_class_1 = mock_regression_model_class()
+    mock_class_1.name = "mock Regression Model"
+    mock_class_2 = mock_regression_model_class()
+
+    assert not mock_class_1 == mock_class_2
