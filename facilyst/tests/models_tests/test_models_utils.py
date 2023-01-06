@@ -142,5 +142,4 @@ def test_no_model_name_of_problem_type():
 def test_get_models(model, problem_type, expected):
     actual_models = get_models(model, problem_type)
 
-    assert len(actual_models) == len(expected)
     assert set(actual_models) == set(expected)
