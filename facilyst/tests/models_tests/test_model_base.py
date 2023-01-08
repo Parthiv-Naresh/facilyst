@@ -2,11 +2,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from facilyst.models import CatBoostClassifier, ModelBase
+from facilyst.models import CatBoostClassifier
 from facilyst.models.utils import get_models
 
 
-def test_models_equivalency(mock_regression_model_class):
+def test_models_equivalency(mock_regression_model_class, mock_time_series_model_class):
     mock_class_1 = mock_regression_model_class()
     mock_class_2 = mock_regression_model_class()
 
@@ -20,6 +20,16 @@ def test_models_equivalency(mock_regression_model_class):
     mock_class_1 = mock_regression_model_class()
     mock_class_1.name = "mock Regression Model"
     mock_class_2 = mock_regression_model_class()
+
+    assert not mock_class_1 == mock_class_2
+
+    mock_class_1 = mock_regression_model_class()
+
+    class TestClass:
+        def __init__(self):
+            pass
+
+    mock_class_2 = TestClass()
 
     assert not mock_class_1 == mock_class_2
 
