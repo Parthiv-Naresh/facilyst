@@ -9,8 +9,7 @@ import pandas as pd
 class ModelBase(ABC):
     """Base initialization for all models.
 
-    :param model: The model to be used.
-    :type model: object
+    model (object): The model to be used.
     """
 
     def __init__(
@@ -21,9 +20,19 @@ class ModelBase(ABC):
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, ModelBase):
-            return NotImplemented
-
-        return self.get_params() == other.get_params()
+            return False
+        name_equal = self.name == other.name
+        primary_equal = self.primary_type == other.primary_type
+        secondary_equal = self.secondary_type == other.secondary_type
+        tertiary_equal = self.tertiary_type == other.tertiary_type
+        params_equal = self.parameters == other.parameters
+        return (
+            name_equal
+            and primary_equal
+            and secondary_equal
+            and tertiary_equal
+            and params_equal
+        )
 
     @property
     @abstractmethod
@@ -68,10 +77,8 @@ class ModelBase(ABC):
     def predict(self, x_test: Union[pd.DataFrame, np.ndarray]) -> pd.Series:
         """Predicts on the data using the model.
 
-        :param x_test: The testing data for the model to predict on.
-        :type x_test: pd.DataFrame or np.ndarray
-        :return: The predictions.
-        :rtype pd.Series:
+        x_test (pd.DataFrame or np.ndarray): The testing data for the model to predict on.
+        return (pd.Series): The predictions.
         """
         predictions = pd.Series(self.model.predict(x_test))
         return predictions

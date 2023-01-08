@@ -72,10 +72,10 @@ def test_import_or_raise(has_no_extra_dependencies, current_dir):
         ("BINARY", "binary", True),
         ("MultiClass", "multiclass", True),
         ("multi Class", "multiclass", True),
-        ("ts regression", "time series regression", True),
+        ("ts regression", "time series", True),
         ("tsr", None, False),
         ("timeseriesregression", None, False),
-        ("time series", None, False),
+        ("time series", "time series", True),
     ],
 )
 def test_handle_problem_type(problem_type_actual, problem_type_expected, valid):

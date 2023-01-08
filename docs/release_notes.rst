@@ -5,8 +5,11 @@ Future Release
 ==============
     * Enhancements
         * Added ``FTDatetime`` as a preprocessor to perform feature engineering on datetime columns :pr:`55`
+        * Added ``TimeSeriesModelPipeline`` to support time series models from ``statsforecast`` :pr:`73`
+        * Added ``ADIDA``, ``AutoARIMA``, ``AutoETS``, ``AuthoTheta``, ``CrostonOptimized``, ``IMAPA``, and ``TSB`` time series models :pr:`73`
     * Fixes
     * Changes
+        * Improved the logic for ``get_models`` to include an ``exclude`` parameter :pr:`73`
     * Documentation Changes
     * Testing Changes
     * CI/CD Changes

@@ -5,87 +5,166 @@ from facilyst.models.model_base import ModelBase
 from facilyst.utils import _get_subclasses
 from facilyst.utils.gen_utils import handle_problem_type
 
+all_models = set(_get_subclasses(ModelBase))
 
-def get_models(model: str, problem_type: Optional[str] = None) -> list:
+
+def get_models(
+    name_or_tag: Optional[str] = None,
+    problem_type: Optional[str] = None,
+    exclude: Optional[str] = None,
+) -> set:
     """Return all models that correspond to either the name or type passed.
 
     A model can be selected either by its name, or by its primary, secondary, or tertiary type. If problem type is passed,
     then only models belonging to that type will be returned. If the name of a model is passed that conflicts with the
     problem type passed, then an error will be raised.
 
-    :param model: The name or type of model(s) to return.
-    :type model: str
-    :param problem_type: The problem type to which the models should belong, `regression` or `classification`.
-    :type problem_type: str, optional
-    :return: A list of all models found.
-    :rtype list:
+    name_or_tag (str): The name or tag of model(s) to return.
+    problem_type (str): The problem type to which the models should belong, `regression`, `classification`, or `time series`.
+    exclude (str): The name or tag to exclude.
+    return (set): A set of all models found.
     """
-    if not model:
-        raise ValueError("No model name passed.")
+    all_models = set(_get_subclasses(ModelBase))
 
-    all_models = _get_subclasses(ModelBase)
-    if " " not in model:
-        if model.lower() in ["all", "any"]:
+    if _is_any_allowed(name_or_tag) and _is_any_allowed(problem_type):
+        if exclude is None or exclude == "":
             return all_models
-        subset_models_primary = [
-            each_model
-            for each_model in all_models
-            if model.lower() in each_model.primary_type.lower()
-        ]
-        subset_models_secondary = [
-            each_model
-            for each_model in all_models
-            if model.lower() in each_model.secondary_type.lower()
-        ]
-        subset_models_tertiary = [
-            each_model
-            for each_model in all_models
-            if model.lower() in each_model.tertiary_type.lower()
-        ]
-        subset_models = (
-            subset_models_primary or subset_models_secondary or subset_models_tertiary
-        )
-
-        if not subset_models:
-            raise ValueError(
-                f"That model type doesn't exist. Available model types are: \n"
-                f"Primary types: {set(each_model.primary_type for each_model in all_models)} \n"
-                f"Secondary types: {set(each_model.secondary_type for each_model in all_models)} \n"
-                f"Tertiary types: {set(each_model.tertiary_type for each_model in all_models)}"
-            )
         else:
-            if problem_type:
-                subset_models = _get_models_by_problem_type(subset_models, problem_type)
-                if not subset_models:
-                    raise ValueError(
-                        f"There are no {model} models belong to the {problem_type} problem type available."
+            all_excluded_tagged = all_models - _get_models_by_name(exclude, None).union(
+                _get_models_by_tag(exclude)
+            )
+            return set(sorted(all_excluded_tagged, key=lambda x: x.name))
+
+    if _is_any_allowed(name_or_tag):
+        problem_type = handle_problem_type(problem_type)
+        primary_tagged = _get_models_by_primary_tag(primary_tag=problem_type)
+        if exclude is None or exclude == "":
+            return primary_tagged
+        else:
+            primary_excluded_tagged = primary_tagged - _get_models_by_name(
+                exclude, None
+            ).union(_get_models_by_tag(exclude))
+            return set(sorted(primary_excluded_tagged, key=lambda x: x.name))
+
+    if _is_any_allowed(problem_type):
+        try:
+            problem_type = handle_problem_type(name_or_tag)
+            primary_tagged = _get_models_by_primary_tag(primary_tag=problem_type)
+            if exclude is None or exclude == "":
+                return primary_tagged
+            else:
+                primary_excluded_tagged = primary_tagged - _get_models_by_name(
+                    exclude, None
+                ).union(_get_models_by_tag(exclude))
+                return set(sorted(primary_excluded_tagged, key=lambda x: x.name))
+        except ValueError:
+            pass
+        name_tagged = _get_models_by_name(name=name_or_tag, problem_type=None)
+        secondary_tagged = _get_models_by_secondary_tag(secondary_tag=name_or_tag)
+        tertiary_tagged = _get_models_by_tertiary_tag(tertiary_tag=name_or_tag)
+        no_models_found = ValueError(
+            f"No models were found for that name/tag. Available model names are: \n"
+            f"All model names: {sorted(set(each_model.name for each_model in all_models))} \n"
+            f"Available model tags are: \n"
+            f"Primary tags: {sorted(set(each_model.primary_type for each_model in all_models))} \n"
+            f"Secondary tags: {sorted(set(each_model.secondary_type for each_model in all_models))} \n"
+            f"Tertiary tags: {sorted(set(each_model.tertiary_type for each_model in all_models))}"
+        )
+        if name_tagged or secondary_tagged or tertiary_tagged:
+            all_name_tagged_models = name_tagged.union(secondary_tagged).union(
+                tertiary_tagged
+            )
+            if exclude is None or exclude == "":
+                return all_name_tagged_models
+            else:
+                all_names_excluded_tagged = (
+                    all_name_tagged_models
+                    - _get_models_by_name(exclude, None).union(
+                        _get_models_by_tag(exclude)
                     )
-            return subset_models
-
-    model_name_found = []
-    for each_model in all_models:
-        if each_model.name.lower() == model.lower():
-            model_name_found = [each_model]
-            break
-    if not model_name_found:
-        raise ValueError(
-            f"That model doesn't exist. This is the list of all available models: {[each_model.name for each_model in all_models]}"
-        )
-    elif problem_type:
-        final_model = _get_models_by_problem_type(model_name_found, problem_type)
-        if not final_model:
-            raise ValueError(
-                f"The model {model_name_found[0].name} was found but doesn't match the problem type {problem_type}"
-            )
+                )
+                return set(sorted(all_names_excluded_tagged, key=lambda x: x.name))
         else:
-            return final_model
+            raise no_models_found
+
+    problem_type = handle_problem_type(problem_type)
+    name_tagged = _get_models_by_name(name=name_or_tag, problem_type=problem_type)
+    primary_tagged = _get_models_by_primary_tag(primary_tag=problem_type)
+    secondary_tagged = _get_models_by_secondary_tag(secondary_tag=name_or_tag)
+    tertiary_tagged = _get_models_by_tertiary_tag(tertiary_tag=name_or_tag)
+    no_models_found = ValueError(
+        f"No models were found for that name/tag. Available model names are: \n"
+        f"All model names: {sorted(set(each_model.name for each_model in all_models))} \n"
+        f"Available model tags are: \n"
+        f"Primary tags: {sorted(set(each_model.primary_type for each_model in all_models))} \n"
+        f"Secondary tags: {sorted(set(each_model.secondary_type for each_model in all_models))} \n"
+        f"Tertiary tags: {sorted(set(each_model.tertiary_type for each_model in all_models))}"
+    )
+    if name_tagged or secondary_tagged or tertiary_tagged:
+        all_name_tagged_models = primary_tagged.intersection(
+            name_tagged.union(secondary_tagged).union(tertiary_tagged)
+        )
+        if exclude is None or exclude == "":
+            return all_name_tagged_models
+        else:
+            all_names_excluded_tagged = all_name_tagged_models - _get_models_by_name(
+                exclude, None
+            ).union(_get_models_by_tag(exclude))
+            return set(sorted(all_names_excluded_tagged, key=lambda x: x.name))
     else:
-        return model_name_found
+        raise no_models_found
 
 
-def _get_models_by_problem_type(models: list, problem_type: str) -> list:
-    accepted_models = []
-    for model in models:
-        if model.primary_type == handle_problem_type(problem_type):
-            accepted_models.append(model)
-    return accepted_models
+def _is_any_allowed(tag):
+    if tag is None or tag.lower() in ["any", "all", ""]:
+        return True
+
+
+def _get_models_by_name(name, problem_type):
+    subset_models_name = []
+    subset_models_problem_type = _get_models_by_primary_tag(primary_tag=problem_type)
+    for model in subset_models_problem_type:
+        if name.lower() in model.name.lower():
+            subset_models_name.append(model)
+    return set(sorted(subset_models_name, key=lambda x: x.name))
+
+
+def _get_models_by_tag(tag):
+    try:
+        problem_type = handle_problem_type(tag)
+        subset_models_tagged = _get_models_by_primary_tag(primary_tag=problem_type)
+    except ValueError:
+        secondary_tagged = _get_models_by_secondary_tag(secondary_tag=tag)
+        tertiary_tagged = _get_models_by_tertiary_tag(tertiary_tag=tag)
+        subset_models_tagged = secondary_tagged.union(tertiary_tagged)
+    return set(sorted(subset_models_tagged, key=lambda x: x.name))
+
+
+def _get_models_by_primary_tag(primary_tag):
+    if _is_any_allowed(primary_tag):
+        return set(_get_subclasses(ModelBase))
+    else:
+        subset_models_primary = {
+            each_model
+            for each_model in all_models
+            if primary_tag.lower() == each_model.primary_type.lower()
+        }
+        return set(sorted(subset_models_primary, key=lambda x: x.name))
+
+
+def _get_models_by_secondary_tag(secondary_tag):
+    subset_models_secondary = {
+        each_model
+        for each_model in all_models
+        if secondary_tag.lower() == each_model.secondary_type.lower()
+    }
+    return set(sorted(subset_models_secondary, key=lambda x: x.name))
+
+
+def _get_models_by_tertiary_tag(tertiary_tag):
+    subset_models_tertiary = {
+        each_model
+        for each_model in all_models
+        if tertiary_tag.lower() == each_model.tertiary_type.lower()
+    }
+    return set(sorted(subset_models_tertiary, key=lambda x: x.name))

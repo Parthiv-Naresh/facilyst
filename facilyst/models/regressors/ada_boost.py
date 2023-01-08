@@ -45,6 +45,7 @@ class ADABoostRegressor(ModelBase):
         n_estimators: Optional[int] = 50,
         learning_rate: Optional[float] = 1.0,
         loss: Optional[str] = "linear",
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
         parameters = {
@@ -52,6 +53,7 @@ class ADABoostRegressor(ModelBase):
             "n_estimators": n_estimators,
             "learning_rate": learning_rate,
             "loss": loss,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 

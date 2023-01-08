@@ -59,6 +59,6 @@ def test_decision_tree_classifier(
         "min_samples_leaf": 1,
         "min_samples_split": 2,
         "min_weight_fraction_leaf": 0.0,
-        "random_state": None,
+        "random_state": 0,
         "splitter": "best",
     }

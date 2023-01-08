@@ -1,4 +1,5 @@
 from .model_base import ModelBase
+from .time_series_model_base import TimeSeriesModelBase
 from .neural_networks import (
     BERTBinaryClassifier,
     BERTQuestionAnswering,
@@ -16,10 +17,17 @@ from .classifiers import (
 )
 from .regressors import (
     ADABoostRegressor,
+    ADIDARegressor,
+    AutoARIMARegressor,
+    AutoETSRegressor,
+    AutoThetaRegressor,
     BaggingRegressor,
     CatBoostRegressor,
+    CrostonOptimizedRegressor,
     DecisionTreeRegressor,
     ExtraTreesRegressor,
+    IMAPARegressor,
     RandomForestRegressor,
+    TSBRegressor,
     XGBoostRegressor,
 )

@@ -39,12 +39,14 @@ class CatBoostClassifier(ModelBase):
         n_estimators: Optional[int] = 50,
         max_depth: Optional[int] = None,
         learning_rate: Optional[float] = None,
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
         parameters = {
             "n_estimators": n_estimators,
             "max_depth": max_depth,
             "learning_rate": learning_rate,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 

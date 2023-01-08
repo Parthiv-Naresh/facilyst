@@ -39,7 +39,7 @@ class HyperoptOptimizer:
         classifier: Optional[str] = None,
         regressor: Optional[str] = None,
         split: Optional[float] = 0.8,
-        iterations_per_model: Optional[int] = 50,
+        iterations_per_model: Optional[Union[int, dict]] = 50,
     ) -> None:
         self.classifier = classifier
         self.regressor = regressor
@@ -62,10 +62,10 @@ class HyperoptOptimizer:
 
         self.space = self.hyperparameter_space()
 
-    def collect_models(self) -> list:
+    def collect_models(self) -> set:
         """Collect all models requested for the optimizer.
 
-        :rtype list:
+        :rtype set:
         """
         return (
             get_models(self.classifier)
@@ -110,7 +110,7 @@ class HyperoptOptimizer:
                 best_score = model_data["best_score"]
                 best_model_hyp = model_data["best_hyperparameters"]
 
-        best_model = get_models(best_model_name)[0]
+        best_model = next(iter(get_models(best_model_name)))
         return best_model(**best_model_hyp), best_score
 
     def _optimize(

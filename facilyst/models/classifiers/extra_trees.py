@@ -49,6 +49,7 @@ class ExtraTreesClassifier(ModelBase):
         max_features: Optional[str] = "auto",
         ccp_alpha: Optional[float] = 0.0,
         n_jobs: Optional[int] = -1,
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
         parameters = {
@@ -58,6 +59,7 @@ class ExtraTreesClassifier(ModelBase):
             "max_features": max_features,
             "ccp_alpha": ccp_alpha,
             "n_jobs": n_jobs,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 

@@ -47,5 +47,5 @@ def test_ada_boost_regressor(numeric_features_regression):
         "learning_rate": 1.0,
         "loss": "linear",
         "n_estimators": 50,
-        "random_state": None,
+        "random_state": 0,
     }

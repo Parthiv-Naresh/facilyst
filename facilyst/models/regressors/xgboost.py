@@ -38,6 +38,7 @@ class XGBoostRegressor(ModelBase):
         max_depth: Optional[int] = None,
         learning_rate: Optional[float] = None,
         n_jobs: Optional[int] = -1,
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
         parameters = {
@@ -45,6 +46,7 @@ class XGBoostRegressor(ModelBase):
             "max_depth": max_depth,
             "learning_rate": learning_rate,
             "n_jobs": n_jobs,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 

@@ -1,20 +1,29 @@
+from typing import Any, List
+
 import pytest
 
 from facilyst.models import (
     ADABoostClassifier,
     ADABoostRegressor,
+    ADIDARegressor,
+    AutoARIMARegressor,
+    AutoETSRegressor,
+    AutoThetaRegressor,
     BaggingClassifier,
     BaggingRegressor,
     CatBoostClassifier,
     CatBoostRegressor,
+    CrostonOptimizedRegressor,
     DecisionTreeClassifier,
     DecisionTreeRegressor,
     ExtraTreesClassifier,
     ExtraTreesRegressor,
+    IMAPARegressor,
     MultiLayerPerceptronClassifier,
     MultiLayerPerceptronRegressor,
     RandomForestClassifier,
     RandomForestRegressor,
+    TSBRegressor,
     XGBoostClassifier,
     XGBoostRegressor,
 )
@@ -24,7 +33,17 @@ from facilyst.models.neural_networks.bert_classifier import (
 from facilyst.models.neural_networks.bert_qa import BERTQuestionAnswering
 from facilyst.models.utils import get_models
 
-all_regressors = [
+all_time_series_regressors: List[Any] = [
+    ADIDARegressor,
+    AutoARIMARegressor,
+    AutoETSRegressor,
+    AutoThetaRegressor,
+    CrostonOptimizedRegressor,
+    IMAPARegressor,
+    TSBRegressor,
+]
+
+non_time_series_regressors: List[Any] = [
     ADABoostRegressor,
     BaggingRegressor,
     BERTQuestionAnswering,
@@ -36,7 +55,9 @@ all_regressors = [
     XGBoostRegressor,
 ]
 
-all_classifiers = [
+all_regressors: List[Any] = non_time_series_regressors + all_time_series_regressors
+
+all_classifiers: List[Any] = [
     ADABoostClassifier,
     BaggingClassifier,
     BERTBinaryClassifier,
@@ -48,7 +69,7 @@ all_classifiers = [
     XGBoostClassifier,
 ]
 
-tree_regressors = [
+tree_regressors: List[Any] = [
     ADABoostRegressor,
     BaggingRegressor,
     CatBoostRegressor,
@@ -58,7 +79,7 @@ tree_regressors = [
     XGBoostRegressor,
 ]
 
-tree_classifiers = [
+tree_classifiers: List[Any] = [
     ADABoostClassifier,
     BaggingClassifier,
     CatBoostClassifier,
@@ -68,59 +89,67 @@ tree_classifiers = [
     XGBoostClassifier,
 ]
 
-all_tree_models = tree_regressors + tree_classifiers
+all_tree_models: List[Any] = tree_regressors + tree_classifiers
 
-nlp_models = [
+nlp_models: List[Any] = [
     BERTBinaryClassifier,
     BERTQuestionAnswering,
 ]
 
-
-def test_no_model_name_passed():
-    with pytest.raises(ValueError, match="No model name passed."):
-        get_models(model="")
-
-
-def test_model_type_doesnt_exist():
-    with pytest.raises(ValueError, match="That model type doesn't exist."):
-        get_models(model="nonexistent")
+neural_models = [
+    BERTBinaryClassifier,
+    BERTQuestionAnswering,
+    MultiLayerPerceptronClassifier,
+    MultiLayerPerceptronRegressor,
+]
 
 
-def test_no_model_type_of_problem_type():
-    with pytest.raises(
-        ValueError,
-        match="There are no neural models belong to the time series regression problem type available.",
-    ):
-        get_models(model="neural", problem_type="time series regression")
+def test_no_models_found_error():
+    with pytest.raises(ValueError, match="No models were found"):
+        get_models(name_or_tag="something", problem_type=None)
 
-
-def test_model_name_doesnt_exist():
-    with pytest.raises(ValueError, match="That model doesn't exist."):
-        get_models(model="Extra Special Regressor")
-
-
-def test_no_model_name_of_problem_type():
-    with pytest.raises(
-        ValueError,
-        match="The model Random Forest Regressor was found but doesn't match the problem type classification",
-    ):
-        get_models(model="Random Forest Regressor", problem_type="classification")
+    with pytest.raises(ValueError, match="No models were found"):
+        get_models(name_or_tag="something", problem_type="regression")
 
 
 @pytest.mark.parametrize(
-    "model, problem_type, expected",
+    "model, problem_type, exclude, expected",
     [
-        ("Random Forest Regressor", "regression", [RandomForestRegressor]),
-        ("tree", "regression", tree_regressors),
-        ("regression", None, all_regressors),
-        ("classification", None, all_classifiers),
-        ("all", None, all_regressors + all_classifiers),
-        ("tree", None, all_tree_models),
-        ("nlp", None, nlp_models),
+        ("Random Forest Regressor", "regression", None, [RandomForestRegressor]),
+        ("Random Forest", "ALL", None, [RandomForestRegressor, RandomForestClassifier]),
+        ("Random Forest", "ALL", "regression", [RandomForestClassifier]),
+        ("tree", "regression", None, tree_regressors),
+        (
+            "tree",
+            None,
+            "random forest",
+            set(all_tree_models) - {RandomForestRegressor, RandomForestClassifier},
+        ),
+        ("classification", None, "", all_classifiers),
+        (
+            "tree",
+            "classification",
+            "decision",
+            set(tree_classifiers) - {DecisionTreeClassifier},
+        ),
+        (None, "Classification", "cat", set(all_classifiers) - {CatBoostClassifier}),
+        (None, "regression", None, non_time_series_regressors),
+        ("regression", None, None, non_time_series_regressors),
+        (
+            "regression",
+            None,
+            "neural",
+            set(non_time_series_regressors)
+            - {BERTQuestionAnswering, MultiLayerPerceptronRegressor},
+        ),
+        (None, None, None, all_regressors + all_classifiers),
+        (None, None, "regression", all_classifiers + all_time_series_regressors),
+        ("nlp", None, None, nlp_models),
+        ("time series", None, None, all_time_series_regressors),
+        ("ets", "time series", None, [AutoETSRegressor]),
     ],
 )
-def test_get_models(model, problem_type, expected):
-    actual_models = get_models(model, problem_type)
+def test_get_models(model, problem_type, exclude, expected):
+    actual_models = get_models(model, problem_type, exclude)
 
-    assert len(actual_models) == len(expected)
-    assert set(actual_models) == set(expected)
+    assert actual_models == set(expected)

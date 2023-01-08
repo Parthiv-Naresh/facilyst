@@ -51,7 +51,7 @@ def test_mlp_classifier(
         "n_iter_no_change": 10,
         "nesterovs_momentum": True,
         "power_t": 0.5,
-        "random_state": None,
+        "random_state": 0,
         "shuffle": True,
         "solver": "adam",
         "tol": 0.0001,

@@ -44,6 +44,7 @@ class BaggingClassifier(ModelBase):
         max_samples: Optional[float] = 1.0,
         oob_score: Optional[bool] = False,
         n_jobs: Optional[int] = -1,
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
         parameters = {
@@ -52,6 +53,7 @@ class BaggingClassifier(ModelBase):
             "max_samples": max_samples,
             "oob_score": oob_score,
             "n_jobs": n_jobs,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 
