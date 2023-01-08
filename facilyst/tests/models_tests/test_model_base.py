@@ -1,3 +1,10 @@
+import numpy as np
+import pandas as pd
+import pytest
+
+from facilyst.models.utils import get_models
+
+
 def test_models_equivalency(mock_regression_model_class):
     mock_class_1 = mock_regression_model_class()
     mock_class_2 = mock_regression_model_class()
@@ -14,3 +21,51 @@ def test_models_equivalency(mock_regression_model_class):
     mock_class_2 = mock_regression_model_class()
 
     assert not mock_class_1 == mock_class_2
+
+
+@pytest.mark.parametrize("regression_model", get_models("regression", exclude="neural"))
+def test_estimators_regressors_sk_equivalent(
+    regression_model, numeric_features_regression
+):
+    x, y = numeric_features_regression
+
+    regressor = regression_model()
+    regressor.fit(x, y)
+    dt_predictions = regressor.predict(x)
+
+    sk_dt_regressor = regression_model()
+    sk_dt_regressor.fit(x, y)
+    sk_dt_predictions = sk_dt_regressor.predict(x)
+
+    np.testing.assert_array_almost_equal(dt_predictions.values, sk_dt_predictions)
+
+    assert isinstance(dt_predictions, pd.Series)
+    assert len(dt_predictions) == 100
+
+    score = regressor.score(x, y)
+    assert isinstance(score, float)
+
+
+@pytest.mark.parametrize(
+    "classifier_model", get_models("classification", exclude="neural")
+)
+def test_estimators_classifiers_sk_equivalent(
+    classifier_model, numeric_features_multi_classification
+):
+    x, y = numeric_features_multi_classification
+
+    classifier = classifier_model()
+    classifier.fit(x, y)
+    dt_predictions = classifier.predict(x)
+
+    sk_dt_classifier = classifier_model()
+    sk_dt_classifier.fit(x, y)
+    sk_dt_predictions = sk_dt_classifier.predict(x)
+
+    np.testing.assert_array_almost_equal(dt_predictions.values, sk_dt_predictions)
+
+    assert isinstance(dt_predictions, pd.Series)
+    assert len(dt_predictions) == 100
+
+    score = classifier.score(x, y)
+    assert isinstance(score, float)

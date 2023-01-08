@@ -79,8 +79,9 @@ def handle_problem_type(problem_type: str) -> str:
         "time series regression",
         "timeseries regression",
         "ts regression",
+        "time series",
     ]:
-        problem_type_ = "time series regression"
+        problem_type_ = "time series"
     else:
         raise ValueError("That problem type isn't recognized!")
 

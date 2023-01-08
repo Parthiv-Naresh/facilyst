@@ -54,6 +54,7 @@ class RandomForestClassifier(ModelBase):
         ccp_alpha: Optional[float] = 0.0,
         max_samples: Optional[int] = None,
         n_jobs: Optional[int] = -1,
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
         parameters = {
@@ -64,6 +65,7 @@ class RandomForestClassifier(ModelBase):
             "ccp_alpha": ccp_alpha,
             "max_samples": max_samples,
             "n_jobs": n_jobs,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 

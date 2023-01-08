@@ -43,7 +43,7 @@ all_time_series_regressors: List[Any] = [
     TSBRegressor,
 ]
 
-all_regressors: List[Any] = [
+non_time_series_regressors: List[Any] = [
     ADABoostRegressor,
     BaggingRegressor,
     BERTQuestionAnswering,
@@ -53,7 +53,9 @@ all_regressors: List[Any] = [
     MultiLayerPerceptronRegressor,
     RandomForestRegressor,
     XGBoostRegressor,
-] + all_time_series_regressors
+]
+
+all_regressors: List[Any] = non_time_series_regressors + all_time_series_regressors
 
 all_classifiers: List[Any] = [
     ADABoostClassifier,
@@ -94,52 +96,53 @@ nlp_models: List[Any] = [
     BERTQuestionAnswering,
 ]
 
-
-def test_no_model_name_passed():
-    with pytest.raises(ValueError, match="No model name passed."):
-        get_models(model="")
-
-
-def test_model_type_doesnt_exist():
-    with pytest.raises(ValueError, match="That model type doesn't exist."):
-        get_models(model="nonexistent")
+neural_models = [
+    BERTBinaryClassifier,
+    BERTQuestionAnswering,
+    MultiLayerPerceptronClassifier,
+    MultiLayerPerceptronRegressor,
+]
 
 
-def test_no_model_type_of_problem_type():
-    with pytest.raises(
-        ValueError,
-        match="There are no neural models belong to the time series regression problem type available.",
-    ):
-        get_models(model="neural", problem_type="time series regression")
+def test_no_models_found_error():
+    with pytest.raises(ValueError, match="No models were found"):
+        get_models(name_or_tag="something", problem_type=None)
 
-
-def test_model_name_doesnt_exist():
-    with pytest.raises(ValueError, match="That model doesn't exist."):
-        get_models(model="Extra Special Regressor")
-
-
-def test_no_model_name_of_problem_type():
-    with pytest.raises(
-        ValueError,
-        match="The model Random Forest Regressor was found but doesn't match the problem type classification",
-    ):
-        get_models(model="Random Forest Regressor", problem_type="classification")
+    with pytest.raises(ValueError, match="No models were found"):
+        get_models(name_or_tag="something", problem_type="regression")
 
 
 @pytest.mark.parametrize(
-    "model, problem_type, expected",
+    "model, problem_type, exclude, expected",
     [
-        ("Random Forest Regressor", "regression", [RandomForestRegressor]),
-        ("tree", "regression", tree_regressors),
-        ("regression", None, all_regressors),
-        ("classification", None, all_classifiers),
-        ("all", None, all_regressors + all_classifiers),
-        ("tree", None, all_tree_models),
-        ("nlp", None, nlp_models),
-        ("time series", None, all_time_series_regressors),
+        ("Random Forest Regressor", "regression", None, [RandomForestRegressor]),
+        ("Random Forest", "ALL", None, [RandomForestRegressor, RandomForestClassifier]),
+        ("Random Forest", "ALL", "regression", [RandomForestClassifier]),
+        ("tree", "regression", None, tree_regressors),
+        (
+            "tree",
+            None,
+            "random forest",
+            set(all_tree_models) - {RandomForestRegressor, RandomForestClassifier},
+        ),
+        ("classification", None, "", all_classifiers),
+        (None, "Classification", "cat", set(all_classifiers) - {CatBoostClassifier}),
+        (None, "regression", None, non_time_series_regressors),
+        ("regression", None, None, non_time_series_regressors),
+        (
+            "regression",
+            None,
+            "neural",
+            set(non_time_series_regressors)
+            - {BERTQuestionAnswering, MultiLayerPerceptronRegressor},
+        ),
+        (None, None, None, all_regressors + all_classifiers),
+        ("nlp", None, None, nlp_models),
+        ("time series", None, None, all_time_series_regressors),
+        ("ets", "time series", None, [AutoETSRegressor]),
     ],
 )
-def test_get_models(model, problem_type, expected):
-    actual_models = get_models(model, problem_type)
+def test_get_models(model, problem_type, exclude, expected):
+    actual_models = get_models(model, problem_type, exclude)
 
-    assert set(actual_models) == set(expected)
+    assert actual_models == set(expected)

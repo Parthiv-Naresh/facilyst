@@ -165,7 +165,7 @@ def test_ft_datetime(
     df["Index_col"] = [i for i in range(100)]
     df["Ints"] = np.random.choice([1, 2, 3, 4], 100)
     df["Year"] = np.random.choice([1992, 1995, 2003, 2007], 100)
-    df["Month"] = np.random.choice([1, 1, 4, 7, 9, 12], 100)
+    df["Month"] = np.random.choice([1, 2, 4, 7, 9, 12], 100)
     df["Day"] = np.random.choice([1, 5, 7, 12, 25, 30], 100)
     df["Dates_1"] = pd.date_range("1/1/21", freq="3D", periods=100)
     df["Dates_2"] = pd.date_range("3/5/1996", freq="4H", periods=100)

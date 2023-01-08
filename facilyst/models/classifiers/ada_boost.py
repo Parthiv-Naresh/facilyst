@@ -45,6 +45,7 @@ class ADABoostClassifier(ModelBase):
         n_estimators: Optional[int] = 50,
         learning_rate: Optional[float] = 1.0,
         algorithm: str = "SAMME.R",
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
         parameters = {
@@ -52,6 +53,7 @@ class ADABoostClassifier(ModelBase):
             "n_estimators": n_estimators,
             "learning_rate": learning_rate,
             "algorithm": algorithm,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 

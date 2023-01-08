@@ -62,7 +62,7 @@ def test_time_series_models_only_horizon_length_of_x_test_returned(time_series_d
 @pytest.mark.parametrize("numeric_features", [True, False])
 @pytest.mark.parametrize("freq", ["6H", "3D", "M"])
 @pytest.mark.parametrize("target_wave", [(12, 3, 3), (5, 2, -4)])
-@pytest.mark.parametrize("ts_model", get_models("time series"))
+@pytest.mark.parametrize("ts_model", get_models(problem_type="time series"))
 def test_time_series_models_predict_and_forecast_are_equal(
     ts_model,
     target_wave,

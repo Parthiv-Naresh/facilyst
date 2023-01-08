@@ -16,8 +16,8 @@ class ADIDARegressor(TimeSeriesModelBase):
 
     name: str = "ADIDA Regressor"
 
-    primary_type: str = "regression"
-    secondary_type: str = "time series"
+    primary_type: str = "time series"
+    secondary_type: str = "regression"
     tertiary_type: str = "sparse"
 
     hyperparameters: dict = {}

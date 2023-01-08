@@ -16,8 +16,8 @@ class IMAPARegressor(TimeSeriesModelBase):
 
     name: str = "IMAPA Regressor"
 
-    primary_type: str = "regression"
-    secondary_type: str = "time series"
+    primary_type: str = "time series"
+    secondary_type: str = "regression"
     tertiary_type: str = "sparse"
 
     hyperparameters: dict = {}

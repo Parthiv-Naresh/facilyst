@@ -25,8 +25,8 @@ class AutoETSRegressor(TimeSeriesModelBase):
 
     name: str = "AutoETS Regressor"
 
-    primary_type: str = "regression"
-    secondary_type: str = "time series"
+    primary_type: str = "time series"
+    secondary_type: str = "regression"
     tertiary_type: str = "automatic"
 
     hyperparameters: dict = {

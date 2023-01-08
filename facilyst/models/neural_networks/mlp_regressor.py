@@ -49,6 +49,7 @@ class MultiLayerPerceptronRegressor(ModelBase):
         learning_rate: Optional[str] = "constant",
         learning_rate_init: Optional[float] = 0.001,
         max_iter: Optional[int] = 200,
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
 
@@ -60,7 +61,7 @@ class MultiLayerPerceptronRegressor(ModelBase):
             "batch_size": batch_size,
             "learning_rate": learning_rate,
             "learning_rate_init": learning_rate_init,
-            "max_iter": max_iter,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 

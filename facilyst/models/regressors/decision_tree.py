@@ -47,6 +47,7 @@ class DecisionTreeRegressor(ModelBase):
         max_features: Optional[str] = "auto",
         ccp_alpha: Optional[float] = 0.0,
         splitter: Optional[str] = "best",
+        random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
         parameters = {
@@ -55,6 +56,7 @@ class DecisionTreeRegressor(ModelBase):
             "max_features": max_features,
             "ccp_alpha": ccp_alpha,
             "splitter": splitter,
+            "random_state": random_state,
         }
         parameters.update(kwargs)
 
