@@ -51,7 +51,7 @@ def test_bagging_regressor(numeric_features_regression):
         "n_estimators": 50,
         "n_jobs": -1,
         "oob_score": False,
-        "random_state": None,
+        "random_state": 0,
         "verbose": 0,
         "warm_start": False,
     }

@@ -60,5 +60,5 @@ def test_ada_boost_classifier(
         "estimator": None,
         "learning_rate": 1.0,
         "n_estimators": 50,
-        "random_state": None,
+        "random_state": 0,
     }

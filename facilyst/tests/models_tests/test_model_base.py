@@ -24,7 +24,10 @@ def test_models_equivalency(mock_regression_model_class):
     assert not mock_class_1 == mock_class_2
 
 
-@pytest.mark.parametrize("regression_model", get_models("regression", exclude="neural"))
+@pytest.mark.parametrize(
+    "regression_model",
+    sorted(get_models("regression", exclude="neural"), key=lambda x: x.name),
+)
 def test_estimators_regressors_sk_equivalent(
     regression_model, numeric_features_regression
 ):
@@ -48,7 +51,8 @@ def test_estimators_regressors_sk_equivalent(
 
 
 @pytest.mark.parametrize(
-    "classifier_model", get_models("classification", exclude="neural")
+    "classifier_model",
+    sorted(get_models("classification", exclude="neural"), key=lambda x: x.name),
 )
 def test_estimators_classifiers_sk_equivalent(
     classifier_model, numeric_features_multi_classification

@@ -142,7 +142,7 @@ def _get_models_by_tag(tag):
 
 def _get_models_by_primary_tag(primary_tag):
     if _is_any_allowed(primary_tag):
-        return all_models
+        return set(_get_subclasses(ModelBase))
     else:
         subset_models_primary = {
             each_model
