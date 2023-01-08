@@ -33,7 +33,10 @@ def test_estimators_regressors_sk_equivalent(
 ):
     x, y = numeric_features_regression
 
-    regressor = regression_model()
+    try:
+        regressor = regression_model()
+    except ImportError:
+        pytest.skip("Skipping test because extra dependencies not installed")
     regressor.fit(x, y)
     dt_predictions = regressor.predict(x)
 
@@ -59,7 +62,10 @@ def test_estimators_classifiers_sk_equivalent(
 ):
     x, y = numeric_features_multi_classification
 
-    classifier = classifier_model()
+    try:
+        classifier = classifier_model()
+    except ImportError:
+        pytest.skip("Skipping test because extra dependencies not installed")
     classifier.fit(x, y)
     dt_predictions = classifier.predict(x)
 

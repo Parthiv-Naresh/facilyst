@@ -9,6 +9,7 @@ Future Release
         * Added ``ADIDA``, ``AutoARIMA``, ``AutoETS``, ``AuthoTheta``, ``CrostonOptimized``, ``IMAPA``, and ``TSB`` time series models :pr:`73`
     * Fixes
     * Changes
+        * Improved the logic for ``get_models`` to include an ``exclude`` parameter :pr:`73`
     * Documentation Changes
     * Testing Changes
     * CI/CD Changes
