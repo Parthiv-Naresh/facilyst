@@ -118,7 +118,7 @@ def _get_models_by_name(name, problem_type):
     for model in subset_models_problem_type:
         if name.lower() in model.name.lower():
             subset_models_name.append(model)
-    return set(subset_models_name)
+    return set(sorted(subset_models_name, key=lambda x: x.name))
 
 
 def _get_models_by_tag(tag):
@@ -129,7 +129,7 @@ def _get_models_by_tag(tag):
         secondary_tagged = _get_models_by_secondary_tag(secondary_tag=tag)
         tertiary_tagged = _get_models_by_tertiary_tag(tertiary_tag=tag)
         subset_models_tagged = secondary_tagged.union(tertiary_tagged)
-    return subset_models_tagged
+    return set(sorted(subset_models_tagged, key=lambda x: x.name))
 
 
 def _get_models_by_primary_tag(primary_tag):
@@ -141,7 +141,7 @@ def _get_models_by_primary_tag(primary_tag):
             for each_model in all_models
             if primary_tag.lower() == each_model.primary_type.lower()
         }
-        return subset_models_primary
+        return set(sorted(subset_models_primary, key=lambda x: x.name))
 
 
 def _get_models_by_secondary_tag(secondary_tag):
@@ -150,7 +150,7 @@ def _get_models_by_secondary_tag(secondary_tag):
         for each_model in all_models
         if secondary_tag.lower() == each_model.secondary_type.lower()
     }
-    return subset_models_secondary
+    return set(sorted(subset_models_secondary, key=lambda x: x.name))
 
 
 def _get_models_by_tertiary_tag(tertiary_tag):
@@ -159,4 +159,4 @@ def _get_models_by_tertiary_tag(tertiary_tag):
         for each_model in all_models
         if tertiary_tag.lower() == each_model.tertiary_type.lower()
     }
-    return subset_models_tertiary
+    return set(sorted(subset_models_tertiary, key=lambda x: x.name))

@@ -37,6 +37,6 @@ def test_hyperopt(numeric_features_regression):
     )
     best_model, best_score = opt.optimize(x, y)
 
-    expected_model = get_models("Random Forest Regressor")[0]
+    expected_model = next(iter(get_models("Random Forest Regressor")))
     assert isinstance(best_model, expected_model)
     assert isinstance(best_score, float)

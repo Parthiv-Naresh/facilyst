@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from facilyst.models import CatBoostClassifier, ModelBase
 from facilyst.models.utils import get_models
 
 
@@ -33,7 +34,7 @@ def test_estimators_regressors_sk_equivalent(
     regressor.fit(x, y)
     dt_predictions = regressor.predict(x)
 
-    sk_dt_regressor = regression_model()
+    sk_dt_regressor = regression_model().model
     sk_dt_regressor.fit(x, y)
     sk_dt_predictions = sk_dt_regressor.predict(x)
 
@@ -58,9 +59,12 @@ def test_estimators_classifiers_sk_equivalent(
     classifier.fit(x, y)
     dt_predictions = classifier.predict(x)
 
-    sk_dt_classifier = classifier_model()
+    sk_dt_classifier = classifier_model().model
     sk_dt_classifier.fit(x, y)
     sk_dt_predictions = sk_dt_classifier.predict(x)
+
+    if isinstance(classifier, CatBoostClassifier):
+        sk_dt_predictions = pd.Series(sk_dt_predictions.flatten())
 
     np.testing.assert_array_almost_equal(dt_predictions.values, sk_dt_predictions)
 
