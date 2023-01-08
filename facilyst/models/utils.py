@@ -30,9 +30,10 @@ def get_models(
         if exclude is None or exclude == "":
             return all_models
         else:
-            return all_models - _get_models_by_name(exclude, None).union(
+            all_excluded_tagged = all_models - _get_models_by_name(exclude, None).union(
                 _get_models_by_tag(exclude)
             )
+            return set(sorted(all_excluded_tagged, key=lambda x: x.name))
 
     if _is_any_allowed(name_or_tag):
         problem_type = handle_problem_type(problem_type)
@@ -40,9 +41,10 @@ def get_models(
         if exclude is None or exclude == "":
             return primary_tagged
         else:
-            return primary_tagged - _get_models_by_name(exclude, None).union(
-                _get_models_by_tag(exclude)
-            )
+            primary_excluded_tagged = primary_tagged - _get_models_by_name(
+                exclude, None
+            ).union(_get_models_by_tag(exclude))
+            return set(sorted(primary_excluded_tagged, key=lambda x: x.name))
 
     if _is_any_allowed(problem_type):
         try:
@@ -51,9 +53,10 @@ def get_models(
             if exclude is None or exclude == "":
                 return primary_tagged
             else:
-                return primary_tagged - _get_models_by_name(exclude, None).union(
-                    _get_models_by_tag(exclude)
-                )
+                primary_excluded_tagged = primary_tagged - _get_models_by_name(
+                    exclude, None
+                ).union(_get_models_by_tag(exclude))
+                return set(sorted(primary_excluded_tagged, key=lambda x: x.name))
         except ValueError:
             pass
         name_tagged = _get_models_by_name(name=name_or_tag, problem_type=None)
@@ -74,9 +77,13 @@ def get_models(
             if exclude is None or exclude == "":
                 return all_name_tagged_models
             else:
-                return all_name_tagged_models - _get_models_by_name(
-                    exclude, None
-                ).union(_get_models_by_tag(exclude))
+                all_names_excluded_tagged = (
+                    all_name_tagged_models
+                    - _get_models_by_name(exclude, None).union(
+                        _get_models_by_tag(exclude)
+                    )
+                )
+                return set(sorted(all_names_excluded_tagged, key=lambda x: x.name))
         else:
             raise no_models_found
 
@@ -100,9 +107,10 @@ def get_models(
         if exclude is None or exclude == "":
             return all_name_tagged_models
         else:
-            return all_name_tagged_models - _get_models_by_name(exclude, None).union(
-                _get_models_by_tag(exclude)
-            )
+            all_names_excluded_tagged = all_name_tagged_models - _get_models_by_name(
+                exclude, None
+            ).union(_get_models_by_tag(exclude))
+            return set(sorted(all_names_excluded_tagged, key=lambda x: x.name))
     else:
         raise no_models_found
 
