@@ -8,6 +8,7 @@ Future Release
         * Added ``TimeSeriesModelPipeline`` to support time series models from ``statsforecast`` :pr:`73`
         * Added ``ADIDA``, ``AutoARIMA``, ``AutoETS``, ``AuthoTheta``, ``CrostonOptimized``, ``IMAPA``, and ``TSB`` time series models :pr:`73`
     * Fixes
+        * Removed automatic writing of files during training for ``CatBoost`` models :pr:`79`
     * Changes
         * Improved the logic for ``get_models`` to include an ``exclude`` parameter :pr:`73`
     * Documentation Changes
