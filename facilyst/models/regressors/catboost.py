@@ -1,5 +1,5 @@
 """A model that uses gradient boosting on decision trees alongside categorical encoding for regression problems."""
-from typing import Optional, Any, Union
+from typing import Any, Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -61,19 +61,37 @@ class CatBoostRegressor(ModelBase):
         super().__init__(model=catboost_model, parameters=parameters)
 
     def fit(self, x_train, y_train) -> Any:
+        """Fits CatBoost Regressor model to the data.
+
+        :param x_train: The training data for the model to be fitted on.
+        :type x_train: pd.DataFrame or np.ndarray
+        :param y_train: The training targets for the model to be fitted on.
+        :type y_train: pd.Series or np.ndarray
+        """
         x_train, y_train = prepare_data(x_train, y_train, True)
-        self.string_features = x_train.select_dtypes(include=['string']).columns.tolist()
+        self.string_features = x_train.select_dtypes(
+            include=["string"]
+        ).columns.tolist()
         self.columns_with_nan = x_train.columns[x_train.isna().any()].tolist()
         cols_to_drop = set(self.string_features).union(set(self.columns_with_nan))
         x_train = x_train.drop(cols_to_drop, axis=1)
 
         x_train, y_train = prepare_data(x_train, y_train, True)
-        self.categorical_features = x_train.ww.select(include="Categorical").columns.tolist()
+        self.categorical_features = x_train.ww.select(
+            include="Categorical"
+        ).columns.tolist()
 
-        self.model.fit(x_train, y_train, silent=True, cat_features=self.categorical_features)
+        self.model.fit(
+            x_train, y_train, silent=True, cat_features=self.categorical_features
+        )
         return self
 
-    def predict(self, x_test: Union[pd.DataFrame, np.ndarray]) -> Any:
+    def predict(self, x_test: Union[pd.DataFrame, np.ndarray]) -> pd.Series:
+        """Predicts on the data using the CatBoost Regressor.
+
+        x_test (pd.DataFrame or np.ndarray): The testing data for the model to predict on.
+        return (pd.Series): The predictions.
+        """
         x_test, _ = prepare_data(x_test, ww_initialize=True)
         cols_to_drop = set(self.string_features).union(set(self.columns_with_nan))
         x_test = x_test.drop(cols_to_drop, axis=1)

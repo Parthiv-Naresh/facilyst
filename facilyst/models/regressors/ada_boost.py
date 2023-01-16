@@ -1,5 +1,5 @@
 """An ensemble weighted model for regression problems."""
-from typing import Optional, Any
+from typing import Any, Optional
 
 import woodwork as ww
 from hyperopt import hp
@@ -64,6 +64,13 @@ class ADABoostRegressor(ModelBase):
         super().__init__(model=ada_regressor_model, parameters=parameters)
 
     def fit(self, x_train, y_train) -> Any:
+        """Fits ADABoost model to the data.
+
+        :param x_train: The training data for the model to be fitted on.
+        :type x_train: pd.DataFrame or np.ndarray
+        :param y_train: The training targets for the model to be fitted on.
+        :type y_train: pd.Series or np.ndarray
+        """
         x_train, y_train = prepare_data(x_train, y_train, True)
         y_train = ww.init_series(y_train)
         x_train = x_train.ww.select(exclude="Categorical")

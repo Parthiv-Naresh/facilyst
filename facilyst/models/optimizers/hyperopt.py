@@ -131,7 +131,7 @@ class HyperoptOptimizer:
         return space
 
     @staticmethod
-    def organize_results(results_dict: dict) -> pd.DataFrame:
+    def _organize_results(results_dict: dict) -> pd.DataFrame:
         return pd.DataFrame.from_dict(results_dict, orient="index")
 
     def optimize(
@@ -155,12 +155,14 @@ class HyperoptOptimizer:
             results_dict[model.name] = self._optimize(
                 x, y, model, model.hyperparameters
             )
-        self.results = HyperoptOptimizer.organize_results(results_dict)
+        self.results = HyperoptOptimizer._organize_results(results_dict)
 
         best_model_row = self.results.best_score.idxmin()
         best_model = get_models(name_or_tag=best_model_row)
         best_model = list(best_model)[0]
-        best_model_hyperparameters = self.results.loc[best_model_row].best_hyperparameters
+        best_model_hyperparameters = self.results.loc[
+            best_model_row
+        ].best_hyperparameters
         best_score = self.results.loc[best_model_row].best_score
 
         return best_model(**best_model_hyperparameters), best_score
@@ -199,7 +201,7 @@ class HyperoptOptimizer:
             max_evals=model_iter or 50,
             trials=trials,
             verbose=False,
-            allow_trials_fmin=False
+            allow_trials_fmin=False,
         )
 
         best_trial = trials.best_trial

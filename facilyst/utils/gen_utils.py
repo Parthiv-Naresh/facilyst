@@ -1,11 +1,13 @@
 """General utility functions."""
 import importlib
 from types import ModuleType
-from typing import Optional, Union
+from typing import Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 import woodwork as ww
+
+ww.config.set_option("numeric_categorical_threshold", 0.2)
 
 
 def _get_subclasses(base_class: object) -> list:
@@ -93,23 +95,25 @@ def handle_problem_type(problem_type: str) -> str:
 
 
 def infer_problem_type(
-    x: Union[pd.DataFrame, np.ndarray], y: Union[pd.Series, np.ndarray]
+    y: Union[pd.Series, np.ndarray], x: Optional[Union[pd.DataFrame, np.ndarray]] = None
 ) -> str:
     """Infers the most likely problem type based on the target data passed in.
 
-    x (pd.DataFrame, np.ndarray): The features data. Only used in determining if the problem type is time series.
     y (pd.Series, np.ndarray): The target data to be inferred.
+    x (pd.DataFrame, np.ndarray): The features data. Only used in determining if the problem type is time series.
     returns (str): The inferred problem type
     """
+    x, y = prepare_data(x, y, True)
     if not isinstance(y, (pd.Series, np.ndarray)):
         raise TypeError(
             "The target data must be of either pd.Series or np.ndarray type."
         )
 
-    if y.ndim > 1:
-        raise ValueError("Only a one dimensional np.ndarray is allowed.")
-
     def _is_time_series(x):
+        if x is None:
+            return None
+        if isinstance(x.index, pd.DatetimeIndex) and pd.infer_freq(x.index):
+            return "time series"
         x_ww = x.ww.init()
         datetime_columns = x.ww.select(include="Datetime").columns
         if len(datetime_columns) >= 1:
@@ -122,16 +126,26 @@ def infer_problem_type(
             return None
 
     y_ww = ww.init_series(y)
-    if y_ww.ww.schema.is_numeric:
-        problem_type = "regression"
-        problem_type = _is_time_series() or problem_type
-    else:
+    if not y_ww.ww.schema.is_numeric:
         problem_type = "classification"
+    else:
+        problem_type = "regression"
+        problem_type = _is_time_series(x) or problem_type
 
     return problem_type
 
 
-def prepare_data(x: Union[pd.DataFrame, np.ndarray] = None, y: Union[pd.DataFrame, np.ndarray] = None, ww_initialize: bool = False):
+def prepare_data(
+    x: Union[pd.DataFrame, np.ndarray] = None,
+    y: Union[pd.DataFrame, np.ndarray] = None,
+    ww_initialize: bool = False,
+) -> Tuple[Optional[pd.DataFrame], Optional[pd.Series]]:
+    """Prepares the data for usage by models by converting to Pandas types and initializing through Woodwork.
+
+    x (pd.DataFrame or np.ndarray): Training data. Optional.
+    y (pd.Series or np.ndarray): Target data. Optional.
+    ww_initialize (bool): Whether to initialize the resulting pandas objects through Woodwork.
+    """
     if isinstance(x, np.ndarray):
         x = pd.DataFrame(x)
     if isinstance(y, np.ndarray):

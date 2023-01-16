@@ -4,7 +4,7 @@ import pytest
 from sklearn.datasets import make_classification, make_regression
 
 from facilyst.models import ModelBase, TimeSeriesModelBase
-from facilyst.utils import make_wave, make_features
+from facilyst.utils import make_features, make_wave
 
 
 def pytest_configure(config):
