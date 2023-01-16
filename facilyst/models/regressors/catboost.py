@@ -3,7 +3,6 @@ from typing import Any, Optional, Union
 
 import numpy as np
 import pandas as pd
-import woodwork as ww
 from hyperopt import hp
 
 from facilyst.models.model_base import ModelBase
@@ -56,7 +55,7 @@ class CatBoostRegressor(ModelBase):
 
         cat_regressor = import_or_raise("catboost", import_errors_dict["catboost"])
 
-        catboost_model = cat_regressor.CatBoostRegressor(**parameters)
+        catboost_model = cat_regressor.CatBoostRegressor(allow_writing_files=False, **parameters)
 
         super().__init__(model=catboost_model, parameters=parameters)
 

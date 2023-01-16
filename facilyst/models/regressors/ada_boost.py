@@ -1,7 +1,6 @@
 """An ensemble weighted model for regression problems."""
 from typing import Any, Optional
 
-import woodwork as ww
 from hyperopt import hp
 from sklearn.ensemble import AdaBoostRegressor as ada_regressor
 from sklearn.tree import DecisionTreeRegressor
@@ -72,6 +71,5 @@ class ADABoostRegressor(ModelBase):
         :type y_train: pd.Series or np.ndarray
         """
         x_train, y_train = prepare_data(x_train, y_train, True)
-        y_train = ww.init_series(y_train)
         x_train = x_train.ww.select(exclude="Categorical")
         super().fit(x_train, y_train)
