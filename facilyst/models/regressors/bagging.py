@@ -1,11 +1,13 @@
 """An ensemble bagging model for regression problems."""
-from typing import Optional
+from typing import Optional, Any
 
+import woodwork as ww
 from hyperopt import hp
 from sklearn.ensemble import BaggingRegressor as bagging_regressor
 from sklearn.tree import DecisionTreeRegressor
 
 from facilyst.models.model_base import ModelBase
+from facilyst.utils import prepare_data
 
 
 class BaggingRegressor(ModelBase):
@@ -60,3 +62,9 @@ class BaggingRegressor(ModelBase):
         bag_regressor = bagging_regressor(**parameters)
 
         super().__init__(model=bag_regressor, parameters=parameters)
+
+    def fit(self, x_train, y_train) -> Any:
+        x_train, y_train = prepare_data(x_train, y_train, True)
+        y_train = ww.init_series(y_train)
+        x_train = x_train.ww.select(exclude="Categorical")
+        super().fit(x_train, y_train)

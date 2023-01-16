@@ -1,10 +1,13 @@
 """A model that uses gradient boosting on decision trees alongside categorical encoding for regression problems."""
-from typing import Optional
+from typing import Optional, Any, Union
 
+import numpy as np
+import pandas as pd
+import woodwork as ww
 from hyperopt import hp
 
 from facilyst.models.model_base import ModelBase
-from facilyst.utils import import_errors_dict, import_or_raise
+from facilyst.utils import import_errors_dict, import_or_raise, prepare_data
 
 
 class CatBoostRegressor(ModelBase):
@@ -40,6 +43,9 @@ class CatBoostRegressor(ModelBase):
         random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
+        self.columns_with_nan = None
+        self.string_features = None
+        self.categorical_features = None
         parameters = {
             "n_estimators": n_estimators,
             "max_depth": max_depth,
@@ -53,3 +59,25 @@ class CatBoostRegressor(ModelBase):
         catboost_model = cat_regressor.CatBoostRegressor(**parameters)
 
         super().__init__(model=catboost_model, parameters=parameters)
+
+    def fit(self, x_train, y_train) -> Any:
+        x_train, y_train = prepare_data(x_train, y_train, True)
+        self.string_features = x_train.select_dtypes(include=['string']).columns.tolist()
+        self.columns_with_nan = x_train.columns[x_train.isna().any()].tolist()
+        cols_to_drop = set(self.string_features).union(set(self.columns_with_nan))
+        x_train = x_train.drop(cols_to_drop, axis=1)
+
+        x_train, y_train = prepare_data(x_train, y_train, True)
+        self.categorical_features = x_train.ww.select(include="Categorical").columns.tolist()
+
+        self.model.fit(x_train, y_train, silent=True, cat_features=self.categorical_features)
+        return self
+
+    def predict(self, x_test: Union[pd.DataFrame, np.ndarray]) -> Any:
+        x_test, _ = prepare_data(x_test, ww_initialize=True)
+        cols_to_drop = set(self.string_features).union(set(self.columns_with_nan))
+        x_test = x_test.drop(cols_to_drop, axis=1)
+
+        x_test, _ = prepare_data(x_test, ww_initialize=True)
+
+        return prepare_data(y=self.model.predict(x_test), ww_initialize=True)[1]

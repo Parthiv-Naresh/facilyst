@@ -1,7 +1,11 @@
 """General utility functions."""
 import importlib
 from types import ModuleType
-from typing import Optional
+from typing import Optional, Union
+
+import numpy as np
+import pandas as pd
+import woodwork as ww
 
 
 def _get_subclasses(base_class: object) -> list:
@@ -86,3 +90,57 @@ def handle_problem_type(problem_type: str) -> str:
         raise ValueError("That problem type isn't recognized!")
 
     return problem_type_
+
+
+def infer_problem_type(
+    x: Union[pd.DataFrame, np.ndarray], y: Union[pd.Series, np.ndarray]
+) -> str:
+    """Infers the most likely problem type based on the target data passed in.
+
+    x (pd.DataFrame, np.ndarray): The features data. Only used in determining if the problem type is time series.
+    y (pd.Series, np.ndarray): The target data to be inferred.
+    returns (str): The inferred problem type
+    """
+    if not isinstance(y, (pd.Series, np.ndarray)):
+        raise TypeError(
+            "The target data must be of either pd.Series or np.ndarray type."
+        )
+
+    if y.ndim > 1:
+        raise ValueError("Only a one dimensional np.ndarray is allowed.")
+
+    def _is_time_series(x):
+        x_ww = x.ww.init()
+        datetime_columns = x.ww.select(include="Datetime").columns
+        if len(datetime_columns) >= 1:
+            for col in datetime_columns:
+                if pd.infer_freq(x_ww.ww[col]):
+                    return "time series"
+                continue
+            return None
+        else:
+            return None
+
+    y_ww = ww.init_series(y)
+    if y_ww.ww.schema.is_numeric:
+        problem_type = "regression"
+        problem_type = _is_time_series() or problem_type
+    else:
+        problem_type = "classification"
+
+    return problem_type
+
+
+def prepare_data(x: Union[pd.DataFrame, np.ndarray] = None, y: Union[pd.DataFrame, np.ndarray] = None, ww_initialize: bool = False):
+    if isinstance(x, np.ndarray):
+        x = pd.DataFrame(x)
+    if isinstance(y, np.ndarray):
+        y = pd.Series(y)
+
+    if ww_initialize:
+        if x is not None:
+            x.ww.init()
+        if y is not None:
+            y = ww.init_series(y)
+
+    return x, y
