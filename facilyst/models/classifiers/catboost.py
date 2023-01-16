@@ -52,7 +52,7 @@ class CatBoostClassifier(ModelBase):
 
         cat_classifier = import_or_raise("catboost", import_errors_dict["catboost"])
 
-        catboost_model = cat_classifier.CatBoostClassifier(**parameters)
+        catboost_model = cat_classifier.CatBoostClassifier(allow_writing_files=False, **parameters)
 
         super().__init__(model=catboost_model, parameters=parameters)
 

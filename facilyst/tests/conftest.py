@@ -4,7 +4,7 @@ import pytest
 from sklearn.datasets import make_classification, make_regression
 
 from facilyst.models import ModelBase, TimeSeriesModelBase
-from facilyst.utils import make_wave
+from facilyst.utils import make_features, make_wave
 
 
 def pytest_configure(config):
@@ -38,6 +38,13 @@ def multi_dim_data():
     }
 
     return multi_dim_types
+
+
+@pytest.fixture
+def all_data_types_regression():
+    x = make_features(num_rows=500, all_dtypes=True)
+    _, y = make_regression(n_samples=500, n_features=1, random_state=42)
+    return x, y
 
 
 @pytest.fixture
