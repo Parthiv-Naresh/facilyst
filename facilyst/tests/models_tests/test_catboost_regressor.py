@@ -34,5 +34,6 @@ def test_catboost_regressor(numeric_features_regression):
     assert catboost_regressor.get_params() == {
         "loss_function": "RMSE",
         "n_estimators": 50,
+        "allow_writing_files": False,
         "random_state": 0,
     }

@@ -14,12 +14,10 @@ class CatBoostClassifier(ModelBase):
 
      This is a classifier that uses gradient boosting on decision trees alongside categorical encoding.
 
-    :param n_estimators: The maximum number of trees that can be built. Defaults to 50.
-    :type n_estimators: int, optional
-    :param max_depth: The maximum depth of the tree. Defaults to None.
-    :type max_depth: int, optional
-    :param learning_rate: The learning rate.
-    :type learning_rate: float, optional
+    n_estimators (int): The maximum number of trees that can be built. Defaults to 50.
+    max_depth (int): The maximum depth of the tree. Defaults to None.
+    learning_rate (float): The learning rate.
+    allow_writing_files (bool): Whether to allow the generation of files during training. Defaults to False.
     """
 
     name: str = "Catboost Classifier"
@@ -39,6 +37,7 @@ class CatBoostClassifier(ModelBase):
         n_estimators: Optional[int] = 50,
         max_depth: Optional[int] = None,
         learning_rate: Optional[float] = None,
+        allow_writing_files: Optional[bool] = False,
         random_state: Optional[int] = 0,
         **kwargs,
     ) -> None:
@@ -46,6 +45,7 @@ class CatBoostClassifier(ModelBase):
             "n_estimators": n_estimators,
             "max_depth": max_depth,
             "learning_rate": learning_rate,
+            "allow_writing_files": allow_writing_files,
             "random_state": random_state,
         }
         parameters.update(kwargs)

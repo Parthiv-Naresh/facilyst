@@ -42,5 +42,6 @@ def test_catboost_classifier(
 
     assert catboost_classifier.get_params() == {
         "n_estimators": 50,
+        "allow_writing_files": False,
         "random_state": 0,
     }
